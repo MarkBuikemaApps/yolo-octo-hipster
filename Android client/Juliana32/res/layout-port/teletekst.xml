@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:orientation="horizontal" >
+
+        <com.markbuikema.juliana32.ui.Button
+            android:id="@+id/teletekstLeft"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="@string/arrow_left" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ProgressBar
+            android:id="@+id/teletekstProgress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/teletekstPageNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <com.markbuikema.juliana32.ui.Button
+            android:id="@+id/teletekstRight"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="@string/arrow_right" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/teletekstImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_weight="1"
+        android:contentDescription="@string/menu_teletekst"
+        android:gravity="top"
+        android:src="@drawable/listselector" />
+
+</LinearLayout>
