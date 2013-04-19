@@ -52,16 +52,30 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/listselector"
+                android:contentDescription="@string/refresh"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
                 android:src="@drawable/ic_menu_refresh"
                 android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/menuSeason"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_margin="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:background="@drawable/listselector"
+                android:paddingLeft="@dimen/small_margin"
+                android:paddingRight="@dimen/small_margin"
+                android:textSize="20sp" />
 
             <ImageButton
                 android:id="@+id/menuToggler2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/menu"
                 android:scaleType="fitStart"
                 android:src="@drawable/overflow" />
         </LinearLayout>
@@ -77,7 +91,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 layout="@layout/home" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +104,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 layout="@layout/nieuws" />
-            
         </LinearLayout>
 
         <LinearLayout

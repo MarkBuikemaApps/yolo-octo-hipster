@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.coboltforge.slidemenu.SlideMenu;
@@ -43,6 +44,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	private ImageButton menuToggler;
 	private ImageButton overflowToggler;
 	private ImageButton refreshButton;
+	private Spinner seasonButton;
 	private ProgressBar loader;
 	private TextView title;
 
@@ -70,10 +72,10 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		overflowToggler = (ImageButton) findViewById(R.id.menuToggler2);
 		title = (TextView) findViewById(R.id.titleText);
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
+		seasonButton = (Spinner) findViewById(R.id.menuSeason);
 		loader = (ProgressBar) findViewById(R.id.loading);
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			if (ViewConfiguration.get(this).hasPermanentMenuKey())
-				overflowToggler.setVisibility(View.GONE);
+			if (ViewConfiguration.get(this).hasPermanentMenuKey()) overflowToggler.setVisibility(View.GONE);
 
 		initializePages();
 
@@ -117,34 +119,33 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		case HOME:
 			title = getResources().getString(R.string.app_name);
 			activePageView = findViewById(R.id.homeView);
-			if (home == null)
-				home = new Home(this);
+			if (home == null) home = new Home(this);
 			break;
 		case NIEUWS:
 			title = getResources().getString(R.string.menu_nieuws);
 			activePageView = findViewById(R.id.nieuwsView);
-			if (nieuws == null)
-				nieuws = new Nieuws(this);
+			if (nieuws == null) nieuws = new Nieuws(this);
 			nieuws.showRefreshButton();
 			break;
 		case TEAMS:
 			title = getResources().getString(R.string.menu_teams);
 			activePageView = findViewById(R.id.teamsView);
-			if (teams == null)
-				teams = new Teams(this);
+			if (teams == null) teams = new Teams(this);
+			if (!teams.isLoaded()) {
+				loader.setVisibility(View.VISIBLE);
+			}
 			break;
 		case TELETEKST:
 			title = getResources().getString(R.string.menu_teletekst);
 			activePageView = findViewById(R.id.teletekstView);
-			if (teletekst == null)
-				teletekst = new Teletekst(this);
+			if (teletekst == null) teletekst = new Teletekst(this);
 			break;
 		}
 
-		if (page != Page.NIEUWS) {
-			refreshButton.setVisibility(View.GONE);
-			loader.setVisibility(View.GONE);
-		}
+		loader.setVisibility(View.GONE);
+
+		seasonButton.setVisibility(page == Page.TEAMS ? View.VISIBLE : View.GONE);
+		refreshButton.setVisibility(page == Page.NIEUWS ? View.VISIBLE : View.GONE);
 
 		activePageView.setVisibility(View.VISIBLE);
 
@@ -236,8 +237,8 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		am.cancel(pi);
 
 		if (notify) {
-			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()
-					+ NOTIFICATION_INTERVAL * 6 * 1000, NOTIFICATION_INTERVAL * 60 * 1000, pi);
+			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + NOTIFICATION_INTERVAL * 6
+					* 1000, NOTIFICATION_INTERVAL * 60 * 1000, pi);
 			Log.d("JulianaService", "Service started");
 		}
 	}
@@ -277,8 +278,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		outState.putString("page", page.toString());
 		outState.putBoolean("showAbout", showAbout);
 
-		if (teletekst != null)
-			teletekst.onSaveInstanceState(outState);
+		if (teletekst != null) teletekst.onSaveInstanceState(outState);
 
 		super.onSaveInstanceState(outState);
 	}
@@ -287,12 +287,10 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		initializePages();
 
-		if (teletekst != null)
-			teletekst.onRestoreInstanceState(savedInstanceState);
+		if (teletekst != null) teletekst.onRestoreInstanceState(savedInstanceState);
 		onPageChanged(Page.valueOf(savedInstanceState.getString("page")));
 		showAbout = savedInstanceState.getBoolean("showAbout");
-		if (showAbout)
-			showAboutDialog();
+		if (showAbout) showAboutDialog();
 
 		super.onRestoreInstanceState(savedInstanceState);
 	}

@@ -16,5 +16,7 @@
     <string name="about2">Ontwikkeld door Mark Buikema</string>
     <string name="about_email">buikemamark@gmail.com</string>
     <string name="about_email_subject">s.v. Juliana 32 app</string>
+    <string name="menu">Menu</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

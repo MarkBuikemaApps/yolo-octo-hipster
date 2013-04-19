@@ -209,12 +209,94 @@
 			}
 		});
 	}
-	
+
 	function startcrawler() {
 		$.ajax({
-			url: "api/news/startcrawling",
-			type: "post",
-			success: alert('started retrieving news')
+			url : "api/news/startcrawling",
+			type : "post",
+			success : alert('started retrieving news')
+		});
+	}
+
+	function testcreateseason() {
+		$.ajax({
+			url : "api/seasons/add/" + $("#seasonYear").val(),
+			type : "post",
+			dataType : 'json',
+			contentType : 'application/json'
+		});
+	}
+
+	function testgetseasons() {
+		var year = $("#seasonYear").val();
+		if (year == undefined || year == "") {
+			$.ajax({
+				url : "api/seasons/get/all",
+				type : "get",
+				dataType : 'json',
+				contentType : 'application/json',
+				success : function(d) {
+					d = JSON.stringify(d);
+					$("#seasonresults").html("Total response: " + d);
+				}
+			});
+		} else {
+			$.ajax({
+				url : "api/seasons/get/" + year,
+				type : "get",
+				dataType : 'json',
+				contentType : 'application/json',
+				success : function(d) {
+					d = JSON.stringify(d);
+					$("#seasonresults").html(
+							"Season " + year + " response: " + d);
+				}
+			});
+		}
+	}
+
+	function testcreateteam() {
+
+		var category = "SENIOREN";
+		if ($("#senior:checked").val()) {
+			category = "SENIOREN";
+		} else if ($("#junior:checked").val()) {
+			category = "JUNIOREN";
+		} else if ($("#dames:checked").val()) {
+			category = "DAMES";
+		}
+		
+		var data = '{"name":"' + $("#teamname").val() + '","category":"'+category+'"}';
+		$.ajax({
+			url : "api/teams/add/" + $("#seasonYear").val(),
+			type : "post",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : data
+		});
+	}
+
+	function testcreategame() {
+		var year = $("#seasonYear").val();
+		var teamId = $("#teamId").val();
+
+		var teamgoals = $("#goals").val();
+		var otherteamname = $("#otherteamname").val();
+		var otherteamgoals = $("#otherteamgoals").val();
+		var home = $("#homegame").is(":checked");
+		var date = $("#gamedate").val();
+
+		var data = "{\"teamName\":\"" + teamname + "\",\"teamGoals\":\""
+				+ teamgoals + "\",\"otherTeam\":\"" + otherteamname
+				+ "\",\"otherGoals\":\"" + otherteamgoals + "\",\"home\":\""
+				+ home + "\",\"date\":\"" + date + "\"}";
+
+		$.ajax({
+			url : "api/teams/addgame/" + year + "/" + teamId,
+			type : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			data : data
 		});
 	}
 </script>
@@ -223,7 +305,7 @@
 <body>
 	<h1>Administratie Juliana32</h1>
 
-<button width="100%" onclick="startcrawler()">Start retrieving news</button>
+	<button onclick="startcrawler()">Start retrieving news</button>
 	<table border="1px" width="100%">
 		<tr>
 			<td width="50%">News Items</td>
@@ -261,6 +343,29 @@
 					(fill in id)</button> <br> <br> specific id <input id="teaserId"></input>
 				<br>
 				<div id="teaserResults"></div>
+
+			</td>
+		</tr>
+		<tr>
+			<td>year<input id="seasonYear"><br>
+				<button onclick="testcreateseason()">Test post season</button> <br>
+				<button onclick="testgetseasons()">Test get seasons</button>
+				<div id="seasonresults"></div>
+			</td>
+			<td>name<input id="teamname"><br>
+				<input type="radio" id="senior" name="cat">S&nbsp;
+				<input type="radio" id="junior" name="cat">J&nbsp; <input
+				type="radio" id="dames" name="cat">D<br><button onclick="testcreateteam()">Test post team (fill in
+					year)</button><br> ID<input
+				id="teamId"> <br> <br> goals scored <input
+				id="goals"><br> other team name<input
+				id="otherteamname"><br> other team goals <input
+				id="otherteamgoals"><br> home game? <input
+				type="checkbox" id="homegame"><br> date <input
+				id="gamedate">
+
+				<button onclick="testcreategame()">Create game</button>
+
 
 			</td>
 		</tr>
