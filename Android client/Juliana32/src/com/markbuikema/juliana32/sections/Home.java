@@ -2,6 +2,7 @@ package com.markbuikema.juliana32.sections;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -14,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -23,17 +23,20 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ScrollView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 
 public class Home {
@@ -41,21 +44,20 @@ public class Home {
 	private static final String TAG = "Home Section";
 	private static final int MARGIN = 20;
 
-	private Context context;
+	private MainActivity activity;
 
-	private ScrollView fixtureScroller;
-	private LinearLayout fixtureContainer;
+	private ListView fixtures;
+	private FixtureAdapter fixtureAdapter;
 	private LinearLayout teaserContainer;
 	private ArrayList<TeaserNieuwsItem> teasers;
 
 	private int teaserWidth;
 	private int teaserHeight;
 
-	public Home(Activity act) {
-		context = act;
+	public Home(MainActivity act) {
+		activity = act;
 		View mainView = act.findViewById(R.id.home);
-		fixtureScroller = (ScrollView) mainView.findViewById(R.id.fixtureScroller);
-		fixtureContainer = (LinearLayout) mainView.findViewById(R.id.fixtureContainer);
+		fixtures = (ListView) mainView.findViewById(R.id.fixtures);
 		teaserContainer = (LinearLayout) mainView.findViewById(R.id.teaserContainer);
 
 		teasers = new ArrayList<TeaserNieuwsItem>();
@@ -65,8 +67,13 @@ public class Home {
 		new TeaserRetriever().execute();
 	}
 
+	public void populateGames() {
+		fixtureAdapter = new FixtureAdapter(activity, activity.getLatestGames());
+		fixtures.setAdapter(fixtureAdapter);
+	}
+
 	private void setTeaserDimensions() {
-		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
 		Display d = wm.getDefaultDisplay();
 		teaserWidth = (d.getWidth() / 3) * 2;
 		float height = ((float) teaserWidth / 246f) * 96f;
@@ -77,11 +84,11 @@ public class Home {
 	public void addTeaser(final TeaserNieuwsItem item) {
 		Log.d(TAG, item.toString());
 		teasers.add(item);
-		View view = LayoutInflater.from(context).inflate(R.layout.listitem_teaseritem, null);
+		View view = LayoutInflater.from(activity).inflate(R.layout.listitem_teaseritem, null);
 		TextView teaserText = (TextView) view.findViewById(R.id.teaserTitle);
 		ImageView teaserImage = (ImageView) view.findViewById(R.id.teaserImage);
 		teaserText.setText(item.getTitle());
-		BitmapDrawable drawable = new BitmapDrawable(context.getResources(), item.getImage());
+		BitmapDrawable drawable = new BitmapDrawable(activity.getResources(), item.getImage());
 		teaserImage.setImageDrawable(drawable);
 		LayoutParams params = new LayoutParams(teaserWidth, teaserHeight);
 		params.setMargins(MARGIN, MARGIN, MARGIN, MARGIN);
@@ -98,11 +105,51 @@ public class Home {
 			@Override
 			public void onClick(View v) {
 				// TODO
-				Toast.makeText(context, "Clicked: " + item.getImgUrl(), Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Clicked: " + item.getImgUrl(), Toast.LENGTH_LONG).show();
 			}
 		});
 
 		teaserContainer.addView(view);
+	}
+
+	private class FixtureAdapter extends ArrayAdapter<Game> {
+
+		public FixtureAdapter(Context context, List<Game> objects) {
+			super(context, 0, objects);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = LayoutInflater.from(activity).inflate(R.layout.listitem_game, null);
+			}
+			TextView date = (TextView) convertView.findViewById(R.id.game_date);
+			TextView homeTeam = (TextView) convertView.findViewById(R.id.game_home_team_name);
+			TextView awayTeam = (TextView) convertView.findViewById(R.id.game_away_team_name);
+			TextView homeScore = (TextView) convertView.findViewById(R.id.game_home_team_score);
+			TextView awayScore = (TextView) convertView.findViewById(R.id.game_away_team_score);
+
+			TextView scoreDivider = (TextView) convertView.findViewById(R.id.game_team_score_divider);
+
+			Game game = getItem(position);
+
+			date.setText(game.getDateString());
+			homeTeam.setText(game.isHome() ? game.getTeamName() : game.getOtherTeam());
+			awayTeam.setText(game.isHome() ? game.getOtherTeam() : game.getTeamName());
+			if (game.isPlayed()) {
+				homeScore.setText(Integer.toString(game.isHome() ? game.getTeamGoals() : game.getOtherGoals()));
+				awayScore.setText(Integer.toString(game.isHome() ? game.getOtherGoals() : game.getTeamGoals()));
+				scoreDivider.setVisibility(View.VISIBLE);
+			} else {
+				homeScore.setText("");
+				awayScore.setText("");
+				scoreDivider.setVisibility(View.GONE);
+
+			}
+
+			return convertView;
+		}
+
 	}
 
 	private class TeaserRetriever extends AsyncTask<Void, TeaserNieuwsItem, Void> {

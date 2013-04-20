@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.apache.http.impl.conn.DefaultClientConnection"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.tools.Tools"/>
+<fullyQualifiedTypeName name="org.apache.http.impl.client.DefaultHttpClient"/>
+<fullyQualifiedTypeName name="org.apache.http.util.EntityUtils"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.activities.MainActivity"/>
+<fullyQualifiedTypeName name="org.json.JSONException"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.InformationRetriever"/>
+<fullyQualifiedTypeName name="android.opengl.Visibility"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="android.widget.ProgressBar"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Team.Category"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.TeamListItem"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
+<fullyQualifiedTypeName name="android.R.id"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.SeasonAdapter"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.layout"/>
+<fullyQualifiedTypeName name="android.widget.AdapterView.OnItemSelectedListener"/>
+</qualifiedTypeNameHistroy>

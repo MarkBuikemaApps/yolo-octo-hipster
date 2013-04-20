@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.activities.MainActivity.Page;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
@@ -49,10 +50,12 @@ public class Nieuws {
 	private Bitmap julianaIcon;
 	private ImageButton refreshButton;
 	private ProgressBar loading;
-
+	private MainActivity activity;
+	
 	private NieuwsRetriever nieuwsRetriever;
 
 	public Nieuws(final Activity act) {
+		activity = (MainActivity) act;
 		View mainView = act.findViewById(R.id.nieuws);
 		nieuwsList = (ListView) mainView.findViewById(R.id.nieuwsList);
 		refreshButton = (ImageButton) act.findViewById(R.id.menuRefresh);
@@ -81,6 +84,8 @@ public class Nieuws {
 				Log.d(TAG, text);
 			}
 		});
+		
+		refresh();
 	}
 
 	public void showRefreshButton() {
@@ -151,6 +156,7 @@ public class Nieuws {
 		@Override
 		protected void onPostExecute(ArrayList<NieuwsItem> result) {
 			loading.setVisibility(View.GONE);
+			if (activity.getPage() == Page.NIEUWS)
 			refreshButton.setVisibility(View.VISIBLE);
 			for (NieuwsItem item : result)
 				nieuwsAdapter.add(item);
@@ -167,7 +173,7 @@ public class Nieuws {
 			try {
 				HttpResponse response = client.execute(get);
 
-				String json = EntityUtils.toString(response.getEntity());
+				String json = EntityUtils.toString(response.getEntity(), "UTF-8");
 
 				JSONObject object = null;
 				try {

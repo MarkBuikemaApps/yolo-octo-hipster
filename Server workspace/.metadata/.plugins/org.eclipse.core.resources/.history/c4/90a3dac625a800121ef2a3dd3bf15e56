@@ -1,0 +1,68 @@
+package com.markbuikema.juliana32.server.model;
+
+import java.util.GregorianCalendar;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.markbuikema.juliana32.server.singletons.Seasons;
+
+@XmlRootElement(name="games")
+public class Game {
+	
+	@XmlElement
+	private int id;
+
+	@XmlElement
+	private String teamName;
+
+	@XmlElement
+	private String otherTeam;
+
+	@XmlElement
+	private boolean home;
+
+	@XmlElement
+	private boolean played;
+
+	@XmlElement
+	private long date;
+
+	@XmlElement
+	private int teamGoals;
+
+	@XmlElement
+	private int otherGoals;
+	
+	public Game() {
+		id = Seasons.getLatestUnusedGameId();
+	}
+
+	public String toString() {
+		if (played) {
+			if (home)
+				return getDateString() + " " + teamName + " - " + otherTeam + " : "
+						+ teamGoals + " - " + otherGoals;
+			else
+				return getDateString() + " " + otherTeam + " - " + teamName + " : "
+						+ otherGoals + " - " + teamGoals;
+		} else {
+			if (home)
+				return getDateString() + " " + teamName + " - " + otherTeam;
+			else 
+				return getDateString() + " " + otherTeam + " - " + teamName;
+		}
+	}
+
+	private String getDateString() {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(date);
+		return cal.get(GregorianCalendar.DAY_OF_MONTH) + "/"
+				+ (cal.get(GregorianCalendar.MONTH) + 1) + "/"
+				+ cal.get(GregorianCalendar.YEAR);
+	}
+	
+	public boolean isGame(int id) {
+		return this.id == id;
+	}
+}

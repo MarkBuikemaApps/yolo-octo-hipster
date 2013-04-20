@@ -18,5 +18,7 @@
     <string name="about_email_subject">s.v. Juliana 32 app</string>
     <string name="menu">Menu</string>
     <string name="refresh">Refresh</string>
+    <string name="game_team_divider">" - "</string>
+    <string name="date_divider">:   </string>
 
 </resources>

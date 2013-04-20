@@ -44,8 +44,9 @@ public class Team {
 		return category;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Game> getGames() {
-		return games;
+		return (ArrayList<Game>) games.clone();
 	}
 	
 	

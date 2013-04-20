@@ -33,7 +33,7 @@ import com.markbuikema.juliana32.model.Team.Category;
 public class Teams {
 
 	private final static String TAG = "Teams";
-
+	private final static long TWO_WEEKS = 1000 * 60 * 60 * 24 * 14;
 	private final static String INFORMATION_URL = MainActivity.BASE_SERVER_URL + "/seasons/get/all";
 
 	private Activity activity;
@@ -42,7 +42,6 @@ public class Teams {
 	private SeasonAdapter seasonAdapter;
 	private ArrayList<Season> seasons;
 	private ProgressBar loader;
-	private int selectedSeasonIndex;
 	private Spinner seasonSpinner;
 
 	private boolean finishedLoading = false;
@@ -73,7 +72,6 @@ public class Teams {
 	}
 
 	private void onSeasonSelected(int seasonIndex) {
-		selectedSeasonIndex = seasonIndex;
 		teamAdapter.setSeason(seasons.get(seasonIndex));
 	}
 
@@ -183,18 +181,47 @@ public class Teams {
 			seasonSpinner.setAdapter(seasonAdapter);
 
 			if (seasons.size() != 0) {
-				int highest = 0;
-				int index = 0;
-				for (int i = 0; i < seasons.size(); i++) {
-					if (seasons.get(i).getYear() > highest) {
-						highest = seasons.get(i).getYear();
-						index = i;
-					}
-				}
-				onSeasonSelected(index);
+
+				onSeasonSelected(getNewestSeasonIndex());
+			}
+			
+			((MainActivity)activity).notifyDoneLoadingSeasons();
+		}
+	}
+
+	public ArrayList<Game> getLatestGames() {
+		Log.d(TAG, "Method called");
+		long currentTime = System.currentTimeMillis();
+		long minTime = currentTime - TWO_WEEKS;
+		int index = getNewestSeasonIndex();
+		if (index == -1) return null;
+		Season latest = seasons.get(index);
+		Log.d(TAG, "latest season: " + latest.getYear() + ", games: " + latest.getGameCount());
+		ArrayList<Game> games = new ArrayList<Game>();
+		for (Team team : latest.getTeams()) {
+			for (Game game : team.getGames()) {
+				Log.d(TAG,"Date: " + game.getDate() + ", minDate: " + minTime);
+				if (game.getDate() >= minTime) games.add(game);
 			}
 		}
+		
+		for (Game game: games) {
+			Log.d(TAG,game.toString());
+		}
+		return games;
+	}
 
+	public int getNewestSeasonIndex() {
+		if (seasons.size() == 0) return -1;
+		int highest = 0;
+		int index = 0;
+		for (int i = 0; i < seasons.size(); i++) {
+			if (seasons.get(i).getYear() > highest) {
+				highest = seasons.get(i).getYear();
+				index = i;
+			}
+		}
+		return index;
 	}
 
 	private class SeasonAdapter extends ArrayAdapter<Season> {

@@ -16,7 +16,7 @@ public class NormalNieuwsItem extends NieuwsItem {
 	public String getCreatedAtString() {
 		String string = createdAt.get(GregorianCalendar.DAY_OF_MONTH) + "/"
 				+ (createdAt.get(GregorianCalendar.MONTH)+1) + "/"
-				+ createdAt.get(GregorianCalendar.YEAR);
+				+ Integer.toString(createdAt.get(GregorianCalendar.YEAR)).substring(2);
 		return string;
 	}
 	

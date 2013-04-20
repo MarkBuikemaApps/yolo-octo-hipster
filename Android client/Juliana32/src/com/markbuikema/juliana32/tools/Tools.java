@@ -31,7 +31,7 @@ public class Tools {
 		HttpGet get = new HttpGet(url);
 		try {
 			HttpResponse response = client.execute(get);
-			return EntityUtils.toString(response.getEntity());
+			return EntityUtils.toString(response.getEntity(), "UTF-8");
 		} catch (ClientProtocolException e){} catch (IOException e) {
 			e.printStackTrace();
 		}

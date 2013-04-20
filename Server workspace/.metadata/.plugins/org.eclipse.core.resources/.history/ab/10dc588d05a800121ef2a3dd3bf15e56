@@ -1,0 +1,30 @@
+package com.markbuikema.juliana32.server.singletons;
+
+import java.util.ArrayList;
+
+import com.markbuikema.juliana32.server.model.Season;
+
+public class Seasons {
+
+	private static Seasons instance;
+
+	private ArrayList<Season> seasons;
+
+	private Seasons() {
+		seasons = new ArrayList<Season>();
+	}
+
+	public Seasons get() {
+		if (instance == null)
+			instance = new Seasons();
+		return instance;
+	}
+
+	public Season getSeason(int index) {
+		if (index >= 0 && index < seasons.size())
+			return seasons.get(index);
+		else
+			return null;
+	}
+
+}

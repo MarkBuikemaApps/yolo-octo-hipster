@@ -1,0 +1,9 @@
+package com.markbuikema.juliana32.server.model;
+
+import java.util.ArrayList;
+
+public class Season {
+	private String name;
+	private ArrayList<Team> teams;
+	
+}

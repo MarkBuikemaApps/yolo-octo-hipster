@@ -1,0 +1,35 @@
+package com.markbuikema.juliana32.model;
+
+import java.util.ArrayList;
+
+public class Season {
+
+	private int year;
+	private ArrayList<Team> teams;
+
+	public Season(int year) {
+		this.year = year;
+		teams = new ArrayList<Team>();
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public String getName() {
+		return Integer.toString(year).substring(2) + "/" + Integer.toString(year + 1).substring(2);
+	}
+
+	public void addTeam(Team team) {
+		teams.add(team);
+	}
+
+	public String toString() {
+		String string = year + "\n";
+		for (Team t : teams) {
+			string += t.getName() + ": " + t.getGameCount() + " games\n";
+		}
+		return string + "\n";
+	}
+
+}

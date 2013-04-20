@@ -1,0 +1,56 @@
+package com.markbuikema.juliana32.server.model;
+
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Season {
+
+	@XmlElement
+	private int id;
+	@XmlElement
+	private int year;
+	@XmlElement
+	private ArrayList<Team> teams;
+
+	public Season() {
+		teams = new ArrayList<Team>();
+	}
+	
+	public Season(int year) {
+		teams = new ArrayList<Team>();
+		this.year = year;
+	}
+
+	public Team getTeam(int i) {
+		if (i >= 0 && i < teams.size())
+			return teams.get(i);
+		else
+			return null;
+	}
+
+	public boolean isSeason(int year) {
+		return this.year == year;
+	}
+	
+	@XmlElement
+	public String getName() {
+		return year + "/" + Integer.toString(year+1).substring(2);
+	}
+
+	public Team getTeam(String team) {
+		for (Team t: teams) {
+			if (t.isTeam(team)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+	public void addTeam(Team team) {
+		teams.add(team);
+	}
+
+}

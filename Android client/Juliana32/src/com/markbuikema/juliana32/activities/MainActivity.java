@@ -1,5 +1,7 @@
 package com.markbuikema.juliana32.activities;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -28,6 +30,8 @@ import android.widget.TextView;
 import com.coboltforge.slidemenu.SlideMenu;
 import com.coboltforge.slidemenu.SlideMenuInterface.OnSlideMenuItemClickListener;
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activities.MainActivity.Page;
+import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.sections.Home;
 import com.markbuikema.juliana32.sections.Nieuws;
 import com.markbuikema.juliana32.sections.Teams;
@@ -99,6 +103,18 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 			}
 		});
 
+	}
+
+	public ArrayList<Game> getLatestGames() {
+		if (teams != null)
+			return teams.getLatestGames();
+		else
+			return null;
+	}
+
+	public void notifyDoneLoadingSeasons() {
+		if (home == null) return;
+		home.populateGames();
 	}
 
 	private void initializePages() {
@@ -297,5 +313,9 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 	public static String filter(String input) {
 		return android.text.Html.fromHtml(input).toString();
+	}
+
+	public Page getPage() {
+		return page;
 	}
 }

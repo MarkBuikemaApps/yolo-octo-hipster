@@ -1,13 +1,10 @@
 package com.markbuikema.juliana32.server.crawler;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jsoup.Connection;
-import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 
 import com.markbuikema.juliana32.server.model.NewsItem;
