@@ -1,0 +1,129 @@
+package com.markbuikema.juliana32.sections;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.model.Photo;
+import com.markbuikema.juliana32.model.TableRow;
+import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.tools.FixtureAdapter;
+import com.markbuikema.juliana32.tools.TableAdapter;
+import com.markbuikema.juliana32.tools.Tools;
+
+public class TeamDetail {
+
+	private Team team;
+	private MainActivity activity;
+
+	private Button uitslagenButton;
+	private Button programmaButton;
+
+	private ViewPager photoPager;
+	private ListView table;
+	
+	private TableAdapter tableAdapter;
+
+	private ListView uitslagen;
+	private ListView programma;
+
+	@SuppressWarnings("unchecked")
+	public TeamDetail(MainActivity activity, Team team) {
+		this.team = team;
+		this.activity = activity;
+
+		View mainView = activity.findViewById(R.id.teamDetailView);
+
+		uitslagenButton = (Button) mainView.findViewById(R.id.uitslagenButton);
+		programmaButton = (Button) mainView.findViewById(R.id.programmaButton);
+
+		uitslagenButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				toggleUitslagen();
+			}
+		});
+
+		programmaButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				toggleProgramma();
+			}
+		});
+
+		uitslagen = (ListView) mainView.findViewById(R.id.uitslagenList);
+		programma = (ListView) mainView.findViewById(R.id.programmaList);
+
+		photoPager = (ViewPager) mainView.findViewById(R.id.photoPager);
+		table = (ListView) mainView.findViewById(R.id.tableListView);
+
+//		table.setClickable(false);
+
+		ArrayList<TableRow> tableList = team.getTable();
+		Collections.sort(tableList);
+		
+		if (tableAdapter == null) 
+			tableAdapter = new TableAdapter(activity, tableList);
+		
+		table.setAdapter(tableAdapter);
+		uitslagen.setAdapter(new FixtureAdapter(activity, team.getUitslagen()));
+		programma.setAdapter(new FixtureAdapter(activity, team.getProgramma()));
+
+		uitslagen.setVisibility(View.GONE);
+		programma.setVisibility(View.GONE);
+		
+//		table.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+//        LayoutParams.MATCH_PARENT));
+		
+		for (Photo photo: team.getPhotos()) {
+			photo.load();
+		}
+	}
+
+	public void toggleUitslagen() {
+		if (uitslagen.getVisibility() == View.VISIBLE)
+			uitslagen.setVisibility(View.GONE);
+		else
+			uitslagen.setVisibility(View.VISIBLE);
+	}
+
+	public void toggleProgramma() {
+		if (programma.getVisibility() == View.VISIBLE)
+			programma.setVisibility(View.GONE);
+		else
+			programma.setVisibility(View.VISIBLE);
+	}
+
+	
+	public static class DummySectionFragment extends Fragment {
+
+		Bitmap bmp = null;
+
+		public DummySectionFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			Bundle args = getArguments();
+			bmp = Tools.getPictureFromUrl(args.getString("url"));
+			ImageView view = (ImageView) inflater.inflate(R.layout.teletekst_item, null);
+			view.setImageBitmap(bmp);
+			return view;
+		}
+	}
+}

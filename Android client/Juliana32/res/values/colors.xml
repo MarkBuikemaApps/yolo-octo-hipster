@@ -3,7 +3,12 @@
 
     <color name="icsblue">#33b5e5</color>
     <color name="transparenticsblue">#d333b5e5</color>
+    <color name="transparentgrey">#d3dddddd</color>
     <color name="grey">#dddddd</color>
     <color name="transparentblack">#99000000</color>
+    <color name="red">#ca150c</color>
+    <color name="blue">#1e1870</color>
+    <color name="white">#ffffff</color>
+    <color name="ltgrey">#fefefe</color>
     
 </resources>

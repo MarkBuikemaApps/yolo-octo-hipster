@@ -1,0 +1,23 @@
+package com.markbuikema.juliana32.model;
+
+public class TableRow {
+	public String teamName;
+	public int played;
+	public int won;
+	public int drawn;
+	public int lost;
+	public int minusPoints;
+	public int scored;
+	public int conceded;
+
+	public TableRow(String teamName, int played, int won, int drawn, int lost, int minusPoints, int scored, int conceded) {
+		this.teamName = teamName;
+		this.played = played;
+		this.won = won;
+		this.drawn = drawn;
+		this.lost = lost;
+		this.minusPoints = minusPoints;
+		this.scored = scored;
+		this.conceded = conceded;
+	}
+}

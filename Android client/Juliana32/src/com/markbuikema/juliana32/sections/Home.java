@@ -2,7 +2,6 @@ package com.markbuikema.juliana32.sections;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,10 +22,8 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -38,6 +35,7 @@ import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
+import com.markbuikema.juliana32.tools.FixtureAdapter;
 
 public class Home {
 
@@ -68,10 +66,11 @@ public class Home {
 	}
 
 	public void populateGames() {
-		fixtureAdapter = new FixtureAdapter(activity, activity.getLatestGames());
+		ArrayList<Game> games = activity.getLatestGames();
+		fixtureAdapter = new FixtureAdapter(activity, games);
 		fixtures.setAdapter(fixtureAdapter);
 	}
-
+	
 	private void setTeaserDimensions() {
 		WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
 		Display d = wm.getDefaultDisplay();
@@ -112,45 +111,7 @@ public class Home {
 		teaserContainer.addView(view);
 	}
 
-	private class FixtureAdapter extends ArrayAdapter<Game> {
-
-		public FixtureAdapter(Context context, List<Game> objects) {
-			super(context, 0, objects);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = LayoutInflater.from(activity).inflate(R.layout.listitem_game, null);
-			}
-			TextView date = (TextView) convertView.findViewById(R.id.game_date);
-			TextView homeTeam = (TextView) convertView.findViewById(R.id.game_home_team_name);
-			TextView awayTeam = (TextView) convertView.findViewById(R.id.game_away_team_name);
-			TextView homeScore = (TextView) convertView.findViewById(R.id.game_home_team_score);
-			TextView awayScore = (TextView) convertView.findViewById(R.id.game_away_team_score);
-
-			TextView scoreDivider = (TextView) convertView.findViewById(R.id.game_team_score_divider);
-
-			Game game = getItem(position);
-
-			date.setText(game.getDateString());
-			homeTeam.setText(game.isHome() ? game.getTeamName() : game.getOtherTeam());
-			awayTeam.setText(game.isHome() ? game.getOtherTeam() : game.getTeamName());
-			if (game.isPlayed()) {
-				homeScore.setText(Integer.toString(game.isHome() ? game.getTeamGoals() : game.getOtherGoals()));
-				awayScore.setText(Integer.toString(game.isHome() ? game.getOtherGoals() : game.getTeamGoals()));
-				scoreDivider.setVisibility(View.VISIBLE);
-			} else {
-				homeScore.setText("");
-				awayScore.setText("");
-				scoreDivider.setVisibility(View.GONE);
-
-			}
-
-			return convertView;
-		}
-
-	}
+	
 
 	private class TeaserRetriever extends AsyncTask<Void, TeaserNieuwsItem, Void> {
 
@@ -162,7 +123,7 @@ public class Home {
 			try {
 				HttpResponse response = client.execute(teaserGet);
 
-				String jsonString = EntityUtils.toString(response.getEntity());
+				String jsonString = EntityUtils.toString(response.getEntity(), "UTF-8");
 				Log.d(TAG, jsonString);
 				JSONObject obj = null;
 				try {

@@ -40,6 +40,7 @@ public class SeasonsResource {
 	@POST
 	@Path("/add/{year}")
 	public void addSeason(@PathParam("year") int year) {
+		if (Seasons.get().exists(year)) return;
 		Seasons.get().add(new Season(year));
 	}	
 	

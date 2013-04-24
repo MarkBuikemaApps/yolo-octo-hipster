@@ -1,0 +1,12 @@
+package com.markbuikema.juliana32.server.model;
+
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="table")
+public class Table {
+
+	private ArrayList<TableRow> rows;
+	
+}

@@ -20,5 +20,17 @@
     <string name="refresh">Refresh</string>
     <string name="game_team_divider">" - "</string>
     <string name="date_divider">:   </string>
+    <string name="uitslagen">Uitslagen</string>
+    <string name="programma">Programma</string>
+    <string name="played">G</string>
+    <string name="team">Team</string>
+    <string name="number">#</string>
+    <string name="won">W</string>
+    <string name="drawn">GL</string>
+    <string name="lost">V</string>
+    <string name="points">P</string>
+    <string name="scored">DPV</string>
+    <string name="conceded">DPT</string>
+    <string name="minusPoints">PM</string>
 
 </resources>

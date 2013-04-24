@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -26,7 +26,9 @@ import android.widget.TextView;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.Game;
+import com.markbuikema.juliana32.model.Photo;
 import com.markbuikema.juliana32.model.Season;
+import com.markbuikema.juliana32.model.TableRow;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
 
@@ -36,7 +38,7 @@ public class Teams {
 	private final static long TWO_WEEKS = 1000 * 60 * 60 * 24 * 14;
 	private final static String INFORMATION_URL = MainActivity.BASE_SERVER_URL + "/seasons/get/all";
 
-	private Activity activity;
+	private MainActivity activity;
 	private ListView teamsList;
 	private TeamAdapter teamAdapter;
 	private SeasonAdapter seasonAdapter;
@@ -46,7 +48,7 @@ public class Teams {
 
 	private boolean finishedLoading = false;
 
-	public Teams(Activity act) {
+	public Teams(MainActivity act) {
 		this.activity = act;
 		loader = (ProgressBar) act.findViewById(R.id.loading);
 		seasonSpinner = (Spinner) act.findViewById(R.id.menuSeason);
@@ -68,7 +70,34 @@ public class Teams {
 
 		});
 
+		teamsList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Team team = findTeam(teamAdapter.getItem(arg2).getTeamId());
+				activity.requestTeamDetailPage(team);
+			}
+		});
+
 		new InformationRetriever().execute();
+	}
+
+	private Team findTeam(int teamId) {
+		for (Season s : seasons) {
+			for (Team t : s.getTeams()) {
+				if (t.getId() == teamId) return t;
+			}
+		}
+		return null;
+	}
+
+	private Team findTeam(String name) {
+		for (Season s : seasons) {
+			for (Team t : s.getTeams()) {
+				if (t.getName().equals(name)) return t;
+			}
+		}
+		return null;
 	}
 
 	private void onSeasonSelected(int seasonIndex) {
@@ -119,7 +148,6 @@ public class Teams {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			Log.d(TAG, season.toString());
 			return season;
 
 		}
@@ -143,10 +171,57 @@ public class Teams {
 					team.addGame(processGameJSON(game));
 				}
 
+				try {
+					JSONArray photos = teamJSON.getJSONArray("photos");
+					for (int i = 0; i < photos.length(); i++) {
+						team.addPhoto(processPhotoJSON(photos.getJSONObject(i)));
+					}
+				} catch (JSONException e) {
+					JSONObject photo = teamJSON.getJSONObject("photos");
+					team.addPhoto(processPhotoJSON(photo));
+				}
+
+				JSONObject table = teamJSON.getJSONObject("table");
+				try {
+					JSONArray rows = table.getJSONArray("rows");
+					for (int i = 0; i < rows.length(); i++) {
+						team.addTableRow(processTableRowJSON(rows.getJSONObject(i)));
+					}
+				} catch (JSONException e) {
+					team.addTableRow(processTableRowJSON(table.getJSONObject("rows")));
+				}
+
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			return team;
+		}
+
+		private Photo processPhotoJSON(JSONObject photoJSON) {
+			try {
+				String url = photoJSON.getString("url");
+				int id = photoJSON.getInt("id");
+				return new Photo(id, url);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		private TableRow processTableRowJSON(JSONObject rowJSON) {
+			try {
+				String teamName = rowJSON.getString("teamName");
+				int played = rowJSON.getInt("played");
+				int won = rowJSON.getInt("won");
+				int drawn = rowJSON.getInt("drawn");
+				int minusPoints = rowJSON.getInt("minusPoints");
+				int scored = rowJSON.getInt("scored");
+				int conceded = rowJSON.getInt("conceded");
+				return new TableRow(teamName, played, won, drawn, minusPoints, scored, conceded);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 		private Game processGameJSON(JSONObject gameJSON) {
@@ -184,29 +259,26 @@ public class Teams {
 
 				onSeasonSelected(getNewestSeasonIndex());
 			}
-			
-			((MainActivity)activity).notifyDoneLoadingSeasons();
+
+			((MainActivity) activity).notifyDoneLoadingSeasons();
 		}
 	}
 
 	public ArrayList<Game> getLatestGames() {
-		Log.d(TAG, "Method called");
 		long currentTime = System.currentTimeMillis();
 		long minTime = currentTime - TWO_WEEKS;
 		int index = getNewestSeasonIndex();
-		if (index == -1) return null;
+		if (index == -1) return new ArrayList<Game>();
 		Season latest = seasons.get(index);
-		Log.d(TAG, "latest season: " + latest.getYear() + ", games: " + latest.getGameCount());
 		ArrayList<Game> games = new ArrayList<Game>();
 		for (Team team : latest.getTeams()) {
 			for (Game game : team.getGames()) {
-				Log.d(TAG,"Date: " + game.getDate() + ", minDate: " + minTime);
 				if (game.getDate() >= minTime) games.add(game);
 			}
 		}
-		
-		for (Game game: games) {
-			Log.d(TAG,game.toString());
+
+		for (Game game : games) {
+			Log.d(TAG, game.toString());
 		}
 		return games;
 	}
@@ -233,7 +305,6 @@ public class Teams {
 
 	private class TeamAdapter extends ArrayAdapter<TeamListItem> {
 
-		private int teamId = 0;
 		private Season season;
 
 		public TeamAdapter(Context context) {

@@ -1,0 +1,48 @@
+package com.markbuikema.juliana32.sections;
+
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.model.Team;
+
+public class TeamDetail {
+	
+	private Team team;
+	private MainActivity activity;
+	
+	private Button uitslagenButton;
+	private Button programmaButton;
+	
+	private ViewPager photoPager;
+	private ListView table;
+	
+	private ListView uitslagen;
+	private ListView programma;
+	
+	public TeamDetail(MainActivity activity, Team team) {
+		this.team = team;
+		this.activity = activity;
+		
+		View mainView = activity.findViewById(R.id.teamDetailView);
+		
+		uitslagenButton = (Button) mainView.findViewById(R.id.uitslagenButton);
+		programmaButton = (Button) mainView.findViewById(R.id.programmaButton);
+		
+		uitslagen = (ListView) mainView.findViewById(R.id.uitslagenList);
+		programma = (ListView) mainView.findViewById(R.id.programmaList);
+		
+		photoPager = (ViewPager) mainView.findViewById(R.id.photoPager);
+		table = (ListView) mainView.findViewById(R.id.tableListView);
+	}
+	
+	
+	
+	public void showUitslagen() {
+		
+	}
+	
+}

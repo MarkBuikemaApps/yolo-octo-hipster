@@ -1,0 +1,21 @@
+package com.markbuikema.juliana32.model;
+
+import java.util.ArrayList;
+
+public class Table {
+
+	private ArrayList<TableRow> rows;
+
+	public Table() {
+		rows = new ArrayList<TableRow>();
+	}
+	
+	public ArrayList<TableRow> getTable() {
+		return rows;
+	}
+
+	public void addRow(TableRow row) {
+		rows.add(row);
+	}
+
+}

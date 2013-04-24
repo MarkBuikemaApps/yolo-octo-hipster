@@ -265,8 +265,9 @@
 		} else if ($("#dames:checked").val()) {
 			category = "DAMES";
 		}
-		
-		var data = '{"name":"' + $("#teamname").val() + '","category":"'+category+'"}';
+
+		var data = '{"name":"' + $("#teamname").val() + '","category":"'
+				+ category + '"}';
 		$.ajax({
 			url : "api/teams/add/" + $("#seasonYear").val(),
 			type : "post",
@@ -297,6 +298,66 @@
 			dataType : 'json',
 			contentType : 'application/json',
 			data : data
+		});
+	}
+
+	function testgettable() {
+
+		var year = $("#seasonYear").val();
+		var teamId = $("#teamId").val();
+		$.ajax({
+			url : "api/teams/table/" + year + "/" + teamId,
+			type : 'get',
+			dataType : 'json',
+			contentType : 'application/json',
+			success : function(d) {
+				alert(JSON.stringify(d));
+			}
+
+		});
+	}
+
+	function testputtable() {
+
+		var year = $("#seasonYear").val();
+		var teamId = $("#teamId").val();
+		$.ajax({
+			url : "api/teams/puttable/" + year + "/" + teamId,
+			type : 'put',
+			dataType : 'json',
+			contentType : 'application/json',
+			data : '{"rows":[{"teamName":"' + $("#team1").val()
+					+ '","played":"' + $("#played1").val() + '","won":"'
+					+ $("#won1").val() + '","drawn":"' + $("#drawn1").val()
+					+ '","lost":"' + $("#lost1").val() + '","minusPoints":"'
+					+ $("#minusPoints1").val() + '","scored":"'
+					+ $("#scored1").val() + '","conceded":"'
+					+ $("#conceded1").val() + '"},{"teamName":"'
+					+ $("#team2").val() + '","played":"' + $("#played2").val()
+					+ '","won":"' + $("#won2").val() + '","drawn":"'
+					+ $("#drawn2").val() + '","lost":"' + $("#lost2").val()
+					+ '","minusPoints":"' + $("#minusPoints2").val()
+					+ '","scored":"' + $("#scored2").val() + '","conceded":"'
+					+ $("#conceded2").val() + '"},{"teamName":"'
+					+ $("#team3").val() + '","played":"' + $("#played3").val()
+					+ '","won":"' + $("#won3").val() + '","drawn":"'
+					+ $("#drawn3").val() + '","lost":"' + $("#lost3").val()
+					+ '","minusPoints":"' + $("#minusPoints3").val()
+					+ '","scored":"' + $("#scored3").val() + '","conceded":"'
+					+ $("#conceded3").val() + '"}]}'
+		});
+	}
+	
+	function testputphoto() {
+		var year = $("#seasonYear").val();
+		var teamId = $("#teamId").val();
+		
+		$.ajax({
+			url:"api/teams/putphoto/" + year + "/" + teamId,
+			type : 'put',
+			dataType : 'json',
+			contentType : 'application/json',
+			data : '{"url":"' + $("#photourl").val() + '"}'
 		});
 	}
 </script>
@@ -352,13 +413,13 @@
 				<button onclick="testgetseasons()">Test get seasons</button>
 				<div id="seasonresults"></div>
 			</td>
-			<td>name<input id="teamname"><br>
-				<input type="radio" id="senior" name="cat">S&nbsp;
-				<input type="radio" id="junior" name="cat">J&nbsp; <input
-				type="radio" id="dames" name="cat">D<br><button onclick="testcreateteam()">Test post team (fill in
-					year)</button><br> ID<input
-				id="teamId"> <br> <br> goals scored <input
-				id="goals"><br> other team name<input
+			<td>name<input id="teamname"><br> <input
+				type="radio" id="senior" name="cat">S&nbsp; <input
+				type="radio" id="junior" name="cat">J&nbsp; <input
+				type="radio" id="dames" name="cat">D<br>
+				<button onclick="testcreateteam()">Test post team (fill in
+					year)</button> <br> ID<input id="teamId"> <br> <br>
+				goals scored <input id="goals"><br> other team name<input
 				id="otherteamname"><br> other team goals <input
 				id="otherteamgoals"><br> home game? <input
 				type="checkbox" id="homegame"><br> date <input
@@ -366,8 +427,27 @@
 
 				<button onclick="testcreategame()">Create game</button>
 
+				<hr> photo url<input id="photourl">
+			<button onclick="testputphoto()">Add photo</button>
 
 			</td>
+		</tr>
+		<tr>
+			<td>team<input id="team1">, p<input id="played1">,
+				w<input id="won1">, d<input id="drawn1">, l<input
+				id="lost1">, gs<input id="scored1">, gc<input
+				id="conceded1">, -<input id="minusPoints1">
+				<hr>team<input id="team2">, p<input id="played2">,
+				w<input id="won2">, d<input id="drawn2">, l<input
+				id="lost2">, gs<input id="scored2">, gc<input
+				id="conceded2">, -<input id="minusPoints2">
+				<hr>team<input id="team3">, p<input id="played3">,
+				w<input id="won3">, d<input id="drawn3">, l<input
+				id="lost3">, gs<input id="scored3">, gc<input
+				id="conceded3">, -<input id="minusPoints3"> <br>
+				<br>
+				<button onclick="testgettable()">Test get table</button> <br>
+				<button onclick="testputtable()">Test put table</button></td>
 		</tr>
 	</table>
 </body>

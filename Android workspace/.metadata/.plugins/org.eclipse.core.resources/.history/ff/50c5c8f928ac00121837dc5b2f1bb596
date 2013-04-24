@@ -1,0 +1,92 @@
+package com.markbuikema.juliana32.tools;
+
+import java.util.ArrayList;
+
+import android.R;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import static com.markbuikema.juliana32.R.id.*;
+import static com.markbuikema.juliana32.R.layout.*;
+import static com.markbuikema.juliana32.R.string.*;
+import static com.markbuikema.juliana32.R.color;
+import com.markbuikema.juliana32.model.TableRow;
+
+public class TableAdapter extends ArrayAdapter<TableRow> {
+
+	public TableAdapter(Context context, ArrayList<TableRow> objects) {
+		super(context, 0, objects);
+		TableRow dummyRow = new TableRow("", 0, 0, 0, 0, 0, 0);
+		insert(dummyRow, 0);
+
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(listitem_tablerow, null);
+
+		TableRow row = getItem(position);
+		Resources r = getContext().getResources();
+
+		View background = convertView.findViewById(rowBackground);
+		View divider = convertView.findViewById(rowDivider);
+
+		if (position % 2 == 0) {
+			background.setBackgroundColor(r.getColor(color.white));
+			divider.setBackgroundColor(r.getColor(color.blue));
+		} else {
+			background.setBackgroundColor(r.getColor(color.ltgrey));
+			divider.setBackgroundColor(r.getColor(color.red));
+		}
+
+		TextView teamPosition = (TextView) convertView.findViewById(rowPosition);
+		TextView teamName = (TextView) convertView.findViewById(rowTeam);
+		TextView teamPlayed = (TextView) convertView.findViewById(rowPlayed);
+		TextView teamPoints = (TextView) convertView.findViewById(rowPoints);
+
+		if (position == 0) {
+			teamPosition.setText(r.getString(team));
+			teamName.setText(r.getString(team));
+			teamPlayed.setText(r.getString(played));
+			teamPoints.setText(r.getString(points));
+		} else {
+			teamPosition.setText(Integer.toString(position));
+			teamName.setText(row.getTeamName());
+			teamPlayed.setText(row.getPlayed());
+			teamPoints.setText(row.getPoints());
+		}
+
+		if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			TextView teamWon = (TextView) convertView.findViewById(rowWon);
+			TextView teamDrawn = (TextView) convertView.findViewById(rowDrawn);
+			TextView teamLost = (TextView) convertView.findViewById(rowLost);
+			TextView teamScored = (TextView) convertView.findViewById(rowScored);
+			TextView teamConceded = (TextView) convertView.findViewById(rowConceded);
+			TextView teamMinusPoints = (TextView) convertView.findViewById(rowMinusPoints);
+
+			if (position == 0) {
+				teamWon.setText(r.getString(won));
+				teamDrawn.setText(r.getString(drawn));
+				teamLost.setText(r.getString(lost));
+				teamScored.setText(r.getString(scored));
+				teamConceded.setText(r.getString(conceded));
+				teamMinusPoints.setText(r.getString(minusPoints));
+			} else {
+				teamWon.setText(row.getWon());
+				teamDrawn.setText(row.getDrawn());
+				teamLost.setText(row.getLost());
+				teamScored.setText(row.getScored());
+				teamConceded.setText(row.getConceded());
+				teamMinusPoints.setText(row.getMinusPoints());
+			}
+		}
+
+		return convertView;
+	}
+}

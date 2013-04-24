@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/listselector"
     android:padding="@dimen/default_margin" >
 
     <TextView
@@ -12,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/small_margin"
-        android:text="TextView" />
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/game_date_divider"
@@ -30,7 +29,7 @@
             android:id="@+id/game_home_team_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/game_team_divider"
@@ -42,7 +41,7 @@
             android:id="@+id/game_away_team_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +54,7 @@
             android:id="@+id/game_home_team_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/game_team_score_divider"
@@ -67,7 +66,7 @@
             android:id="@+id/game_away_team_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </LinearLayout>

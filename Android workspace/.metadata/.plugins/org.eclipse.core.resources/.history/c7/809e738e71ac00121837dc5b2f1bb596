@@ -1,0 +1,38 @@
+package com.markbuikema.juliana32.model;
+
+import com.markbuikema.juliana32.tools.Tools;
+
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+
+public class Photo {
+
+	private int id;
+	private String url;
+	private Bitmap bmp;
+	
+	public Photo(int id, String url) {
+		this.id = id;
+		this.url = url;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+	
+	private class Loader extends AsyncTask<Void,Void,Bitmap> {
+		@Override
+		protected Bitmap doInBackground(Void... params) {
+			return Tools.getPictureFromUrl(url);
+		}
+		
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			bmp = result;
+		}
+	}
+}

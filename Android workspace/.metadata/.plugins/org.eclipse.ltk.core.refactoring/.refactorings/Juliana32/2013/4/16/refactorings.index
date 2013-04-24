@@ -4,3 +4,7 @@
 1366451417863	Rename field 'gamedate'
 1366451461466	Extracts string 'null' into R.string.game_team_divider
 1366451752629	Extracts string 'null' into R.string.date_divider
+1366556003119	Rename method 'teamDetailShown'
+1366564050448	Extracts string 'null' into R.string.uitslagen
+1366564074328	Extracts string 'null' into R.string.programma
+1366565910851	Rename local variable 'uitslagen'

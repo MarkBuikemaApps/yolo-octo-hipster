@@ -22,13 +22,20 @@ public class Team {
 
 	@XmlElement
 	private String name;
+	
+	@XmlElement
+	private Table table;
 
 	@XmlElement
 	private ArrayList<Game> games;
+	
+	@XmlElement
+	private ArrayList<Photo> photos;
 
 	public Team() {
 		id = Seasons.getLatestUnusedTeamId();
 		games = new ArrayList<Game>();
+		photos = new ArrayList<Photo>();
 	}
 
 	public Game getGame(int index) {
@@ -52,6 +59,19 @@ public class Team {
 
 	public String getName() {
 		return name;
+	}
+	
+	
+	public Table getTeamTable() {
+		return table;
+	}
+	
+	public void setTable(Table table) {
+		this.table = table;
+	}
+
+	public void addPhoto(Photo photo) {
+		photos.add(photo);
 	}
 
 }

@@ -19,6 +19,10 @@ public class Season {
 		teams = new ArrayList<Team>();
 		this.year = year;
 	}
+	
+	public int getYear() {
+		return year;
+	}
 
 	public boolean isSeason(int year) {
 		return this.year == year;
@@ -33,7 +37,7 @@ public class Season {
 	@XmlElement
 	private ArrayList<Team> teams;
 
-	public Team getTeam(int teamId) {
+	public Team findTeam(int teamId) {
 		for (Team t : teams) {
 			if (t.isTeam(teamId)) {
 				return t;

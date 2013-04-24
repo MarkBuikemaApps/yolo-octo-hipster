@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <ListView
+            android:id="@+id/tableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/white"
+            android:transcriptMode="alwaysScroll" >
+        </ListView>
+
+        <ListView
+            android:id="@+id/uitslagenList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/uitslagen"
+            android:cacheColorHint="@color/white"
+            android:listSelector="@android:color/transparent"
+            android:transcriptMode="alwaysScroll" >
+        </ListView>
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
+
+        <Button
+            android:id="@+id/uitslagenButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/listselector"
+            android:text="@string/uitslagen" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/grey" >
+        </View>
+
+        <Button
+            android:id="@+id/programmaButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/listselector"
+            android:text="@string/programma" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/photoPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
+
+        <ListView
+            android:id="@+id/programmaList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/programma"
+            android:cacheColorHint="@color/white"
+            android:listSelector="@android:color/transparent"
+            android:transcriptMode="alwaysScroll" >
+        </ListView>
+    </FrameLayout>
+
+</LinearLayout>

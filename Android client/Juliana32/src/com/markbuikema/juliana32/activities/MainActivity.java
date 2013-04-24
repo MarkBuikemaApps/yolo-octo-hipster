@@ -30,10 +30,11 @@ import android.widget.TextView;
 import com.coboltforge.slidemenu.SlideMenu;
 import com.coboltforge.slidemenu.SlideMenuInterface.OnSlideMenuItemClickListener;
 import com.markbuikema.juliana32.R;
-import com.markbuikema.juliana32.activities.MainActivity.Page;
 import com.markbuikema.juliana32.model.Game;
+import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.sections.Home;
 import com.markbuikema.juliana32.sections.Nieuws;
+import com.markbuikema.juliana32.sections.TeamDetail;
 import com.markbuikema.juliana32.sections.Teams;
 import com.markbuikema.juliana32.sections.Teletekst;
 import com.markbuikema.juliana32.service.NotificationService;
@@ -53,6 +54,9 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	private TextView title;
 
 	private View activePageView;
+	private View teamDetailView;
+	
+	private TeamDetail teamDetail;
 
 	private Home home;
 	private Teletekst teletekst;
@@ -72,6 +76,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		menu = (SlideMenu) findViewById(R.id.slideMenu1);
+		teamDetailView = findViewById(R.id.teamDetailView);
 		menuToggler = (ImageButton) findViewById(R.id.menuToggler);
 		overflowToggler = (ImageButton) findViewById(R.id.menuToggler2);
 		title = (TextView) findViewById(R.id.titleText);
@@ -109,7 +114,11 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		if (teams != null)
 			return teams.getLatestGames();
 		else
-			return null;
+			return new ArrayList<Game>();
+	}
+	
+	public Teams getTeams() {
+		return teams;
 	}
 
 	public void notifyDoneLoadingSeasons() {
@@ -158,6 +167,9 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 			break;
 		}
 
+		teamDetailView.setVisibility(View.GONE);
+		teamDetail = null;
+		
 		loader.setVisibility(View.GONE);
 
 		seasonButton.setVisibility(page == Page.TEAMS ? View.VISIBLE : View.GONE);
@@ -166,6 +178,19 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		activePageView.setVisibility(View.VISIBLE);
 
 		setTitle(title);
+
+	}
+
+	public void requestTeamDetailPage(Team team) {
+		if (page != Page.TEAMS || isTeamDetailShown()) return;
+
+		teamDetail = new TeamDetail(this, team);
+
+		activePageView.setVisibility(View.GONE);
+		teamDetailView.setVisibility(View.VISIBLE);
+		
+		
+		setTitle(team.getName());
 
 	}
 
@@ -179,8 +204,17 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	public void onBackPressed() {
 		if (menu.isMenuShown())
 			menu.hide();
-		else
+		else if (isTeamDetailShown()) {
+			teamDetailView.setVisibility(View.GONE);
+			activePageView.setVisibility(View.VISIBLE);
+			teamDetail = null;
+			setTitle(R.string.menu_teams);
+		} else
 			super.onBackPressed();
+	}
+
+	private boolean isTeamDetailShown() {
+		return teamDetailView.getVisibility() == View.VISIBLE;
 	}
 
 	@Override

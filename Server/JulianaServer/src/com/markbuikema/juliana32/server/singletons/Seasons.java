@@ -8,6 +8,7 @@ public class Seasons {
 
 	private static int highestTeamId = 0;
 	private static int highestGameId = 0;
+	private static int highestPhotoId = 0;
 
 	public static int getLatestUnusedTeamId() {
 		return highestTeamId++;
@@ -15,6 +16,10 @@ public class Seasons {
 
 	public static int getLatestUnusedGameId() {
 		return highestGameId++;
+	}
+	
+	public static int getLatestUnusedPhotoId() {
+		return highestPhotoId++;
 	}
 
 	private static Seasons instance;
@@ -29,6 +34,14 @@ public class Seasons {
 		if (instance == null)
 			instance = new Seasons();
 		return instance;
+	}
+
+	public boolean exists(int year) {
+		for (Season season : seasons)
+			if (season.getYear() == year)
+				return true;
+
+		return false;
 	}
 
 	public Season getSeason(int index) {
@@ -49,16 +62,15 @@ public class Seasons {
 		}
 		return null;
 	}
-	
-	
 
 	public void add(Season s) {
 		boolean exists = false;
-		for (Season season: seasons) {
-			if (season.isSeason(s)) exists = true;
+		for (Season season : seasons) {
+			if (season.isSeason(s))
+				exists = true;
 		}
 		if (!exists)
-		seasons.add(s);
+			seasons.add(s);
 
 	}
 }
