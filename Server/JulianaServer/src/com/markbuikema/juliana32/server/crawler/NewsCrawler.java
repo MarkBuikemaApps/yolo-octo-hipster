@@ -110,6 +110,7 @@ public class NewsCrawler extends Thread {
 			String title = html.split("title='")[1].split("' class=\"title\"")[0];
 
 			title = Jsoup.parse(title).text();
+			
 			subTitle = Jsoup.parse(subTitle).text();
 			
 			TeaserNewsItem item = new TeaserNewsItem(title, subTitle, imgUrl,

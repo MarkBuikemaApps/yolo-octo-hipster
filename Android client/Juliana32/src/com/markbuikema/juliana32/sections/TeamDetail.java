@@ -40,13 +40,13 @@ public class TeamDetail {
 	private ListView table;
 
 	private TableAdapter tableAdapter;
-	
+
 	private FragmentManager fm;
 	private SectionsPagerAdapter spa;
 
 	private ListView uitslagen;
 	private ListView programma;
-	
+
 	private FrameLayout uitslagenContainer;
 	private FrameLayout programmaContainer;
 
@@ -59,10 +59,10 @@ public class TeamDetail {
 
 		uitslagenContainer = (FrameLayout) mainView.findViewById(R.id.uitslagenContainer);
 		programmaContainer = (FrameLayout) mainView.findViewById(R.id.programmaContainer);
-		
+
 		uitslagenButton = (Button) mainView.findViewById(R.id.uitslagenButton);
 		programmaButton = (Button) mainView.findViewById(R.id.programmaButton);
-		
+
 		uitslagenButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -89,7 +89,7 @@ public class TeamDetail {
 		spa = new SectionsPagerAdapter(fm);
 
 		photoPager.setAdapter(spa);
-		
+
 		ArrayList<TableRow> tableList = team.getTable();
 		Collections.sort(tableList);
 
@@ -99,11 +99,23 @@ public class TeamDetail {
 		uitslagen.setAdapter(new FixtureAdapter(activity, team.getUitslagen()));
 		programma.setAdapter(new FixtureAdapter(activity, team.getProgramma()));
 
-		uitslagenContainer.setVisibility(View.GONE);
-		programmaContainer.setVisibility(View.GONE);
+		closeClouds();
+
+		uitslagenButton.setEnabled(uitslagen.getAdapter().getCount() > 0);
+		programmaButton.setEnabled(programma.getAdapter().getCount() > 0);
 
 		// table.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 		// LayoutParams.MATCH_PARENT));
+
+	}
+
+	public boolean isACloudOpened() {
+		return (uitslagenContainer.getVisibility() == View.VISIBLE || programmaContainer.getVisibility() == View.VISIBLE);
+	}
+
+	public void closeClouds() {
+		uitslagenContainer.setVisibility(View.GONE);
+		programmaContainer.setVisibility(View.GONE);
 
 	}
 
@@ -139,7 +151,7 @@ public class TeamDetail {
 			}.execute(url);
 			return view;
 		}
-		
+
 		private class Loader extends AsyncTask<String, Void, Bitmap> {
 			@Override
 			protected Bitmap doInBackground(String... params) {
@@ -147,7 +159,7 @@ public class TeamDetail {
 			}
 		}
 	}
-	
+
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
@@ -174,5 +186,4 @@ public class TeamDetail {
 		}
 	}
 
-	
 }

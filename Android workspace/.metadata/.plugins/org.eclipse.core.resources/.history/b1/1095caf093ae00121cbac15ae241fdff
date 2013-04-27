@@ -1,0 +1,25 @@
+package com.markbuikema.juliana32.sections;
+
+import android.view.View;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.TeaserNieuwsItem;
+
+public class NieuwsDetail {
+
+	MainActivity act;
+	NieuwsItem item;
+
+	boolean teaser;
+
+	public NieuwsDetail(MainActivity act, NieuwsItem item) {
+		this.act = act;
+		this.item = item;
+		
+		teaser = item instanceof TeaserNieuwsItem;
+		
+		View mainView = act.findViewById(R.id.nieuwsDetailView);
+	}
+}

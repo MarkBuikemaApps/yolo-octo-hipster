@@ -54,8 +54,10 @@ public class TeaserNewsItem {
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
+		content = content.replaceAll("<br>", "\n");
+		content = content.replaceAll("<BR>", "\n");
+		
 		content = Jsoup.parse(content).text();
-		content = Jsoup.clean(content, Whitelist.basic());
 		content = content.replaceAll("&nbsp;", " ");
 		content = content.replaceAll("&acirc;??", "'");
 		content = content.replaceAll(";??","");

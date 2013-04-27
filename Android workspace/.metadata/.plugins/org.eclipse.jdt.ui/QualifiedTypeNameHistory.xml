@@ -20,10 +20,6 @@
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Table.TableRow"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.tools.FixtureAdapter"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
-<fullyQualifiedTypeName name="android.content.res.Configuration"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R.layout"/>
 <fullyQualifiedTypeName name="android.widget.FrameLayout.LayoutParams"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Team"/>
@@ -36,4 +32,13 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.tools.Tools"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Photo"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.TeamDetail.SectionsPagerAdapter"/>
+<fullyQualifiedTypeName name="android.widget.FrameLayout"/>
+<fullyQualifiedTypeName name="android.support.v4.view.ViewPager.OnPageChangeListener"/>
+<fullyQualifiedTypeName name="android.content.res.Configuration"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.TeaserNieuwsItem"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.activities.MainActivity.Page"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 </qualifiedTypeNameHistroy>

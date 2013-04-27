@@ -13,12 +13,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Looper;
 
 public class Tools {
 
+	private static final String PREF_SHOULD_SHOW_HINT = "shouldShowHint";
 	private static Bitmap[] teletekst;
 
 	public static void putTeletekst(Bitmap[] bmps) {
@@ -46,11 +50,10 @@ public class Tools {
 	}
 
 	public static Bitmap getPictureFromUrl(String url) {
-		
-		
-		//exit method if method is called from main thread (not allowed)
+
+		// exit method if method is called from main thread (not allowed)
 		if (Looper.myLooper() == Looper.getMainLooper()) return null;
-		
+
 		URL image;
 		try {
 			image = new URL(url.replaceAll("&amp;", "&"));
@@ -64,6 +67,17 @@ public class Tools {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static boolean shouldShowTeletekstHint(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences("teletekst", 0);
+		try {
+			return prefs.getBoolean(PREF_SHOULD_SHOW_HINT, true);
+		} finally {
+			Editor edit = prefs.edit();
+			edit.putBoolean(PREF_SHOULD_SHOW_HINT, false);
+			edit.commit();
+		}
 	}
 
 }

@@ -79,9 +79,8 @@ public class Nieuws {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				String text = nieuwsAdapter.getItem(arg2).getSubTitle();
-				Toast.makeText(act, text, Toast.LENGTH_LONG).show();
-				Log.d(TAG, text);
+				NieuwsItem item = nieuwsAdapter.getItem(arg2);
+				activity.requestNiewsDetailPage(item);
 			}
 		});
 		

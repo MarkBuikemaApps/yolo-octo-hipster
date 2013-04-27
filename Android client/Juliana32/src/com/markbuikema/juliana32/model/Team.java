@@ -101,6 +101,4 @@ public class Team {
 		return photos.size();
 	}
 	
-	
-	
 }

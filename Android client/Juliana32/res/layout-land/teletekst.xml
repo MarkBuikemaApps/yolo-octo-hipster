@@ -1,60 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/teletekstProgress"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/default_margin"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
-        <com.markbuikema.juliana32.ui.Button
-            android:id="@+id/teletekstLeft"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="@string/arrow_left" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/teletekstviewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </android.support.v4.view.ViewPager>
+    
+    <TextView
+        android:id="@+id/swipehint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ProgressBar
-            android:id="@+id/teletekstProgress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/teletekstPageNum"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <com.markbuikema.juliana32.ui.Button
-            android:id="@+id/teletekstRight"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="@string/arrow_right" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/teletekstImage"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:layout_margin="@dimen/default_margin"
-        android:layout_weight="1"
-        android:gravity="left"
-        android:src="@drawable/listselector" />
-
-</LinearLayout>
+</FrameLayout>

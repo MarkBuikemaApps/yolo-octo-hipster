@@ -48,9 +48,7 @@ public abstract class NieuwsItem {
 		return content;
 	}
 
-	
-
-	public String detailUrl() {
+	public String getDetailUrl() {
 		return detailUrl;
 	}
 	

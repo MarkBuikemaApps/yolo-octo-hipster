@@ -14,22 +14,21 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,144 +41,55 @@ public class Teletekst {
 	public static final String TAG = "Teletekst";
 
 	private Activity activity;
-	private ImageView teletekst;
-	private Button leftButton;
-	private Button rightButton;
 	private ProgressBar progressBar;
-	private TextView pageNum;
 	private FragmentManager fm;
 
-	// v14
 	private ViewPager ttPager;
 	private SectionsPagerAdapter pagerAdapter;
 	private String[] imageUrls;
 
-	private int index = 0;
+	private TextView swipeHint;
+
 	private int maxIndex = 0;
 
 	public Teletekst(Activity act) {
 		activity = act;
 		View mainView = activity.findViewById(R.id.teletekst);
 		progressBar = (ProgressBar) mainView.findViewById(R.id.teletekstProgress);
+		swipeHint = (TextView) mainView.findViewById(R.id.swipehint);
 
+		ttPager = (ViewPager) mainView.findViewById(R.id.teletekstviewpager);
+		ttPager.setOnPageChangeListener(new OnPageChangeListener() {
 
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-
-			ttPager = (ViewPager) mainView.findViewById(R.id.teletekstviewpager);
-
-			fm = ((FragmentActivity) activity).getSupportFragmentManager();
-
-			new RetrieveTeletekstV14().execute();
-
-		} else {
-			teletekst = (ImageView) mainView.findViewById(R.id.teletekstImage);
-			leftButton = (Button) mainView.findViewById(R.id.teletekstLeft);
-			rightButton = (Button) mainView.findViewById(R.id.teletekstRight);
-			pageNum = (TextView) mainView.findViewById(R.id.teletekstPageNum);
-
-			leftButton.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-					if (index > 0)
-						index--;
-					leftButton.setEnabled(index == 0);
-					new RetrieveTeletekst().execute();
-				}
-			});
-
-			rightButton.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					if (index < maxIndex)
-						index++;
-					rightButton.setEnabled(index == maxIndex - 1);
-					new RetrieveTeletekst().execute();
-				}
-			});
-
-			new RetrieveTeletekst().execute();
-			leftButton.setEnabled(false);
-
-		}
-	}
-
-	private void onEnabledChanged(boolean enabled) {
-		progressBar.setVisibility(enabled ? View.GONE : View.VISIBLE);
-		pageNum.setVisibility(enabled ? View.VISIBLE : View.GONE);
-
-		leftButton.setEnabled(enabled && index > 0);
-		rightButton.setEnabled(enabled && index < maxIndex - 1);
-
-		updatePageNum();
-	}
-
-	private void updatePageNum() {
-		pageNum.setText((index + 1) + "/" + maxIndex);
-	}
-
-	private class RetrieveTeletekst extends AsyncTask<Void, Void, Bitmap> {
-
-		private final static String URL_BASE = "http://www.rtvoost.nl/teletekst/teletekst.asp?page=465&rotor=";
-
-		@Override
-		protected void onPreExecute() {
-			onEnabledChanged(false);
-		}
-
-		@Override
-		protected Bitmap doInBackground(Void... v) {
-			String html = "";
-			String url = URL_BASE + (index + 1);
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(url);
-			try {
-				HttpResponse response = client.execute(get);
-				html = EntityUtils.toString(response.getEntity());
-				if (maxIndex == 0)
-					setMaxIndex(html);
-
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			@Override
+			public void onPageSelected(int arg0) {
+				if (arg0 == ViewPager.SCROLL_STATE_SETTLING) hideHint();
 			}
 
-			html = html.split("<img width=\"440\" height=\"345\" src=\"")[1].split("\" usemap=\"#page\"")[0];
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
 
-			String imgUrl = "http://www.rtvoost.nl/teletekst/" + html.replace(" ", "%20");
-
-			URL image;
-			try {
-				image = new URL(imgUrl);
-
-				URLConnection conn = image.openConnection();
-				conn.connect();
-				return BitmapFactory.decodeStream(new BufferedInputStream(conn.getInputStream()));
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-			return null;
-		}
 
-		@Override
-		public void onPostExecute(Bitmap image) {
-			onEnabledChanged(true);
-			teletekst.setImageBitmap(image);
-		}
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+		});
 
-		private void setMaxIndex(String html) {
+		fm = ((FragmentActivity) activity).getSupportFragmentManager();
 
-			html = html.split("\"><img src=\"images/lastrotor.jpg\"")[0];
-			String[] array = html.split("=");
-			maxIndex = Integer.parseInt(array[array.length - 1]);
-		}
+		if (act.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+			if (!Tools.shouldShowTeletekstHint(act)) hideHint();
+
+		new RetrieveTeletekst().execute();
+
 	}
 
-	private class RetrieveTeletekstV14 extends AsyncTask<Integer, Void, Bitmap[]> {
+	public void hideHint() {
+		swipeHint.setVisibility(View.GONE);
+	}
+
+	private class RetrieveTeletekst extends AsyncTask<Integer, Void, Bitmap[]> {
 
 		private final static String URL_BASE = "http://www.rtvoost.nl/teletekst/teletekst.asp?page=465&rotor=";
 
@@ -189,19 +99,17 @@ public class Teletekst {
 		protected void onPreExecute() {
 			progressBar.setVisibility(View.VISIBLE);
 		}
-		
+
 		@Override
 		protected Bitmap[] doInBackground(Integer... v) {
-			if (v.length == 1)
-				page = v[0];
+			if (v.length == 1) page = v[0];
 
 			String url = URL_BASE + 1;
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(url);
 			try {
 				HttpResponse response = client.execute(get);
-				if (maxIndex == 0)
-					setMaxIndex(EntityUtils.toString(response.getEntity()));
+				if (maxIndex == 0) setMaxIndex(EntityUtils.toString(response.getEntity()));
 
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -254,8 +162,7 @@ public class Teletekst {
 			pagerAdapter = new SectionsPagerAdapter(fm);
 			try {
 				ttPager.setAdapter(pagerAdapter);
-				if (page < maxIndex)
-					ttPager.setCurrentItem(page);
+				if (page < maxIndex) ttPager.setCurrentItem(page);
 			} catch (Exception e) {
 			}
 		}
@@ -280,6 +187,7 @@ public class Teletekst {
 			Bundle args = new Bundle();
 			args.putInt("index", i);
 			fragment.setArguments(args);
+
 			return fragment;
 		}
 
@@ -322,7 +230,7 @@ public class Teletekst {
 
 	public void onRestoreInstanceState(final Bundle savedInstanceState) {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			new RetrieveTeletekstV14().execute(savedInstanceState.getInt("teletekstPage"));
+			new RetrieveTeletekst().execute(savedInstanceState.getInt("teletekstPage"));
 		}
 	}
 }

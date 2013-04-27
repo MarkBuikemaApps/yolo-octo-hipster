@@ -48,6 +48,17 @@
                 android:visibility="gone" />
 
             <ImageButton
+                android:contentDescription="@string/share"
+                android:id="@+id/menuShare"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@android:drawable/ic_menu_share"
+                android:visibility="gone" />
+
+            <ImageButton
                 android:id="@+id/menuRefresh"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -63,11 +74,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_margin="0dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
                 android:background="@drawable/listselector"
+                android:paddingBottom="0dp"
                 android:paddingLeft="@dimen/small_margin"
                 android:paddingRight="@dimen/small_margin"
+                android:paddingTop="0dp"
                 android:textSize="20sp" />
 
             <ImageButton
@@ -81,10 +92,18 @@
         </LinearLayout>
 
         <include
+            android:id="@+id/nieuwsDetailView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/nieuwsdetail"
+            android:visibility="gone" />
+
+        <include
             android:id="@+id/teamDetailView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            layout="@layout/teamdetail" />
+            layout="@layout/teamdetail"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/homeView"

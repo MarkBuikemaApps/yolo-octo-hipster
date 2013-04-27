@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="none"></string>
     <string name="app_name">Juliana \'32</string>
     <string name="menu_settings">Instellingen</string>
     <string name="menu_nieuws">Nieuws</string>
@@ -32,5 +33,7 @@
     <string name="scored">DPV</string>
     <string name="conceded">DPT</string>
     <string name="minusPoints">PM</string>
+    <string name="swipehint">Veeg over scherm om van pagina te wisselen</string>
+    <string name="share">Deel dit nieuwsbericht</string>
 
 </resources>

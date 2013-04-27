@@ -1,9 +1,0 @@
-package com.markbuikema.juliana32.model;
-
-public class Team {
-	
-	private int id;
-	private int 
-	
-	
-}

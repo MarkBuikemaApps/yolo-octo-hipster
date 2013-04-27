@@ -31,9 +31,11 @@ import com.coboltforge.slidemenu.SlideMenu;
 import com.coboltforge.slidemenu.SlideMenuInterface.OnSlideMenuItemClickListener;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.Game;
+import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.sections.Home;
 import com.markbuikema.juliana32.sections.Nieuws;
+import com.markbuikema.juliana32.sections.NieuwsDetail;
 import com.markbuikema.juliana32.sections.TeamDetail;
 import com.markbuikema.juliana32.sections.Teams;
 import com.markbuikema.juliana32.sections.Teletekst;
@@ -49,14 +51,17 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	private ImageButton menuToggler;
 	private ImageButton overflowToggler;
 	private ImageButton refreshButton;
+	private ImageButton shareButton;
 	private Spinner seasonButton;
 	private ProgressBar loader;
 	private TextView title;
 
 	private View activePageView;
 	private View teamDetailView;
-	
+	private View nieuwsDetailView;
+
 	private TeamDetail teamDetail;
+	private NieuwsDetail nieuwsDetail;
 
 	private Home home;
 	private Teletekst teletekst;
@@ -77,8 +82,10 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		setContentView(R.layout.activity_main);
 		menu = (SlideMenu) findViewById(R.id.slideMenu1);
 		teamDetailView = findViewById(R.id.teamDetailView);
+		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
 		menuToggler = (ImageButton) findViewById(R.id.menuToggler);
 		overflowToggler = (ImageButton) findViewById(R.id.menuToggler2);
+		shareButton = (ImageButton) findViewById(R.id.menuShare);
 		title = (TextView) findViewById(R.id.titleText);
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
 		seasonButton = (Spinner) findViewById(R.id.menuSeason);
@@ -86,6 +93,21 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 			if (ViewConfiguration.get(this).hasPermanentMenuKey()) overflowToggler.setVisibility(View.GONE);
 
+		
+		shareButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				 final Intent intent = new Intent(Intent.ACTION_SEND);
+
+		     intent.setType("text/plain");
+		     intent.putExtra(Intent.EXTRA_SUBJECT, nieuwsDetail.getTitle());
+		     intent.putExtra(Intent.EXTRA_TEXT, nieuwsDetail.getDetailUrl());
+
+		     startActivity(Intent.createChooser(intent, getString(R.string.share)));
+			}
+		});
+		
 		initializePages();
 
 		onPageChanged(Page.HOME);
@@ -116,7 +138,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		else
 			return new ArrayList<Game>();
 	}
-	
+
 	public Teams getTeams() {
 		return teams;
 	}
@@ -169,7 +191,9 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		teamDetailView.setVisibility(View.GONE);
 		teamDetail = null;
-		
+
+		hideNieuwsDetail();
+
 		loader.setVisibility(View.GONE);
 
 		seasonButton.setVisibility(page == Page.TEAMS ? View.VISIBLE : View.GONE);
@@ -188,9 +212,22 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		activePageView.setVisibility(View.GONE);
 		teamDetailView.setVisibility(View.VISIBLE);
-		
-		
+
 		setTitle(team.getName());
+
+		
+	}
+
+	public void requestNiewsDetailPage(NieuwsItem item) {
+		if (page != Page.NIEUWS || isNieuwsDetailShown()) return;
+
+		nieuwsDetail = new NieuwsDetail(this, item);
+
+		activePageView.setVisibility(View.GONE);
+		nieuwsDetailView.setVisibility(View.VISIBLE);
+		
+		shareButton.setVisibility(View.VISIBLE);
+		refreshButton.setVisibility(View.GONE);
 
 	}
 
@@ -205,16 +242,36 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		if (menu.isMenuShown())
 			menu.hide();
 		else if (isTeamDetailShown()) {
-			teamDetailView.setVisibility(View.GONE);
-			activePageView.setVisibility(View.VISIBLE);
-			teamDetail = null;
-			setTitle(R.string.menu_teams);
+			if (teamDetail.isACloudOpened()) {
+				teamDetail.closeClouds();
+			} else {
+				teamDetailView.setVisibility(View.GONE);
+				activePageView.setVisibility(View.VISIBLE);
+				teamDetail = null;
+				setTitle(R.string.menu_teams);
+			}
+		} else if (isNieuwsDetailShown()) {
+			hideNieuwsDetail();
 		} else
 			super.onBackPressed();
 	}
 
+	public void hideNieuwsDetail() {
+		nieuwsDetailView.setVisibility(View.GONE);
+		activePageView.setVisibility(View.VISIBLE);
+		nieuwsDetail = null;
+		shareButton.setVisibility(View.GONE);
+		if (page == Page.NIEUWS) {
+			refreshButton.setVisibility(View.VISIBLE);
+		}
+	}
+
 	private boolean isTeamDetailShown() {
 		return teamDetailView.getVisibility() == View.VISIBLE;
+	}
+
+	private boolean isNieuwsDetailShown() {
+		return nieuwsDetailView.getVisibility() == View.VISIBLE;
 	}
 
 	@Override
@@ -275,7 +332,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (page == Page.NIEUWS && nieuws != null) {
+		if (page == Page.NIEUWS && nieuws != null && !isNieuwsDetailShown()) {
 			nieuws.refresh();
 		}
 

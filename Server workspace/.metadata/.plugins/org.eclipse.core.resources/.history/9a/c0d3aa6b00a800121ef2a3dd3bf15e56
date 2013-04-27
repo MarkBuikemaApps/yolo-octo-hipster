@@ -1,6 +1,0 @@
-package com.markbuikema.juliana32.server.singletons;
-
-
-public class Seasons extends Singleton {
-
-}
