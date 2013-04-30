@@ -1,9 +1,14 @@
 package com.markbuikema.juliana32.sections;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,13 +16,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -28,6 +33,8 @@ import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.tools.FixtureAdapter;
 import com.markbuikema.juliana32.tools.TableAdapter;
 import com.markbuikema.juliana32.tools.Tools;
+import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class TeamDetail {
 
@@ -45,6 +52,9 @@ public class TeamDetail {
 	private FragmentManager fm;
 	private PhotoPagerAdapter ppa;
 	private TablePagerAdapter tpa;
+
+	private TitlePageIndicator tableTitle;
+	private UnderlinePageIndicator photoIndicator;
 
 	private ListView uitslagen;
 	private ListView programma;
@@ -84,8 +94,6 @@ public class TeamDetail {
 
 		tableList = team.getTables();
 
-		Log.d(TAG, tableList.size() + " tables found for team " + team.getName());
-
 		uitslagen = (ListView) mainView.findViewById(R.id.uitslagenList);
 		programma = (ListView) mainView.findViewById(R.id.programmaList);
 
@@ -107,8 +115,16 @@ public class TeamDetail {
 		uitslagenButton.setEnabled(uitslagen.getAdapter().getCount() > 0);
 		programmaButton.setEnabled(programma.getAdapter().getCount() > 0);
 
-		// table.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-		// LayoutParams.MATCH_PARENT));
+		tableTitle = (TitlePageIndicator) mainView.findViewById(R.id.tablePagerTitle);
+		tableTitle.setViewPager(tablePager);
+
+		photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.photoIndicator);
+		photoIndicator.setViewPager(photoPager);
+
+		if (tpa.getCount() < 2) tableTitle.setVisibility(View.GONE);
+
+		photoIndicator.invalidate();
+		tableTitle.invalidate();
 
 	}
 
@@ -144,21 +160,81 @@ public class TeamDetail {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			Bundle args = getArguments();
-			final ImageView view = (ImageView) inflater.inflate(R.layout.photo_item, null);
-			String url = args.getString("url");
+			View mainView = inflater.inflate(R.layout.photo_item, null);
+			final ImageView view = (ImageView) mainView.findViewById(R.id.photoView);
+			final ImageButton shareButton = (ImageButton) mainView.findViewById(R.id.photoShareButton);
+			shareButton.setVisibility(View.GONE);
+
+			final String teamName = args.getString("teamname");
+			final String url = args.getString("url");
+
+			shareButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					new PhotoSharer().execute(url, teamName);
+				}
+			});
 			new Loader() {
 				protected void onPostExecute(Bitmap result) {
 					if (result == null) return;
 					view.setImageBitmap(result);
+					shareButton.setVisibility(View.VISIBLE);
 				};
 			}.execute(url);
-			return view;
+			return mainView;
 		}
 
 		private class Loader extends AsyncTask<String, Void, Bitmap> {
 			@Override
 			protected Bitmap doInBackground(String... params) {
 				return Tools.getPictureFromUrl(params[0]);
+			}
+		}
+
+		private class PhotoSharer extends AsyncTask<String, Void, String> {
+
+			private String teamName;
+
+			@Override
+			protected String doInBackground(String... params) {
+				teamName = params[1];
+				return cacheImage(Tools.getPhotoInputStreamFromUrl(params[0]), teamName);
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+				Intent share = new Intent(android.content.Intent.ACTION_SEND);
+				share.setType("image/*");
+				share.putExtra(Intent.EXTRA_SUBJECT, "Foto " + teamName);
+				share.putExtra(Intent.EXTRA_TEXT, teamName);
+				share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + result));
+				try {
+					startActivity(Intent.createChooser(share, getResources().getString(R.string.sharePhoto)));
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+
+			private String cacheImage(InputStream is, String teamName) {
+				String path = "";
+				try {
+					File cacheDir = getActivity().getExternalCacheDir();
+					File downloadingMediaFile = new File(cacheDir, "Foto " + teamName + ".jpg");
+					byte[] buf = new byte[256];
+					FileOutputStream out = new FileOutputStream(downloadingMediaFile);
+					while (true) {
+						int rd = is.read(buf, 0, 256);
+						if (rd == -1 || rd == 0) break;
+						out.write(buf, 0, rd);
+					}
+					is.close();
+					out.close();
+					return downloadingMediaFile.getPath();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				return path;
 			}
 		}
 	}
@@ -173,6 +249,7 @@ public class TeamDetail {
 		public Fragment getItem(int i) {
 			Fragment fragment = new PhotoSectionFragment();
 			Bundle args = new Bundle();
+			args.putString("teamname", team.getName());
 			args.putString("url", team.getPhotos().get(i).getUrl());
 			fragment.setArguments(args);
 			return fragment;
@@ -192,13 +269,12 @@ public class TeamDetail {
 	public static class TableSectionFragment extends Fragment {
 
 		public TableSectionFragment() {
-			Log.d(TAG, "TableSection created");
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			Bundle args = getArguments();
-			
+
 			final View mainView = inflater.inflate(R.layout.table_item, null);
 			final ListView listView = (ListView) mainView.findViewById(R.id.tableList);
 

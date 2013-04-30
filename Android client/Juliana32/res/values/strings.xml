@@ -35,5 +35,6 @@
     <string name="minusPoints">PM</string>
     <string name="swipehint">Veeg over scherm om van pagina te wisselen</string>
     <string name="share">Deel dit nieuwsbericht</string>
+    <string name="sharePhoto">Deel deze foto</string>
 
 </resources>

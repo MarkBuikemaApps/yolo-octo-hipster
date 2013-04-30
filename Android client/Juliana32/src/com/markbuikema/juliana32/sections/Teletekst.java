@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.tools.Tools;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class Teletekst {
 
@@ -46,6 +47,7 @@ public class Teletekst {
 
 	private ViewPager ttPager;
 	private SectionsPagerAdapter pagerAdapter;
+	private UnderlinePageIndicator pagerIndicator;
 	private String[] imageUrls;
 
 	private TextView swipeHint;
@@ -56,10 +58,11 @@ public class Teletekst {
 		activity = act;
 		View mainView = activity.findViewById(R.id.teletekst);
 		progressBar = (ProgressBar) mainView.findViewById(R.id.teletekstProgress);
+		pagerIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.teletekstIndicator);
 		swipeHint = (TextView) mainView.findViewById(R.id.swipehint);
 
 		ttPager = (ViewPager) mainView.findViewById(R.id.teletekstviewpager);
-		ttPager.setOnPageChangeListener(new OnPageChangeListener() {
+		pagerIndicator.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int arg0) {
@@ -80,6 +83,7 @@ public class Teletekst {
 
 		if (act.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
 			if (!Tools.shouldShowTeletekstHint(act)) hideHint();
+
 
 		new RetrieveTeletekst().execute();
 
@@ -162,6 +166,8 @@ public class Teletekst {
 			pagerAdapter = new SectionsPagerAdapter(fm);
 			try {
 				ttPager.setAdapter(pagerAdapter);
+				pagerIndicator.setViewPager(ttPager);
+
 				if (page < maxIndex) ttPager.setCurrentItem(page);
 			} catch (Exception e) {
 			}

@@ -1,6 +1,9 @@
 package com.markbuikema.juliana32.model;
 
-public class TableRow implements Comparable<TableRow> {
+import java.io.Serializable;
+
+public class TableRow implements Comparable<TableRow>, Serializable {
+	private static final long serialVersionUID = -5143404312528797219L;
 	private static final int WIN_POINTS = 3;
 	private static final int DRAW_POINTS = 1;
 

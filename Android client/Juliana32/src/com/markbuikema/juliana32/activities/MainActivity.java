@@ -128,7 +128,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 				openOptionsMenu();
 			}
 		});
-		
+
 		if (getIntent().getBooleanExtra(NotificationService.FROM_NOTIFICATION, false)) {
 			onPageChanged(Page.NIEUWS);
 		}
@@ -209,6 +209,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		activePageView.setVisibility(View.VISIBLE);
 
+		
 		setTitle(title);
 
 	}
@@ -217,6 +218,8 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		if (page != Page.TEAMS || isTeamDetailShown()) return;
 
 		teamDetail = new TeamDetail(this, team);
+
+		seasonButton.setVisibility(View.GONE);
 
 		activePageView.setVisibility(View.GONE);
 		teamDetailView.setVisibility(View.VISIBLE);
@@ -252,9 +255,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 			if (teamDetail.isACloudOpened()) {
 				teamDetail.closeClouds();
 			} else {
-				teamDetailView.setVisibility(View.GONE);
-				activePageView.setVisibility(View.VISIBLE);
-				teamDetail = null;
+				hideTeamDetail();
 				setTitle(R.string.menu_teams);
 			}
 		} else if (isNieuwsDetailShown()) {
@@ -270,6 +271,15 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		shareButton.setVisibility(View.GONE);
 		if (page == Page.NIEUWS) {
 			refreshButton.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void hideTeamDetail() {
+		teamDetailView.setVisibility(View.GONE);
+		activePageView.setVisibility(View.VISIBLE);
+		teamDetail = null;
+		if (page == Page.TEAMS) {
+			seasonButton.setVisibility(View.VISIBLE);
 		}
 	}
 

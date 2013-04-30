@@ -2,6 +2,7 @@ package com.markbuikema.juliana32.tools;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -61,6 +62,26 @@ public class Tools {
 			URLConnection conn = image.openConnection();
 			conn.connect();
 			return BitmapFactory.decodeStream(new BufferedInputStream(conn.getInputStream()));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static InputStream getPhotoInputStreamFromUrl(String url) {
+
+		// exit method if method is called from main thread (not allowed)
+		if (Looper.myLooper() == Looper.getMainLooper()) return null;
+
+		URL image;
+		try {
+			image = new URL(url.replaceAll("&amp;", "&"));
+
+			URLConnection conn = image.openConnection();
+			conn.connect();
+			return new BufferedInputStream(conn.getInputStream());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

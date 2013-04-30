@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.markbuikema.juliana32"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ProgressBar
+        android:id="@+id/teletekstProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/teletekstviewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+        </android.support.v4.view.ViewPager>
+
+        <com.viewpagerindicator.UnderlinePageIndicator
+            android:id="@+id/teletekstIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/grey"
+            app:fades="false"
+            app:selectedColor="@color/blue" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/swipehint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/default_margin"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/swipehint"
+        android:textColor="@android:color/black" />
+
+</FrameLayout>

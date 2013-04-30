@@ -9,7 +9,10 @@
         android:id="@+id/tableList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
         android:cacheColorHint="@color/white"
+        android:dividerHeight="0dp"
+        android:divider="@android:color/transparent"
         android:transcriptMode="alwaysScroll" >
     </ListView>
 

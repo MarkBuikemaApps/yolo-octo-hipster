@@ -12,7 +12,7 @@
         android:cacheColorHint="@android:color/white"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:listSelector="@drawable/listselector"
+        android:listSelector="@android:color/transparent"
         android:drawSelectorOnTop="true" >
     </ListView>
 

@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.R.color;
 import com.markbuikema.juliana32.model.TableRow;
 
@@ -75,12 +76,12 @@ public class TableAdapter extends ArrayAdapter<TableRow> {
 		if (position % 2 == 0) {
 			// even numbers
 			background.setBackgroundColor(r.getColor(color.white));
-			divider.setBackgroundColor(r.getColor(color.blue));
 		} else {
 			// odd numbers
 			background.setBackgroundColor(r.getColor(color.ltgrey));
-			divider.setBackgroundColor(r.getColor(color.red));
 		}
+		
+		divider.setBackgroundResource(R.drawable.divider);
 
 		// identify the views
 		TextView teamPosition = (TextView) convertView.findViewById(rowPosition);
