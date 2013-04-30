@@ -7,28 +7,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.markbuikema.juliana32.server.singletons.Seasons;
 
-@XmlRootElement(name="teams")
+@XmlRootElement(name = "teams")
 public class Team {
-	
+
 	public enum Category {
 		DAMES, JUNIOREN, SENIOREN
 	}
-	
+
 	@XmlElement
 	private int id;
-	
+
 	@XmlElement
 	private Category category;
 
 	@XmlElement
 	private String name;
-	
+
 	@XmlElement
-	private Table table;
+	private ArrayList<Table> tables;
 
 	@XmlElement
 	private ArrayList<Game> games;
-	
+
 	@XmlElement
 	private ArrayList<Photo> photos;
 
@@ -36,6 +36,7 @@ public class Team {
 		id = Seasons.getLatestUnusedTeamId();
 		games = new ArrayList<Game>();
 		photos = new ArrayList<Photo>();
+		tables = new ArrayList<Table>();
 	}
 
 	public Game getGame(int index) {
@@ -44,7 +45,7 @@ public class Team {
 		else
 			return null;
 	}
-	
+
 	public boolean isTeam(int id) {
 		return this.id == id;
 	}
@@ -52,26 +53,35 @@ public class Team {
 	public void addGame(Game game) {
 		games.add(game);
 	}
-	
+
 	public String toString() {
-		return id + ": " + category.toString() + ", "+ name;
+		return id + ": " + category.toString() + ", " + name;
 	}
 
 	public String getName() {
 		return name;
 	}
-	
-	
-	public Table getTeamTable() {
-		return table;
+
+	public Table getTeamTable(int id) {
+		for (Table table : tables) {
+			if (table.isTable(id)) {
+				return table;
+			}
+		}
+		return null;
 	}
-	
-	public void setTable(Table table) {
-		this.table = table;
+
+	public void addTable(Table table) {
+		if (table == null) return;
+		tables.add(table);
 	}
 
 	public void addPhoto(Photo photo) {
 		photos.add(photo);
+	}
+
+	public int getTableCount() {
+		return tables.size();
 	}
 
 }

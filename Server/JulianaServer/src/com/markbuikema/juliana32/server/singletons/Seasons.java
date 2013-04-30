@@ -9,6 +9,7 @@ public class Seasons {
 	private static int highestTeamId = 0;
 	private static int highestGameId = 0;
 	private static int highestPhotoId = 0;
+	private static int highestTableId = 0;
 
 	public static int getLatestUnusedTeamId() {
 		return highestTeamId++;
@@ -20,6 +21,10 @@ public class Seasons {
 	
 	public static int getLatestUnusedPhotoId() {
 		return highestPhotoId++;
+	}
+	
+	public static int getLatestUnusedTableId() {
+		return highestTableId++;
 	}
 
 	private static Seasons instance;
@@ -73,4 +78,6 @@ public class Seasons {
 			seasons.add(s);
 
 	}
+
+	
 }

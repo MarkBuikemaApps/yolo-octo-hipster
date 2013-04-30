@@ -1,6 +1,6 @@
 package com.markbuikema.juliana32.model;
 
-public class TableRow implements Comparable {
+public class TableRow implements Comparable<TableRow> {
 	private static final int WIN_POINTS = 3;
 	private static final int DRAW_POINTS = 1;
 
@@ -61,7 +61,7 @@ public class TableRow implements Comparable {
 	}
 	
 	@Override
-	public int compareTo(Object another) {
+	public int compareTo(TableRow another) {
 
 		if (another instanceof TableRow) {
 			TableRow other = (TableRow) another;

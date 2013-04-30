@@ -134,7 +134,6 @@ public class Home {
 					}
 				} catch (JSONException jsone) {
 					try {
-						@SuppressWarnings("null")
 						JSONObject singleObject = obj.getJSONObject("teaserNewsItem");
 						processTeaserJSONObject(singleObject);
 					} catch (Exception e) {

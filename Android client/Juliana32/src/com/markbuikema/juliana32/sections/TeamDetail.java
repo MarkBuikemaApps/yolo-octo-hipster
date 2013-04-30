@@ -1,7 +1,7 @@
 package com.markbuikema.juliana32.sections;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,13 +23,15 @@ import android.widget.ListView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
-import com.markbuikema.juliana32.model.TableRow;
+import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.tools.FixtureAdapter;
 import com.markbuikema.juliana32.tools.TableAdapter;
 import com.markbuikema.juliana32.tools.Tools;
 
 public class TeamDetail {
+
+	private static final String TAG = "TeamDetail";
 
 	private Team team;
 	private MainActivity activity;
@@ -37,12 +40,11 @@ public class TeamDetail {
 	private Button programmaButton;
 
 	private ViewPager photoPager;
-	private ListView table;
-
-	private TableAdapter tableAdapter;
+	private ViewPager tablePager;
 
 	private FragmentManager fm;
-	private SectionsPagerAdapter spa;
+	private PhotoPagerAdapter ppa;
+	private TablePagerAdapter tpa;
 
 	private ListView uitslagen;
 	private ListView programma;
@@ -50,12 +52,13 @@ public class TeamDetail {
 	private FrameLayout uitslagenContainer;
 	private FrameLayout programmaContainer;
 
-	@SuppressWarnings("unchecked")
-	public TeamDetail(MainActivity activity, Team team) {
-		this.team = team;
-		this.activity = activity;
+	private ArrayList<Table> tableList;
 
-		View mainView = activity.findViewById(R.id.teamDetailView);
+	public TeamDetail(MainActivity act, Team team) {
+		this.team = team;
+		activity = act;
+
+		View mainView = act.findViewById(R.id.teamDetailView);
 
 		uitslagenContainer = (FrameLayout) mainView.findViewById(R.id.uitslagenContainer);
 		programmaContainer = (FrameLayout) mainView.findViewById(R.id.programmaContainer);
@@ -79,25 +82,25 @@ public class TeamDetail {
 			}
 		});
 
+		tableList = team.getTables();
+
+		Log.d(TAG, tableList.size() + " tables found for team " + team.getName());
+
 		uitslagen = (ListView) mainView.findViewById(R.id.uitslagenList);
 		programma = (ListView) mainView.findViewById(R.id.programmaList);
 
 		photoPager = (ViewPager) mainView.findViewById(R.id.photoPager);
-		table = (ListView) mainView.findViewById(R.id.tableListView);
+		tablePager = (ViewPager) mainView.findViewById(R.id.tablePager);
 
-		fm = ((FragmentActivity) activity).getSupportFragmentManager();
-		spa = new SectionsPagerAdapter(fm);
+		fm = ((FragmentActivity) act).getSupportFragmentManager();
+		ppa = new PhotoPagerAdapter(fm);
+		tpa = new TablePagerAdapter(fm);
 
-		photoPager.setAdapter(spa);
+		photoPager.setAdapter(ppa);
+		tablePager.setAdapter(tpa);
 
-		ArrayList<TableRow> tableList = team.getTable();
-		Collections.sort(tableList);
-
-		if (tableAdapter == null) tableAdapter = new TableAdapter(activity, tableList);
-
-		table.setAdapter(tableAdapter);
-		uitslagen.setAdapter(new FixtureAdapter(activity, team.getUitslagen()));
-		programma.setAdapter(new FixtureAdapter(activity, team.getProgramma()));
+		uitslagen.setAdapter(new FixtureAdapter(act, team.getUitslagen()));
+		programma.setAdapter(new FixtureAdapter(act, team.getProgramma()));
 
 		closeClouds();
 
@@ -133,9 +136,9 @@ public class TeamDetail {
 			programmaContainer.setVisibility(View.VISIBLE);
 	}
 
-	public static class DummySectionFragment extends Fragment {
+	public static class PhotoSectionFragment extends Fragment {
 
-		public DummySectionFragment() {
+		public PhotoSectionFragment() {
 		}
 
 		@Override
@@ -160,15 +163,15 @@ public class TeamDetail {
 		}
 	}
 
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+	public class PhotoPagerAdapter extends FragmentStatePagerAdapter {
 
-		public SectionsPagerAdapter(FragmentManager fm) {
+		public PhotoPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
 		public Fragment getItem(int i) {
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new PhotoSectionFragment();
 			Bundle args = new Bundle();
 			args.putString("url", team.getPhotos().get(i).getUrl());
 			fragment.setArguments(args);
@@ -183,6 +186,58 @@ public class TeamDetail {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return Integer.toString(position);
+		}
+	}
+
+	public static class TableSectionFragment extends Fragment {
+
+		public TableSectionFragment() {
+			Log.d(TAG, "TableSection created");
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			Bundle args = getArguments();
+			
+			final View mainView = inflater.inflate(R.layout.table_item, null);
+			final ListView listView = (ListView) mainView.findViewById(R.id.tableList);
+
+			Serializable t = args.getSerializable("table");
+			if (t instanceof Table) {
+				Table table = (Table) t;
+				TableAdapter tableAdapter = new TableAdapter(getActivity(), table.getRows());
+				listView.setAdapter(tableAdapter);
+			}
+
+			return mainView;
+		}
+
+	}
+
+	public class TablePagerAdapter extends FragmentStatePagerAdapter {
+
+		public TablePagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int i) {
+			Fragment fragment = new TableSectionFragment();
+			Bundle args = new Bundle();
+			args.putSerializable("table", tableList.get(i));
+
+			fragment.setArguments(args);
+			return fragment;
+		}
+
+		@Override
+		public int getCount() {
+			return team.getTables().size();
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return team.getTableName(position);
 		}
 	}
 

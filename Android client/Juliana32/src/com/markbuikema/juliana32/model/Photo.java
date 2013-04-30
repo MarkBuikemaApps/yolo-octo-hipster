@@ -1,9 +1,5 @@
 package com.markbuikema.juliana32.model;
 
-import com.markbuikema.juliana32.tools.Tools;
-
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 
 public class Photo {
 

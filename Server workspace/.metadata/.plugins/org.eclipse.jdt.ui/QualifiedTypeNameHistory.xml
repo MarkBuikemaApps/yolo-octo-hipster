@@ -3,4 +3,5 @@
 <fullyQualifiedTypeName name="java.util.GregorianCalendar"/>
 <fullyQualifiedTypeName name="javax.ws.rs.core.MediaType"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.server.singletons.Seasons"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>

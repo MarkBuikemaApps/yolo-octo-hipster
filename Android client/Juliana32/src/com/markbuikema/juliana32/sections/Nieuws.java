@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
@@ -51,8 +50,10 @@ public class Nieuws {
 	private ImageButton refreshButton;
 	private ProgressBar loading;
 	private MainActivity activity;
-	
+
 	private NieuwsRetriever nieuwsRetriever;
+
+	private int itemRequestId = -1;
 
 	public Nieuws(final Activity act) {
 		activity = (MainActivity) act;
@@ -83,7 +84,7 @@ public class Nieuws {
 				activity.requestNiewsDetailPage(item);
 			}
 		});
-		
+
 		refresh();
 	}
 
@@ -143,7 +144,7 @@ public class Nieuws {
 
 	}
 
-	private class NieuwsRetriever extends AsyncTask<Void, TeaserNieuwsItem, ArrayList<NieuwsItem>> {
+	public class NieuwsRetriever extends AsyncTask<Void, TeaserNieuwsItem, ArrayList<NieuwsItem>> {
 
 		@Override
 		protected void onPreExecute() {
@@ -155,11 +156,17 @@ public class Nieuws {
 		@Override
 		protected void onPostExecute(ArrayList<NieuwsItem> result) {
 			loading.setVisibility(View.GONE);
-			if (activity.getPage() == Page.NIEUWS)
-			refreshButton.setVisibility(View.VISIBLE);
+			if (activity.getPage() == Page.NIEUWS && !activity.isNieuwsDetailShown()) refreshButton.setVisibility(View.VISIBLE);
 			for (NieuwsItem item : result)
 				nieuwsAdapter.add(item);
 
+			if (itemRequestId != -1) {
+
+				NieuwsItem item = getNewsItem(itemRequestId);
+				activity.requestNiewsDetailPage(item);
+				
+				itemRequestId = -1;
+			}
 		}
 
 		@Override
@@ -184,7 +191,6 @@ public class Nieuws {
 					}
 				} catch (JSONException e) {
 					try {
-						@SuppressWarnings("null")
 						JSONObject singleObject = object.getJSONObject("newsItem");
 						processJSONObject(items, singleObject);
 					} catch (Exception e1) {
@@ -200,7 +206,7 @@ public class Nieuws {
 
 			return items;
 		}
-		
+
 		private void processJSONObject(ArrayList<NieuwsItem> items, JSONObject obj) {
 			try {
 				int id = obj.getInt("id");
@@ -211,7 +217,6 @@ public class Nieuws {
 				String detailUrl = obj.getString("detailUrl");
 				NieuwsItem item = new NormalNieuwsItem(id, title, subTitle, content, createdAt, detailUrl);
 				items.add(item);
-
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -230,6 +235,15 @@ public class Nieuws {
 		nieuwsRetriever = new NieuwsRetriever();
 		nieuwsRetriever.execute();
 	}
-	
+
+	public NieuwsItem getNewsItem(int newsId) {
+		for (int i = 0; i < nieuwsAdapter.getCount(); i++)
+			if (nieuwsAdapter.getItem(i).getId() == newsId) return nieuwsAdapter.getItem(i);
+		return null;
+	}
+
+	public void setItemRequest(int newsId) {
+		itemRequestId = newsId;
+	}
 
 }

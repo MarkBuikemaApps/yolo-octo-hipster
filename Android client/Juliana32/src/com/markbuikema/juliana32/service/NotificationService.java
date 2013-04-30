@@ -31,6 +31,8 @@ import com.markbuikema.juliana32.model.NormalNieuwsItem;
 public class NotificationService extends Service {
 
 	private final static String TAG = "JulianaService";
+	public final static String NEWS_ID = "news_id";
+	public static final String FROM_NOTIFICATION = "from_notification";
 	private static int originalCount;
 
 	private WakeLock mWakeLock;
@@ -55,13 +57,13 @@ public class NotificationService extends Service {
 		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 		mWakeLock.acquire();
 
-//		// check the global background data setting
-//		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-//		if (!cm.getBackgroundDataSetting()) {
-//			stopSelf();
-//			return;
-//		}
-		
+		// // check the global background data setting
+		// ConnectivityManager cm = (ConnectivityManager)
+		// getSystemService(CONNECTIVITY_SERVICE);
+		// if (!cm.getBackgroundDataSetting()) {
+		// stopSelf();
+		// return;
+		// }
 
 		// do the actual work, in a separate thread
 		new PollTask().execute();
@@ -82,11 +84,11 @@ public class NotificationService extends Service {
 				if (count > originalCount && originalCount > 0) {
 					int difference = count - originalCount;
 					originalCount = count;
-					Log.d(TAG,"Original: " + originalCount + ", New: " + count + ", Difference: " + difference);
+					Log.d(TAG, "Original: " + originalCount + ", New: " + count + ", Difference: " + difference);
 					return difference;
 				}
 				if (originalCount == 0) {
-				 originalCount = count;
+					originalCount = count;
 				}
 			} catch (Exception e) {
 
@@ -123,7 +125,7 @@ public class NotificationService extends Service {
 
 		@Override
 		protected ArrayList<NieuwsItem> doInBackground(Integer... params) {
-			
+
 			Log.d(TAG, "NewNewsRetriever started");
 
 			ArrayList<NieuwsItem> items = new ArrayList<NieuwsItem>();
@@ -170,31 +172,30 @@ public class NotificationService extends Service {
 		@Override
 		protected void onPostExecute(ArrayList<NieuwsItem> result) {
 
-			Intent intent = new Intent(NotificationService.this, MainActivity.class);
+			Intent cIntent = new Intent(NotificationService.this, MainActivity.class);
+			cIntent.putExtra(FROM_NOTIFICATION, true);
 
 			String title = "";
-			String text = "";
+			String text = NotificationService.this.getResources().getString(R.string.app_name);
 			if (result.size() > 1) {
-				text = NotificationService.this.getResources().getString(R.string.multiple_notifications);
-				title = NotificationService.this.getResources().getString(R.string.app_name);
+				text = NotificationService.this.getResources().getString(R.string.multiple_notifications, result.size());
 			} else {
-				title = result.get(0).getTitle();
-				text = result.get(0).getSubTitle();
+				text = result.get(0).getTitle();
+				cIntent.putExtra(NEWS_ID, result.get(0).getId());
 			}
-			Intent cIntent = new Intent(NotificationService.this, MainActivity.class);
 			cIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
 			PendingIntent clickIntent = PendingIntent.getActivity(NotificationService.this, 0, cIntent, 0);
-			PendingIntent pIntent = PendingIntent.getBroadcast(NotificationService.this, 0, intent, 0);
+			PendingIntent pIntent = PendingIntent.getBroadcast(NotificationService.this, 0, cIntent, 0);
 			NotificationManager nm = (NotificationManager) NotificationService.this.getSystemService(NOTIFICATION_SERVICE);
 			Notification not = new Notification();
 			not.setLatestEventInfo(NotificationService.this, title, text, pIntent);
 			not.icon = R.drawable.ic_launcher;
 			not.flags = Notification.FLAG_AUTO_CANCEL;
-			not.ledARGB = Color.BLUE;
-			not.tickerText = result.size()>1?"Nieuwe nieuwsberichten":"Nieuw nieuwsbericht";
-			not.when = ((NormalNieuwsItem)result.get(result.size()-1)).getCreatedAt();
-			not.vibrate = new long[] {50,500,50};
+			not.ledARGB = Color.MAGENTA;
+			not.tickerText = result.size() > 1 ? (result.size() + " nieuwe nieuwsberichten") : "1 nieuw nieuwsbericht";
+			not.when = ((NormalNieuwsItem) result.get(result.size() - 1)).getCreatedAt();
+			not.vibrate = new long[] { 50, 50, 50 };
 			not.contentIntent = clickIntent;
 			nm.notify(0, not);
 

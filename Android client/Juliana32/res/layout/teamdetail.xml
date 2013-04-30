@@ -9,19 +9,19 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <ListView
-            android:id="@+id/tableListView"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/tablePager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:cacheColorHint="@color/white"
-            android:transcriptMode="alwaysScroll" >
-        </ListView>
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
 
         <FrameLayout
             android:id="@+id/uitslagenContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/uitslagen" >
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/uitslagen"
+            android:gravity="bottom" >
 
             <ListView
                 android:id="@+id/uitslagenList"

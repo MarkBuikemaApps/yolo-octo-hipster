@@ -93,21 +93,20 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 			if (ViewConfiguration.get(this).hasPermanentMenuKey()) overflowToggler.setVisibility(View.GONE);
 
-		
 		shareButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				 final Intent intent = new Intent(Intent.ACTION_SEND);
+				final Intent intent = new Intent(Intent.ACTION_SEND);
 
-		     intent.setType("text/plain");
-		     intent.putExtra(Intent.EXTRA_SUBJECT, nieuwsDetail.getTitle());
-		     intent.putExtra(Intent.EXTRA_TEXT, nieuwsDetail.getDetailUrl());
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_SUBJECT, nieuwsDetail.getTitle());
+				intent.putExtra(Intent.EXTRA_TEXT, nieuwsDetail.getDetailUrl());
 
-		     startActivity(Intent.createChooser(intent, getString(R.string.share)));
+				startActivity(Intent.createChooser(intent, getString(R.string.share)));
 			}
 		});
-		
+
 		initializePages();
 
 		onPageChanged(Page.HOME);
@@ -129,6 +128,15 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 				openOptionsMenu();
 			}
 		});
+		
+		if (getIntent().getBooleanExtra(NotificationService.FROM_NOTIFICATION, false)) {
+			onPageChanged(Page.NIEUWS);
+		}
+		int newsId = getIntent().getIntExtra(NotificationService.NEWS_ID, -1);
+		if (newsId != -1) {
+			nieuws.setItemRequest(newsId);
+
+		}
 
 	}
 
@@ -215,7 +223,6 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		setTitle(team.getName());
 
-		
 	}
 
 	public void requestNiewsDetailPage(NieuwsItem item) {
@@ -225,7 +232,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		activePageView.setVisibility(View.GONE);
 		nieuwsDetailView.setVisibility(View.VISIBLE);
-		
+
 		shareButton.setVisibility(View.VISIBLE);
 		refreshButton.setVisibility(View.GONE);
 
@@ -266,11 +273,11 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		}
 	}
 
-	private boolean isTeamDetailShown() {
+	public boolean isTeamDetailShown() {
 		return teamDetailView.getVisibility() == View.VISIBLE;
 	}
 
-	private boolean isNieuwsDetailShown() {
+	public boolean isNieuwsDetailShown() {
 		return nieuwsDetailView.getVisibility() == View.VISIBLE;
 	}
 

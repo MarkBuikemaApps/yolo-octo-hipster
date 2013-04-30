@@ -1,5 +1,6 @@
 package com.markbuikema.juliana32.sections;
 
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,8 +36,10 @@ public class NieuwsDetail {
 		date = (TextView) mainView.findViewById(R.id.nieuwsDetailDate);
 		
 		title.setText(item.getTitle());
-		subTitle.setText(item.getSubTitle());
+		subTitle.setText(Html.fromHtml("<i>" + item.getSubTitle() + "</i>"));
 		content.setText(item.getContent());
+		
+		content.setText(Html.fromHtml(item.getContent()));
 		
 		if (item instanceof NormalNieuwsItem) {
 			date.setText(((NormalNieuwsItem) item).getCreatedAtString());

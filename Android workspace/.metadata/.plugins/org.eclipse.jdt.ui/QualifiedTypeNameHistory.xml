@@ -41,4 +41,8 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.activities.MainActivity.Page"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="android.text.Html"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NieuwsItem"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.plurals"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.service.NotificationService"/>
 </qualifiedTypeNameHistroy>

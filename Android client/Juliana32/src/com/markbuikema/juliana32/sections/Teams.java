@@ -28,6 +28,7 @@ import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Photo;
 import com.markbuikema.juliana32.model.Season;
+import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.TableRow;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
@@ -86,15 +87,6 @@ public class Teams {
 		for (Season s : seasons) {
 			for (Team t : s.getTeams()) {
 				if (t.getId() == teamId) return t;
-			}
-		}
-		return null;
-	}
-
-	private Team findTeam(String name) {
-		for (Season s : seasons) {
-			for (Team t : s.getTeams()) {
-				if (t.getName().equals(name)) return t;
 			}
 		}
 		return null;
@@ -170,7 +162,10 @@ public class Teams {
 					JSONObject game = teamJSON.getJSONObject("games");
 					team.addGame(processGameJSON(game));
 				}
-
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			try {
 				try {
 					JSONArray photos = teamJSON.getJSONArray("photos");
 					for (int i = 0; i < photos.length(); i++) {
@@ -180,19 +175,55 @@ public class Teams {
 					JSONObject photo = teamJSON.getJSONObject("photos");
 					team.addPhoto(processPhotoJSON(photo));
 				}
-
-				JSONObject table = teamJSON.getJSONObject("table");
-				try {
-					JSONArray rows = table.getJSONArray("rows");
-					for (int i = 0; i < rows.length(); i++) {
-						team.addTableRow(processTableRowJSON(rows.getJSONObject(i)));
-					}
-				} catch (JSONException e) {
-					team.addTableRow(processTableRowJSON(table.getJSONObject("rows")));
-				}
-
 			} catch (JSONException e) {
 				e.printStackTrace();
+			}
+
+			try {
+				JSONArray tables = teamJSON.getJSONArray("tables");
+
+				for (int t = 0; t < tables.length(); t++) {
+
+					JSONObject table = tables.getJSONObject(t);
+
+					int tableId = table.getInt("id");
+					String tableName = table.getString("name");
+					ArrayList<TableRow> rowList = new ArrayList<TableRow>();
+
+					try {
+						JSONArray rows = table.getJSONArray("rows");
+						for (int i = 0; i < rows.length(); i++) {
+							rowList.add(processTableRowJSON(rows.getJSONObject(i)));
+						}
+					} catch (JSONException e) {
+						rowList.add(processTableRowJSON(table.getJSONObject("rows")));
+					}
+
+					Table result = new Table(tableId, rowList, tableName);
+					team.addTable(result);
+				}
+			} catch (JSONException e) {
+				try {
+					JSONObject table = teamJSON.getJSONObject("tables");
+					int tableId = table.getInt("id");
+					String tableName = table.getString("name");
+					ArrayList<TableRow> rowList = new ArrayList<TableRow>();
+
+					try {
+						JSONArray rows = table.getJSONArray("rows");
+						for (int i = 0; i < rows.length(); i++) {
+							rowList.add(processTableRowJSON(rows.getJSONObject(i)));
+						}
+					} catch (JSONException ex) {
+						rowList.add(processTableRowJSON(table.getJSONObject("rows")));
+					}
+
+					Table result = new Table(tableId, rowList, tableName);
+					team.addTable(result);
+
+				} catch (JSONException e1) {
+					e.printStackTrace();
+				}
 			}
 			return team;
 		}

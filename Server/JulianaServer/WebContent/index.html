@@ -317,16 +317,18 @@
 		});
 	}
 
-	function testputtable() {
+	function testposttable() {
 
 		var year = $("#seasonYear").val();
 		var teamId = $("#teamId").val();
+		var name = $("#tablename").val();
+		alert(name);
 		$.ajax({
-			url : "api/teams/puttable/" + year + "/" + teamId,
-			type : 'put',
+			url : "api/teams/posttable/" + year + "/" + teamId,
+			type : 'post',
 			dataType : 'json',
 			contentType : 'application/json',
-			data : '{"rows":[{"teamName":"' + $("#team1").val()
+			data : '{"name":"' + name + '","rows":[{"teamName":"' + $("#team1").val()
 					+ '","played":"' + $("#played1").val() + '","won":"'
 					+ $("#won1").val() + '","drawn":"' + $("#drawn1").val()
 					+ '","lost":"' + $("#lost1").val() + '","minusPoints":"'
@@ -347,13 +349,13 @@
 					+ $("#conceded3").val() + '"}]}'
 		});
 	}
-	
+
 	function testputphoto() {
 		var year = $("#seasonYear").val();
 		var teamId = $("#teamId").val();
-		
+
 		$.ajax({
-			url:"api/teams/putphoto/" + year + "/" + teamId,
+			url : "api/teams/putphoto/" + year + "/" + teamId,
 			type : 'put',
 			dataType : 'json',
 			contentType : 'application/json',
@@ -428,12 +430,13 @@
 				<button onclick="testcreategame()">Create game</button>
 
 				<hr> photo url<input id="photourl">
-			<button onclick="testputphoto()">Add photo</button>
+				<button onclick="testputphoto()">Add photo</button>
 
 			</td>
 		</tr>
 		<tr>
-			<td>team<input id="team1">, p<input id="played1">,
+			<td>table name<input id="tablename">
+			<hr>team<input id="team1">, p<input id="played1">,
 				w<input id="won1">, d<input id="drawn1">, l<input
 				id="lost1">, gs<input id="scored1">, gc<input
 				id="conceded1">, -<input id="minusPoints1">
@@ -447,7 +450,7 @@
 				id="conceded3">, -<input id="minusPoints3"> <br>
 				<br>
 				<button onclick="testgettable()">Test get table</button> <br>
-				<button onclick="testputtable()">Test put table</button></td>
+				<button onclick="testposttable()">Test put table</button></td>
 		</tr>
 	</table>
 </body>

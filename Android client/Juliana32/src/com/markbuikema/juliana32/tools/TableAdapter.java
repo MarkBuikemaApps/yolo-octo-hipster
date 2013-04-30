@@ -27,7 +27,6 @@ import static com.markbuikema.juliana32.R.string.won;
 
 import java.util.ArrayList;
 
-import android.R;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;

@@ -1,6 +1,6 @@
 package com.markbuikema.juliana32.server.model;
 
-import java.util.GregorianCalendar;
+import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,7 +12,7 @@ import com.markbuikema.juliana32.server.singletons.NewsItems;
 import com.markbuikema.juliana32.server.tools.Tools;
 
 @XmlRootElement
-public class NewsItem implements Comparable {
+public class NewsItem implements Comparable<NewsItem> {
 	@XmlElement
 	private int id;
 	@XmlElement
@@ -25,19 +25,23 @@ public class NewsItem implements Comparable {
 	private long createdAt;
 	@XmlElement
 	private String detailUrl;
+	@XmlElement
+	private ArrayList<String> photos;
 
 	public NewsItem() {
 		id = NewsItems.getLatestUnusedId();
+		photos = new ArrayList<>();
 	}
 
-	public NewsItem(String title, String subTitle, String detailUrl,
-			long createdAt) {
+	public NewsItem(String title, String subTitle, String detailUrl, long createdAt) {
 		id = NewsItems.getLatestUnusedId();
 		this.title = title;
 		this.subTitle = subTitle;
 		this.detailUrl = detailUrl;
 		this.createdAt = createdAt;
 		this.content = Tools.getContent(detailUrl);
+
+		photos = new ArrayList<>();
 
 		try {
 			content = content.split("<div id='content-text'>")[1];
@@ -52,8 +56,12 @@ public class NewsItem implements Comparable {
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
-		content = Jsoup.parse(content).text();
-		content = Jsoup.clean(content, Whitelist.basic());
+		content = content.replaceAll("<br>", "\n");
+		content = content.replaceAll("<BR>", "\n");
+		
+		
+//		content = Jsoup.parse(content).text();
+//		content = Jsoup.clean(content, Whitelist.basic());
 		content = content.replaceAll("&nbsp;", " ");
 		content = content.replaceAll("&acirc;??", "'");
 		content = content.replaceAll(";??", "");
@@ -66,8 +74,7 @@ public class NewsItem implements Comparable {
 
 	@Override
 	public String toString() {
-		return id + ": " + title + "," + subTitle + "," + content + ","
-				+ createdAt + "," + detailUrl;
+		return id + ": " + title + "," + subTitle + "," + content + "," + createdAt + "," + detailUrl;
 	}
 
 	public void replace(NewsItem i) {
@@ -84,14 +91,11 @@ public class NewsItem implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		if (o instanceof NewsItem) {
-			NewsItem item = (NewsItem) o;
-			int difference = (int) (createdAt - item.createdAt);
-			
-			return difference==0?0:(difference/difference);
-		}
-		return 1;
+	public int compareTo(NewsItem item) {
+		int difference = (int) (createdAt - item.createdAt);
+
+		return difference == 0 ? 0 : (difference / difference);
+
 	}
 
 }

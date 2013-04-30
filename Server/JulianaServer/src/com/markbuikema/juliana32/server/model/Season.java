@@ -10,6 +10,12 @@ public class Season {
 
 	@XmlElement
 	private int year;
+	
+	@XmlElement
+	public String getName() {
+		return Integer.toString(year).substring(2) + "/"
+				+ Integer.toString(year + 1).substring(2);
+	}
 
 	public Season() {
 		teams = new ArrayList<Team>();
@@ -28,11 +34,7 @@ public class Season {
 		return this.year == year;
 	}
 
-	@XmlElement
-	public String getName() {
-		return Integer.toString(year).substring(2) + "/"
-				+ Integer.toString(year + 1).substring(2);
-	}
+	
 
 	@XmlElement
 	private ArrayList<Team> teams;

@@ -2,7 +2,7 @@ package com.markbuikema.juliana32.model;
 
 import java.util.GregorianCalendar;
 
-public class NormalNieuwsItem extends NieuwsItem implements Comparable{
+public class NormalNieuwsItem extends NieuwsItem implements Comparable<NormalNieuwsItem>{
 	
 	private GregorianCalendar createdAt;
 
@@ -25,7 +25,7 @@ public class NormalNieuwsItem extends NieuwsItem implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object another) {
+	public int compareTo(NormalNieuwsItem another) {
 		if (!(another instanceof NormalNieuwsItem)) return 0;
 		NormalNieuwsItem item = (NormalNieuwsItem) another;
 		return createdAt.getTimeInMillis()>item.createdAt.getTimeInMillis()?1:-1;

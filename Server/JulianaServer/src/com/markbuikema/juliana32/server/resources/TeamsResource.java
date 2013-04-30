@@ -57,29 +57,29 @@ public class TeamsResource {
 
 		System.out.println(game.toString());
 	}
-	
-	@PUT 
+
+	@PUT
 	@Path("/putphoto/{year}/{teamId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void putPhoto(@PathParam("year") int year, @PathParam("teamId") int teamId, Photo photo) {
 		Seasons.get().findSeason(year).findTeam(teamId).addPhoto(photo);
 	}
 
-	@PUT
-	@Path("/puttable/{year}/{teamId}")
+	@POST
+	@Path("/posttable/{year}/{teamId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void putTable(@PathParam("year") int year, @PathParam("teamId") int teamId, Table table) {
 		Team team = Seasons.get().findSeason(year).findTeam(teamId);
-		team.setTable(table);
+		team.addTable(table);
+		System.out.println(team.getName() + " has now " + team.getTableCount() + " tables.");
 	}
-	
+
 	@GET
-	@Path("/table/{year}/{teamId}")
+	@Path("/table/{year}/{teamId}/{tableId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Table getTable(@PathParam("year") int year, @PathParam("teamId") int teamId) {
+	public Table getTable(@PathParam("year") int year, @PathParam("teamId") int teamId, @PathParam("tableId") int tableId) {
 		Team team = Seasons.get().findSeason(year).findTeam(teamId);
-		return team.getTeamTable();
+		return team.getTeamTable(tableId);
 	}
-	
 
 }
