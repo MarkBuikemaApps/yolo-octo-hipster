@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="17" version="2.0">
+<workbench progressCount="21" version="2.0">
 <workbenchAdvisor/>
-<window height="768" maximized="true" width="1024" x="78" y="0">
+<window height="768" width="1024" x="78" y="0">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="250"/>
 </perspectiveBar>
 <coolbarLayout>
 <coolItem id="group.file" itemType="typeGroupMarker"/>
-<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="122" y="22"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="138" y="22"/>
 <coolItem id="additions" itemType="typeGroupMarker"/>
 <coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="61" y="22"/>
 <coolItem id="adt.actionSet.lint" itemType="typeToolBarContribution" x="53" y="22"/>
@@ -18,7 +18,7 @@
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="76" y="22"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="107" y="22"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="61" y="22"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.launch.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.main.toolbar" itemType="typeToolBarContribution" x="38" y="22"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -74,9 +74,9 @@
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teams.java" partName="Teams.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java" title="Teams.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teams.java" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teams.java" partName="Teams.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java" title="Teams.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teams.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6180" selectionTopPixel="2706"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3356" selectionTopPixel="1155"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Team.java" partName="Team.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/Team.java" title="Team.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/Team.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/Team.java"/>
@@ -191,9 +191,9 @@
 <editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teletekst.xml" partName="teletekst.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/teletekst.xml" title="teletekst.xml" tooltip="Juliana32/res/layout/teletekst.xml" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/teletekst.xml"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teletekst.java" partName="Teletekst.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java" title="Teletekst.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teletekst.java" partName="Teletekst.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java" title="Teletekst.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2106" selectionTopPixel="973"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2930" selectionTopPixel="973"/>
 </editor>
 </editors>
 <views>
@@ -213,8 +213,7 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings"/>
-<category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings (11 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="451"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -259,8 +258,8 @@
 <view id="org.eclipse.jdt.ui.SourceView" partName="Declaration">
 <viewState/>
 </view>
-<view id="com.android.ide.eclipse.ddms.views.AllocTrackerView" partName="Allocation Tracker"/>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
+<view id="com.android.ide.eclipse.ddms.views.AllocTrackerView" partName="Allocation Tracker"/>
 </views>
 <perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="0" fixed="0" version="0.016">
@@ -421,7 +420,7 @@
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.20516606" ratioLeft="278" ratioRight="1077" relationship="2" relative="left"/>
-<info folder="true" part="bottom" ratio="0.5250404" ratioLeft="325" ratioRight="294" relationship="4" relative="org.eclipse.ui.editorss">
+<info folder="true" part="bottom" ratio="0.450727" ratioLeft="279" ratioRight="340" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="com.android.ide.eclipse.ddms.views.LogCatView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.jdt.ui.JavadocView" label="Javadoc"/>
@@ -471,13 +470,8 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/Juliana32/res/layout-port/teletekst.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/Juliana32/res/layout/teletekst.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java"/>
 </editors>
-<item historyLabel="TeamDetail.java" index="0">
-<position info="not_deleted" x="5748" y="0"/>
-</item>
-<item historyLabel="TeamDetail.java" index="0">
-<position info="not_deleted" x="5189" y="0"/>
-</item>
 <item historyLabel="photo_item.xml" index="3"/>
 <item historyLabel="strings.xml" index="4"/>
 <item historyLabel="TeamDetail.java" index="0">
@@ -589,8 +583,14 @@
 <item historyLabel="MainActivity.java" index="2">
 <position info="not_deleted" x="6253" y="0"/>
 </item>
-<item active="true" historyLabel="Teletekst.java" index="10">
+<item historyLabel="Teletekst.java" index="10">
 <position info="not_deleted" x="5087" y="0"/>
+</item>
+<item historyLabel="Teams.java" index="11">
+<position info="not_deleted" x="6180" y="0"/>
+</item>
+<item active="true" historyLabel="Teams.java" index="11">
+<position info="not_deleted" x="3313" y="43"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -598,13 +598,6 @@
 <workbenchWindowAdvisor/>
 <actionBarAdvisor/>
 <trimLayout>
-<trimArea IMemento.internal.id="16384">
-<trimItem IMemento.internal.id="left"/>
-</trimArea>
-<trimArea IMemento.internal.id="131072">
-<trimItem IMemento.internal.id="org.eclipse.ui.editorss"/>
-<trimItem IMemento.internal.id="bottom"/>
-</trimArea>
 <trimArea IMemento.internal.id="128">
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
 </trimArea>

@@ -94,8 +94,6 @@ public class Home {
 		params.gravity = teasers.size() % 2 == 1 ? Gravity.LEFT : Gravity.RIGHT;
 		view.setLayoutParams(params);
 
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			view.announceForAccessibility(item.getSubTitle());
 		view.setClickable(true);
 		view.setContentDescription(item.getSubTitle());
 
@@ -103,9 +101,8 @@ public class Home {
 
 			@Override
 			public void onClick(View v) {
-				// TODO
-				Toast.makeText(activity, "Clicked: " + item.getImgUrl(), Toast.LENGTH_LONG).show();
-			}
+				activity.requestNiewsDetailPage(item);
+			} 
 		});
 
 		teaserContainer.addView(view);

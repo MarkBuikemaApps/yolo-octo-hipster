@@ -92,6 +92,13 @@
         </LinearLayout>
 
         <include
+            android:id="@+id/failurePage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/failure"
+            android:visibility="gone" />
+
+        <include
             android:id="@+id/nieuwsDetailView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

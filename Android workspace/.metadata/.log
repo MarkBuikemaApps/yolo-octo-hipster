@@ -2716,3 +2716,506 @@ java.lang.NullPointerException
 !MESSAGE com.viewpagerindicator.UnderlinePageIndicator failed to instantiate.
 !STACK 0
 java.lang.NullPointerException
+!SESSION 2013-05-01 18:22:51.269 -----------------------------------------------
+eclipse.buildId=v21.1.0-569685
+java.version=1.7.0_10
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.osgi 2 0 2013-05-01 18:23:23.126
+!MESSAGE While loading class "org.eclipse.cdt.internal.ui.text.ICReconcilingListener", thread "Thread[main,6,main]" timed out waiting (5079ms) for thread "Thread[Worker-0,5,main]" to finish starting bundle "org.eclipse.cdt.ui_5.3.2.201202111925 [62]". To avoid deadlock, thread "Thread[main,6,main]" is proceeding but "org.eclipse.cdt.internal.ui.text.ICReconcilingListener" may not be fully initialized.
+!STACK 0
+org.osgi.framework.BundleException: State change in progress for bundle "reference:file:plugins/org.eclipse.cdt.ui_5.3.2.201202111925.jar" by thread "Worker-0".
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.beginStateChange(AbstractBundle.java:1088)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:298)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:440)
+	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:263)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:469)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
+	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:35)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:461)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(Unknown Source)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.defineClass(DefaultClassLoader.java:188)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.defineClassHoldingLock(ClasspathManager.java:632)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.defineClass(ClasspathManager.java:607)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findClassImpl(ClasspathManager.java:568)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClassImpl(ClasspathManager.java:492)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:465)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:464)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.cdt.codan.internal.ui.cxx.Startup$1$1.<init>(Startup.java:47)
+	at org.eclipse.cdt.codan.internal.ui.cxx.Startup$1.run(Startup.java:46)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4144)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3761)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:124)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
+Caused by: org.eclipse.osgi.framework.internal.core.AbstractBundle$BundleStatusException
+	... 56 more
+Root exception:
+org.eclipse.osgi.framework.internal.core.AbstractBundle$BundleStatusException
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.beginStateChange(AbstractBundle.java:1088)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:298)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:440)
+	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:263)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:469)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
+	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:35)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:461)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(Unknown Source)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.defineClass(DefaultClassLoader.java:188)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.defineClassHoldingLock(ClasspathManager.java:632)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.defineClass(ClasspathManager.java:607)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findClassImpl(ClasspathManager.java:568)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClassImpl(ClasspathManager.java:492)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:465)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:395)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:464)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:421)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:412)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.cdt.codan.internal.ui.cxx.Startup$1$1.<init>(Startup.java:47)
+	at org.eclipse.cdt.codan.internal.ui.cxx.Startup$1.run(Startup.java:46)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4144)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3761)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:124)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
+
+!ENTRY org.eclipse.egit.ui 2 0 2013-05-01 18:23:27.257
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mark'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2013-05-02 11:57:23.592 -----------------------------------------------
+eclipse.buildId=v21.1.0-569685
+java.version=1.7.0_10
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2013-05-02 11:57:34.381
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mark'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jdt.core 4 4 2013-05-02 11:57:38.614
+!MESSAGE JavaBuilder handling ImageBuilderInternalException while building: Juliana32
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:817)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.cleanOutputFolders(BatchImageBuilder.java:114)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.build(BatchImageBuilder.java:46)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.buildAll(JavaBuilder.java:254)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.build(JavaBuilder.java:173)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:728)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:199)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:239)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:292)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:295)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:394)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:618)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:597)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:114)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$3$1.run(Sdk.java:1201)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Could not delete '/Juliana32/bin/classes/com'.
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1978)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:804)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.cleanOutputFolders(BatchImageBuilder.java:114)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.build(BatchImageBuilder.java:46)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.buildAll(JavaBuilder.java:254)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.build(JavaBuilder.java:173)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:728)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:199)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:239)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:292)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:295)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:394)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:618)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:597)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:114)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$3$1.run(Sdk.java:1201)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: C:\Users\Mark\Juliana32\yolo-octo-hipster\Android client\Juliana32\bin\classes\com\coboltforge.
+Contains: Could not delete: C:\Users\Mark\Juliana32\yolo-octo-hipster\Android client\Juliana32\bin\classes\com.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2013-05-02 11:57:38.616
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 2 org.eclipse.core.resources 4 273 2013-05-02 11:57:38.618
+!MESSAGE Could not delete '/Juliana32/bin/classes/com'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1978)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:804)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.cleanOutputFolders(BatchImageBuilder.java:114)
+	at org.eclipse.jdt.internal.core.builder.BatchImageBuilder.build(BatchImageBuilder.java:46)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.buildAll(JavaBuilder.java:254)
+	at org.eclipse.jdt.internal.core.builder.JavaBuilder.build(JavaBuilder.java:173)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:728)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:199)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:239)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:292)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:295)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:394)
+	at org.eclipse.core.internal.resources.Project$1.run(Project.java:618)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.core.internal.resources.Project.internalBuild(Project.java:597)
+	at org.eclipse.core.internal.resources.Project.build(Project.java:114)
+	at com.android.ide.eclipse.adt.internal.sdk.Sdk$3$1.run(Sdk.java:1201)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: C:\Users\Mark\Juliana32\yolo-octo-hipster\Android client\Juliana32\bin\classes\com\coboltforge.
+Contains: Could not delete: C:\Users\Mark\Juliana32\yolo-octo-hipster\Android client\Juliana32\bin\classes\com.
+!SUBENTRY 3 org.eclipse.core.resources 4 273 2013-05-02 11:57:38.618
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 4 org.eclipse.core.filesystem 4 273 2013-05-02 11:57:38.618
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2013-05-02 11:57:38.618
+!MESSAGE Could not delete: C:\Users\Mark\Juliana32\yolo-octo-hipster\Android client\Juliana32\bin\classes\com\coboltforge.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2013-05-02 11:57:38.618
+!MESSAGE Could not delete: C:\Users\Mark\Juliana32\yolo-octo-hipster\Android client\Juliana32\bin\classes\com.
+
+!ENTRY org.eclipse.ui 4 0 2013-05-02 13:53:34.613
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at com.android.ide.eclipse.adt.internal.ui.ResourceChooser$3.selectAddedItem(ResourceChooser.java:514)
+	at com.android.ide.eclipse.adt.internal.ui.ResourceChooser$3.widgetSelected(ResourceChooser.java:477)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:248)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4169)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3758)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:825)
+	at org.eclipse.jface.window.Window.open(Window.java:801)
+	at org.eclipse.ui.dialogs.AbstractElementListSelectionDialog.open(AbstractElementListSelectionDialog.java:440)
+	at com.android.ide.eclipse.adt.internal.ui.ResourceChooser.chooseResource(ResourceChooser.java:949)
+	at com.android.ide.eclipse.adt.internal.editors.layout.gre.ClientRulesEngine.displayResourceInput(ClientRulesEngine.java:368)
+	at com.android.ide.eclipse.adt.internal.editors.layout.gre.ClientRulesEngine.displayResourceInput(ClientRulesEngine.java:361)
+	at com.android.ide.common.layout.BaseViewRule$2.action(BaseViewRule.java:228)
+	at com.android.ide.eclipse.adt.internal.editors.layout.gle2.DynamicContextMenu$3$1.run(DynamicContextMenu.java:443)
+	at com.android.ide.eclipse.adt.internal.editors.AndroidXmlEditor.wrapEditXmlModel(AndroidXmlEditor.java:1049)
+	at com.android.ide.eclipse.adt.internal.editors.AndroidXmlEditor.wrapUndoEditXmlModel(AndroidXmlEditor.java:1190)
+	at com.android.ide.eclipse.adt.internal.editors.layout.gle2.DynamicContextMenu$3.run(DynamicContextMenu.java:440)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:498)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:584)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:501)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:411)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4169)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3758)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:124)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 13:59:38.518
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 13:59:38.637
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 13:59:38.729
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 13:59:52.073
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 13:59:52.082
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 13:59:52.104
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:02.941
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:02.950
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:02.991
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:07.572
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:07.582
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:07.599
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:35.865
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:35.873
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:35.969
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:40.183
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:40.191
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:00:40.205
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:27.393
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:27.500
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:27.530
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.091
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.101
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.178
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.498
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.506
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.518
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.812
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.819
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:30.842
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:31.299
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:31.306
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:31.319
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:36.806
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:36.817
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:01:36.831
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:15:35.183
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:15:35.216
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:15:35.235
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:15:36.405
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:15:36.413
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:15:36.426
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:16:03.309
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:16:03.316
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:16:03.334
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:19:16.395
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:19:16.430
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:19:16.447
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:23.294
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:23.330
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:23.416
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:25.347
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:25.356
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:25.375
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:25.674
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:25.680
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:25.692
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:26.088
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:26.096
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:26.110
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:28.237
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:28.245
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:28.260
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:30.522
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:30.529
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:30.541
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:30.997
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:31.005
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:31.016
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme

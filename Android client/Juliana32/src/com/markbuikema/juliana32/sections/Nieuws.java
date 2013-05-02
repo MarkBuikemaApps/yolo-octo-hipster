@@ -2,6 +2,8 @@ package com.markbuikema.juliana32.sections;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -34,6 +36,7 @@ import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.activities.MainActivity.FailureReason;
 import com.markbuikema.juliana32.activities.MainActivity.Page;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
@@ -146,11 +149,14 @@ public class Nieuws {
 
 	public class NieuwsRetriever extends AsyncTask<Void, TeaserNieuwsItem, ArrayList<NieuwsItem>> {
 
+		final static long RETRIEVAL_TIMEOUT = 7000;
+
 		@Override
 		protected void onPreExecute() {
 			nieuwsAdapter.clear();
 			loading.setVisibility(View.VISIBLE);
 			refreshButton.setVisibility(View.GONE);
+
 		}
 
 		@Override
@@ -164,7 +170,7 @@ public class Nieuws {
 
 				NieuwsItem item = getNewsItem(itemRequestId);
 				activity.requestNiewsDetailPage(item);
-				
+
 				itemRequestId = -1;
 			}
 		}

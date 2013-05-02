@@ -1,17 +1,30 @@
 package com.markbuikema.juliana32.activities;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
@@ -44,8 +57,9 @@ import com.markbuikema.juliana32.ui.Button;
 
 public class MainActivity extends FragmentActivity implements OnSlideMenuItemClickListener {
 
-	public static final String BASE_SERVER_URL = "http://192.168.1.254:8080/JulianaServer/api";
+	public static final String BASE_SERVER_URL = "http://192.168.178.20:8080/JulianaServer/api";
 	public static final int NOTIFICATION_INTERVAL = 1;// minutes
+	private static final String TAG = "JulianaActivity";
 
 	private SlideMenu menu;
 	private ImageButton menuToggler;
@@ -59,6 +73,11 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	private View activePageView;
 	private View teamDetailView;
 	private View nieuwsDetailView;
+	private View failurePage;
+
+	private TextView failureText;
+	private ProgressBar failureLoader;
+	private Button failureButton;
 
 	private TeamDetail teamDetail;
 	private NieuwsDetail nieuwsDetail;
@@ -75,11 +94,16 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		HOME, NIEUWS, TEAMS, TELETEKST
 	}
 
+	public enum FailureReason {
+		NO_INTERNET, SERVER_OFFLINE, UNKNOWN
+	}
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		menu = (SlideMenu) findViewById(R.id.slideMenu1);
 		teamDetailView = findViewById(R.id.teamDetailView);
 		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
@@ -90,6 +114,17 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
 		seasonButton = (Spinner) findViewById(R.id.menuSeason);
 		loader = (ProgressBar) findViewById(R.id.loading);
+		failurePage = findViewById(R.id.failurePage);
+		failureLoader = (ProgressBar) failurePage.findViewById(R.id.failureLoader);
+		failureText = (TextView) failurePage.findViewById(R.id.failureText);
+		failureButton = (Button) failurePage.findViewById(R.id.failureButton);
+		failureButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				retry();
+			}
+		});
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 			if (ViewConfiguration.get(this).hasPermanentMenuKey()) overflowToggler.setVisibility(View.GONE);
 
@@ -138,6 +173,15 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		}
 
+	}
+
+	public boolean isOnline() {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 
 	public ArrayList<Game> getLatestGames() {
@@ -204,14 +248,152 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		loader.setVisibility(View.GONE);
 
-		seasonButton.setVisibility(page == Page.TEAMS ? View.VISIBLE : View.GONE);
-		refreshButton.setVisibility(page == Page.NIEUWS ? View.VISIBLE : View.GONE);
-
 		activePageView.setVisibility(View.VISIBLE);
 
-		
+		fixActionBar();
+
+		if (isFailurePageShown()) {
+			title = getResources().getString(R.string.failure);
+		}
 		setTitle(title);
 
+	}
+
+	public void retry() {
+		failureButton.setVisibility(View.INVISIBLE);
+		failureLoader.setVisibility(View.VISIBLE);
+		checkNetworkStatus();
+	}
+
+	public void checkNetworkStatus() {
+		Log.d(TAG, "online: " + isOnline());
+		if (!isOnline()) {
+
+			requestFailurePage(FailureReason.NO_INTERNET);
+
+			Log.d(TAG, "NO INTERNET ACCESS");
+		} else {
+
+			Log.d(TAG, "INTERNET ACCESS! starting servercheck");
+
+			new ServerAvailabilityChecker() {
+
+				@Override
+				protected void onPreExecute() {
+					Log.d(TAG, "PRE SERVER CHECK");
+				};
+
+				@Override
+				protected void onPostExecute(Integer result) {
+					Log.d(TAG, "POST SERVER CHECK");
+					if (result != 418) {
+						Log.d(TAG, "SERVER IS OFFLINE");
+						requestFailurePage(FailureReason.SERVER_OFFLINE);
+					} else {
+						Log.d(TAG, "SERVER IS ONLINE");
+						hideFailurePage();
+						onPageChanged(page);
+
+						teams.reload();
+					}
+				};
+			}.execute();
+		}
+	}
+
+	private class ServerAvailabilityChecker extends AsyncTask<Void, Void, Integer> {
+		@Override
+		protected Integer doInBackground(Void... params) {
+			HttpClient client = new DefaultHttpClient();
+			HttpGet get = new HttpGet(BASE_SERVER_URL + "/tools/online");
+			Log.d(TAG, "before response");
+
+			HttpResponse response;
+
+			try {
+				response = client.execute(get);
+				int statusCode = response.getStatusLine().getStatusCode();
+				Log.d(TAG, "Response: " + statusCode);
+				return statusCode;
+
+			} catch (IOException e) {
+				return 404;
+			}
+
+		}
+	}
+
+	public void fixActionBar() {
+		if (activePageView.getVisibility() == View.VISIBLE) switch (page) {
+		case HOME:
+			loader.setVisibility(View.GONE);
+			refreshButton.setVisibility(View.GONE);
+			seasonButton.setVisibility(View.GONE);
+			shareButton.setVisibility(View.GONE);
+			break;
+		case NIEUWS:
+			loader.setVisibility(View.GONE);
+			refreshButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
+			seasonButton.setVisibility(View.GONE);
+			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
+			break;
+		case TEAMS:
+			loader.setVisibility(View.GONE);
+			refreshButton.setVisibility(View.GONE);
+			shareButton.setVisibility(View.GONE);
+			seasonButton.setVisibility(isTeamDetailShown() ? View.GONE : View.VISIBLE);
+			break;
+		case TELETEKST:
+			loader.setVisibility(View.GONE);
+			refreshButton.setVisibility(View.GONE);
+			shareButton.setVisibility(View.GONE);
+			seasonButton.setVisibility(View.GONE);
+			break;
+		}
+		if (isFailurePageShown()) {
+			loader.setVisibility(View.GONE);
+			refreshButton.setVisibility(View.GONE);
+			seasonButton.setVisibility(View.GONE);
+			menuToggler.setEnabled(false);
+		} else {
+			menuToggler.setEnabled(true);
+		}
+
+	}
+
+	public void requestFailurePage(FailureReason reason) {
+
+		failureLoader.setVisibility(View.INVISIBLE);
+		failureButton.setVisibility(View.VISIBLE);
+
+		activePageView.setVisibility(View.GONE);
+		failurePage.setVisibility(View.VISIBLE);
+
+		switch (reason) {
+		case NO_INTERNET:
+			failureText.setText(R.string.no_internet);
+			break;
+		case SERVER_OFFLINE:
+			failureText.setText(R.string.server_offline);
+			break;
+		case UNKNOWN:
+			failureText.setText(R.string.failuretext);
+		}
+
+		fixActionBar();
+	}
+
+	public void hideFailurePage() {
+		failureLoader.setVisibility(View.INVISIBLE);
+		failureButton.setVisibility(View.VISIBLE);
+		activePageView.setVisibility(View.VISIBLE);
+		failurePage.setVisibility(View.GONE);
+
+		fixActionBar();
+	}
+
+	public boolean isFailurePageShown() {
+		return failurePage.getVisibility() == View.VISIBLE;
 	}
 
 	public void requestTeamDetailPage(Team team) {
@@ -349,6 +531,9 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		checkNetworkStatus();
+
 		if (page == Page.NIEUWS && nieuws != null && !isNieuwsDetailShown()) {
 			nieuws.refresh();
 		}

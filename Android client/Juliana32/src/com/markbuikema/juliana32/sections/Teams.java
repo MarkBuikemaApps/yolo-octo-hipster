@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.activities.MainActivity.FailureReason;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Photo;
 import com.markbuikema.juliana32.model.Season;
@@ -34,6 +35,10 @@ import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
 
 public class Teams {
+
+	public enum InformationStatus {
+		SUCCESS, FAILURE
+	}
 
 	private final static String TAG = "Teams";
 	private final static long TWO_WEEKS = 1000 * 60 * 60 * 24 * 14;
@@ -100,11 +105,15 @@ public class Teams {
 		return finishedLoading;
 	}
 
-	private class InformationRetriever extends AsyncTask<Void, Season, Void> {
+	private class InformationRetriever extends AsyncTask<Void, Season, InformationStatus> {
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected InformationStatus doInBackground(Void... params) {
+			
+//			activity.checkNetworkStatus();
+			
 			String json = getHttpContent(INFORMATION_URL);
+			if (json == null) return InformationStatus.FAILURE;
 			try {
 				JSONObject base = new JSONObject(json);
 				try {
@@ -118,8 +127,9 @@ public class Teams {
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+				return InformationStatus.FAILURE;
 			}
-			return null;
+			return InformationStatus.SUCCESS;
 		}
 
 		private Season processSeasonJSON(JSONObject seasonJSON) {
@@ -280,19 +290,32 @@ public class Teams {
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(InformationStatus status) {
 			finishedLoading = true;
 			loader.setVisibility(View.GONE);
-			seasonAdapter = new SeasonAdapter(activity, seasons);
-			seasonSpinner.setAdapter(seasonAdapter);
+			if (status == InformationStatus.SUCCESS) {
+				//succesfully loaded information
+				
+				if (activity.isFailurePageShown()) {
+					activity.hideFailurePage();
+				}
+				seasonAdapter = new SeasonAdapter(activity, seasons);
+				seasonSpinner.setAdapter(seasonAdapter);
 
-			if (seasons.size() != 0) {
+				if (seasons.size() != 0) {
 
-				onSeasonSelected(getNewestSeasonIndex());
+					onSeasonSelected(getNewestSeasonIndex());
+				}
+			} else {
+				//failure
 			}
 
-			((MainActivity) activity).notifyDoneLoadingSeasons();
+			activity.notifyDoneLoadingSeasons();
 		}
+	}
+	
+	public void reload() {
+		new InformationRetriever().execute();
 	}
 
 	public ArrayList<Game> getLatestGames() {

@@ -1,5 +1,7 @@
 package com.markbuikema.juliana32.server.resources;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -23,12 +25,12 @@ public class NewsResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<NewsItem> getNewsItems() {
 
-		for (NewsItem i:NewsItems.get().getNewsItems()) {
+		for (NewsItem i : NewsItems.get().getNewsItems()) {
 			System.out.println("Answered get request: " + i.toString());
 		}
 		return NewsItems.get().getNewsItems();
 	}
-	
+
 	@POST
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -36,40 +38,44 @@ public class NewsResource {
 		NewsItems.get().add(item);
 		System.out.println("Added: " + item.toString());
 	}
-	
+
 	@GET
 	@Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public NewsItem getSpecificNewsItem(@PathParam("id") int id) {
 		return NewsItems.get().getNewsItems().get(id);
 	}
-	
+
 	@GET
 	@Path("/count")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getCount() {
 		return Integer.toString(NewsItems.get().getNewsItems().size());
 	}
-	
+
 	@PUT
 	@Path("/edit/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void edit(@PathParam("id") int id, NewsItem item) {
 		NewsItems.get().replace(id, item);
 	}
-	
+
 	@DELETE
 	@Path("/delete/{id}")
 	public void delete(@PathParam("id") int id) {
 		NewsItems.get().remove(id);
 	}
-	
+
 	@POST
 	@Path("/startcrawling")
 	public void startCrawling() {
+		try {
+			System.out.println(Inet4Address.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
 		NewsItems.get().startCrawling();
 	}
-	
-	
 
 }
