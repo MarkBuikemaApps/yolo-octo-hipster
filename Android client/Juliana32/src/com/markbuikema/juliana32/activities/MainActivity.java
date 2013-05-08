@@ -263,6 +263,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		failureButton.setVisibility(View.INVISIBLE);
 		failureLoader.setVisibility(View.VISIBLE);
 		checkNetworkStatus();
+		teams.reload();
 	}
 
 	public void checkNetworkStatus() {
@@ -272,54 +273,8 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 			requestFailurePage(FailureReason.NO_INTERNET);
 
 			Log.d(TAG, "NO INTERNET ACCESS");
-		} else {
-
-			Log.d(TAG, "INTERNET ACCESS! starting servercheck");
-
-			new ServerAvailabilityChecker() {
-
-				@Override
-				protected void onPreExecute() {
-					Log.d(TAG, "PRE SERVER CHECK");
-				};
-
-				@Override
-				protected void onPostExecute(Integer result) {
-					Log.d(TAG, "POST SERVER CHECK");
-					if (result != 418) {
-						Log.d(TAG, "SERVER IS OFFLINE");
-						requestFailurePage(FailureReason.SERVER_OFFLINE);
-					} else {
-						Log.d(TAG, "SERVER IS ONLINE");
-						hideFailurePage();
-						onPageChanged(page);
-
-						teams.reload();
-					}
-				};
-			}.execute();
-		}
-	}
-
-	private class ServerAvailabilityChecker extends AsyncTask<Void, Void, Integer> {
-		@Override
-		protected Integer doInBackground(Void... params) {
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(BASE_SERVER_URL + "/tools/online");
-			Log.d(TAG, "before response");
-
-			HttpResponse response;
-
-			try {
-				response = client.execute(get);
-				int statusCode = response.getStatusLine().getStatusCode();
-				Log.d(TAG, "Response: " + statusCode);
-				return statusCode;
-
-			} catch (IOException e) {
-				return 404;
-			}
-
+		}  else {
+			hideFailurePage();
 		}
 	}
 

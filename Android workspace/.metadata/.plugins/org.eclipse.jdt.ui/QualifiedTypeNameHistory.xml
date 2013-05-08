@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.apache.http.impl.conn.DefaultClientConnection"/>
-<fullyQualifiedTypeName name="org.apache.http.impl.client.DefaultHttpClient"/>
-<fullyQualifiedTypeName name="org.apache.http.util.EntityUtils"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.activities.MainActivity"/>
-<fullyQualifiedTypeName name="org.json.JSONException"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.InformationRetriever"/>
 <fullyQualifiedTypeName name="android.opengl.Visibility"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="android.widget.ProgressBar"/>
@@ -15,7 +10,6 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.SeasonAdapter"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemSelectedListener"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemClickListener"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.string"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Table.TableRow"/>
@@ -37,19 +31,33 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NieuwsItem"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R.plurals"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.service.NotificationService"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Table"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.TableRow"/>
 <fullyQualifiedTypeName name="com.viewpagerindicator.TitlePageIndicator"/>
 <fullyQualifiedTypeName name="java.io.Serializable"/>
 <fullyQualifiedTypeName name="android.R"/>
 <fullyQualifiedTypeName name="android.R.drawable"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.TeamDetail.PhotoSectionFragment.PhotoSharer"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.InformationStatus"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.Teams.InformationRetriever"/>
+<fullyQualifiedTypeName name="android.os.AsyncTask"/>
+<fullyQualifiedTypeName name="org.apache.http.impl.client.DefaultHttpClient"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.activities.MainActivity.ServerAvailabilityChecker"/>
+<fullyQualifiedTypeName name="org.apache.http.util.EntityUtils"/>
+<fullyQualifiedTypeName name="java.lang.Runnable"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.activities.MainActivity.FailureReason"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.string"/>
+<fullyQualifiedTypeName name="org.apache.http.HttpResponse"/>
 <fullyQualifiedTypeName name="com.viewpagerindicator.UnderlinePageIndicator"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.sections.NieuwsDetail.PhotoPagerAdapter"/>
+<fullyQualifiedTypeName name="org.json.JSONException"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.view.View.OnTouchListener"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.LockableScrollView"/>
 </qualifiedTypeNameHistroy>

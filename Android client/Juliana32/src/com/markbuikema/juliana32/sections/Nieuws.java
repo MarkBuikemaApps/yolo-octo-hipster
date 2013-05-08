@@ -156,7 +156,6 @@ public class Nieuws {
 			nieuwsAdapter.clear();
 			loading.setVisibility(View.VISIBLE);
 			refreshButton.setVisibility(View.GONE);
-
 		}
 
 		@Override
@@ -222,7 +221,19 @@ public class Nieuws {
 				String subTitle = obj.getString("subTitle");
 				String detailUrl = obj.getString("detailUrl");
 				NieuwsItem item = new NormalNieuwsItem(id, title, subTitle, content, createdAt, detailUrl);
-				items.add(item);
+
+				try {
+					JSONArray photos = obj.getJSONArray("photos");
+					for (int i = 0; i < photos.length(); i++) {
+						String photo = photos.getString(i);
+						item.addPhoto(photo);
+					}
+				} catch (JSONException e) {
+					String photo = obj.getString("photos");
+					item.addPhoto(photo);
+				} finally {
+					items.add(item);
+				}
 
 			} catch (JSONException e) {
 				e.printStackTrace();

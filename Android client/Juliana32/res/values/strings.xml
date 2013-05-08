@@ -39,5 +39,7 @@
     <string name="no_internet">U bent niet verbonden met het internet. De data kan niet geladen worden.</string>
     <string name="server_offline">De server is offline. De data kan niet geladen worden.</string>
     <string name="failure">Fout</string>
+    <string name="no_tables_found">Er is voor dit team geen stand gevonden.</string>
+    <string name="no_photos_found">Er zijn voor dit team geen foto\'s gevonden.</string>
 
 </resources>

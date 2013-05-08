@@ -6,7 +6,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import com.markbuikema.juliana32.server.singletons.NewsItems;
 import com.markbuikema.juliana32.server.tools.Tools;
@@ -41,6 +43,8 @@ public class NewsItem implements Comparable<NewsItem> {
 		this.createdAt = createdAt;
 		this.content = Tools.getContent(detailUrl);
 
+		
+		
 		photos = new ArrayList<>();
 
 		try {
@@ -56,20 +60,36 @@ public class NewsItem implements Comparable<NewsItem> {
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
-		content = content.replaceAll("<br>", "\n");
-		content = content.replaceAll("<BR>", "\n");
+		content = content.replaceAll("<br>", "<br/><br/>");
+		content = content.replaceAll("<BR>", "<br/><br/>");
+		System.out.println("<!---");
+		System.out.println(content);
+		System.out.println("--->");
 		
-		
+//		content = content.replaceAll("<br>", "\n");
+//		content = content.replaceAll("<BR>", "\n");
+//
+//		content = content.replaceAll("&nbsp;", " ");
+//		content = content.replaceAll("&acirc;??", "'");
+//		content = content.replaceAll(";??", "");
+
+		generatePhotosFromHtml(content);
+
 //		content = Jsoup.parse(content).text();
 //		content = Jsoup.clean(content, Whitelist.basic());
-		content = content.replaceAll("&nbsp;", " ");
-		content = content.replaceAll("&acirc;??", "'");
-		content = content.replaceAll(";??", "");
-
 	}
 
 	public String getDetailUrl() {
 		return detailUrl;
+	}
+
+	private void generatePhotosFromHtml(String html) {
+		Document doc = Jsoup.parse(html);
+		Elements elements = doc.getElementsByTag("img");
+		for (int i = 0; i < elements.size(); i++) {
+			photos.add(elements.get(i).absUrl("src"));
+		}
+		System.out.println("NewsItem " + id + " has " + photos.size() + " photos");
 	}
 
 	@Override

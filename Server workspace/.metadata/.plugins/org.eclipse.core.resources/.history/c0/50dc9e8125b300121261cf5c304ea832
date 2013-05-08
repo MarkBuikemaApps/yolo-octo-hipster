@@ -1,0 +1,13 @@
+package com.markbuikema.juliana32.server.resources;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+@Path("/availability")
+public class ToolResource {
+
+	@GET
+	@Path("/get")
+	public void getAvailability() {
+	}
+}

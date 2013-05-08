@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
@@ -64,6 +65,10 @@ public class TeamDetail {
 
 	private ArrayList<Table> tableList;
 
+	private TextView noPhotos;
+
+	private TextView noTables;
+
 	public TeamDetail(MainActivity act, Team team) {
 		this.team = team;
 		activity = act;
@@ -99,6 +104,9 @@ public class TeamDetail {
 
 		photoPager = (ViewPager) mainView.findViewById(R.id.photoPager);
 		tablePager = (ViewPager) mainView.findViewById(R.id.tablePager);
+		
+		noPhotos = (TextView) mainView.findViewById(R.id.noPhotosFound);
+		noTables = (TextView) mainView.findViewById(R.id.noTablesFound);
 
 		fm = ((FragmentActivity) act).getSupportFragmentManager();
 		ppa = new PhotoPagerAdapter(fm);
@@ -106,6 +114,9 @@ public class TeamDetail {
 
 		photoPager.setAdapter(ppa);
 		tablePager.setAdapter(tpa);
+		
+		noPhotos.setVisibility(ppa.getCount()<1?View.VISIBLE:View.GONE);
+		noTables.setVisibility(tpa.getCount()<1?View.VISIBLE:View.GONE);
 
 		uitslagen.setAdapter(new FixtureAdapter(act, team.getUitslagen()));
 		programma.setAdapter(new FixtureAdapter(act, team.getProgramma()));

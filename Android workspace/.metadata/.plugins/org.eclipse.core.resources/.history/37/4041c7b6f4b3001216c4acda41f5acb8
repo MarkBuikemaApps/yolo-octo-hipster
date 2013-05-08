@@ -1,0 +1,70 @@
+package com.markbuikema.juliana32.model;
+
+import java.util.ArrayList;
+
+
+public abstract class NieuwsItem {
+	private int id;
+	private String title;
+	private String subTitle;
+	private String content;
+	private String detailUrl;
+	private ArrayList<String> photos;
+
+	public NieuwsItem(int id, String title, String subTitle, String content, String detailUrl) {
+		this.id = id;
+		this.title = title;
+		this.subTitle = subTitle;
+		this.content = content;
+		this.detailUrl = detailUrl;
+
+		photos = new ArrayList<String>();
+		
+		
+
+	}
+	
+	public void addPhoto(String url) {
+		photos.add(url);
+	}
+	
+	
+
+	public boolean isFromFacebook() {
+		try {
+			Integer.parseInt(detailUrl);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public String getDetailUrl() {
+		return detailUrl;
+	}
+	
+	@Override
+	public String toString() {
+		return id+ ": " + title + "," + subTitle + "," + content + "," + detailUrl;
+	}
+
+	
+
+}

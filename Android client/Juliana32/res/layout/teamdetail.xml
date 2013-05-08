@@ -33,6 +33,15 @@
             </android.support.v4.view.ViewPager>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/noTablesFound"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:text="@string/no_tables_found"
+            android:visibility="gone" />
+
         <FrameLayout
             android:id="@+id/uitslagenContainer"
             android:layout_width="match_parent"
@@ -117,6 +126,15 @@
                 app:selectedColor="@color/blue" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/noPhotosFound"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/no_photos_found"
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
+        
         <FrameLayout
             android:id="@+id/programmaContainer"
             android:layout_width="match_parent"

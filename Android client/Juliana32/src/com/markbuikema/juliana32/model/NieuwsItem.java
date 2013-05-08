@@ -1,5 +1,7 @@
 package com.markbuikema.juliana32.model;
 
+import java.util.ArrayList;
+
 
 public abstract class NieuwsItem {
 	private int id;
@@ -7,6 +9,7 @@ public abstract class NieuwsItem {
 	private String subTitle;
 	private String content;
 	private String detailUrl;
+	private ArrayList<String> photos;
 
 	public NieuwsItem(int id, String title, String subTitle, String content, String detailUrl) {
 		this.id = id;
@@ -15,9 +18,22 @@ public abstract class NieuwsItem {
 		this.content = content;
 		this.detailUrl = detailUrl;
 
+		photos = new ArrayList<String>();
 		
 		
 
+	}
+	
+	public void addPhoto(String url) {
+		photos.add(url);
+	}
+	
+	public int getPhotoCount() {
+		return photos.size();
+	}
+	
+	public String getPhoto(int index) {
+		return photos.get(index);
 	}
 	
 	

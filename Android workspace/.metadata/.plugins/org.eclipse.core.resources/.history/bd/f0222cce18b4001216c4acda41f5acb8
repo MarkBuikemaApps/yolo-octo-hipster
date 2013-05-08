@@ -1,0 +1,25 @@
+package com.markbuikema.juliana32.ui;
+
+import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.widget.ScrollView;
+
+public class ScrollingViewPager extends ViewPager {
+
+	private boolean touching;
+	private LockableScrollView scrollView;
+
+	public ScrollingViewPager(Context context, AttributeSet attrs, LockableScrollView scrollView) {
+		super(context, attrs);
+		this.scrollView = scrollView;
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean mayScroll = event.getAction() != MotionEvent.ACTION_UP && event.getAction() != MotionEvent.ACTION_OUTSIDE;
+		scrollView.allowScrolling(mayScroll);
+		return super.onTouchEvent(event);
+	}
+}

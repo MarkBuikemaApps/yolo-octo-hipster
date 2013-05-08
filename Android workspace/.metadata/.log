@@ -3219,3 +3219,200 @@ java.lang.NullPointerException
 
 !ENTRY com.android.ide.eclipse.adt 4 0 2013-05-02 14:57:31.016
 !MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:21.484
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:21.681
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:24.225
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:24.235
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:24.427
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:24.436
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:51.612
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:51.631
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:52.020
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:26:52.030
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:33.756
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:33.774
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:37.140
+!MESSAGE activity_main.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:37.173
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:37.186
+!MESSAGE activity_main.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:37.555
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:37.564
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:40.790
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:40.800
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:41.001
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:28:41.011
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:29:29.626
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:29:29.639
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:29:30.285
+!MESSAGE teamdetail.xml: Failed to find style 'vpiTitlePageIndicatorStyle' in current theme
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-05-03 12:29:30.295
+!MESSAGE teamdetail.xml: Failed to find style 'vpiUnderlinePageIndicatorStyle' in current theme
+
+!ENTRY org.eclipse.ui 4 0 2013-05-03 22:30:30.540
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.ui.internal.WorkbenchWindow.hardClose(WorkbenchWindow.java:1715)
+	at org.eclipse.ui.internal.WorkbenchWindow.busyClose(WorkbenchWindow.java:730)
+	at org.eclipse.ui.internal.WorkbenchWindow.access$0(WorkbenchWindow.java:715)
+	at org.eclipse.ui.internal.WorkbenchWindow$6.run(WorkbenchWindow.java:867)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:865)
+	at org.eclipse.jface.window.Window.handleShellCloseEvent(Window.java:741)
+	at org.eclipse.jface.window.Window$3.shellClosed(Window.java:687)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:98)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1053)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1077)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1062)
+	at org.eclipse.swt.widgets.Decorations.closeWidget(Decorations.java:309)
+	at org.eclipse.swt.widgets.Decorations.WM_CLOSE(Decorations.java:1694)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4530)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:341)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1627)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2069)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4976)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2541)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:498)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4623)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:341)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1627)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2069)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4976)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2541)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:498)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4623)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:341)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1627)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2069)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4976)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessageW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(OS.java:2546)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3756)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2701)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2665)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2499)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:679)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:668)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:124)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:353)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:629)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
+!SESSION 2013-05-07 12:35:43.457 -----------------------------------------------
+eclipse.buildId=v21.1.0-569685
+java.version=1.7.0_10
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2013-05-07 12:35:52.095
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.egit.ui 2 0 2013-05-07 12:36:29.748
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mark'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2013-05-07 13:22:18.378 -----------------------------------------------
+eclipse.buildId=v21.1.0-569685
+java.version=1.7.0_10
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2013-05-07 13:22:21.916
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.egit.ui 2 0 2013-05-07 13:22:28.892
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mark'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.equinox.p2.touchpoint.natives 2 0 2013-05-07 13:24:33.442
+!MESSAGE Could not remove temporary backup directory (it is safe to manually delete it and its contents): C:\Users\Mark\AppData\Local\Temp\profile_27cfd78b0a80_914c7f26f1da
+!SESSION 2013-05-07 13:25:46.935 -----------------------------------------------
+eclipse.buildId=v21.1.0-569685
+java.version=1.7.0_10
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2013-05-07 13:26:13.823
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.egit.ui 2 0 2013-05-07 13:26:21.848
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mark'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.wireframesketcher.ui 1 0 2013-05-07 13:27:44.681
+!MESSAGE WireframeSketcher v3.9.0 (trial)

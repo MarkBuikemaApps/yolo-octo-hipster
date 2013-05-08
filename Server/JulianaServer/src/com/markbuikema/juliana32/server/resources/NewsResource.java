@@ -43,7 +43,7 @@ public class NewsResource {
 	@Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public NewsItem getSpecificNewsItem(@PathParam("id") int id) {
-		return NewsItems.get().getNewsItems().get(id);
+		return NewsItems.get().getNewsItems().get(id%NewsItems.get().getNewsItems().size());
 	}
 
 	@GET
