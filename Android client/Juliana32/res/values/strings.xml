@@ -41,5 +41,6 @@
     <string name="failure">Fout</string>
     <string name="no_tables_found">Er is voor dit team geen stand gevonden.</string>
     <string name="no_photos_found">Er zijn voor dit team geen foto\'s gevonden.</string>
+    <string name="fotos">Foto\'s</string>
 
 </resources>

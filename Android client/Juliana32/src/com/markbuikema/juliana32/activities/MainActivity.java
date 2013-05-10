@@ -1,15 +1,6 @@
 package com.markbuikema.juliana32.activities;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -24,7 +15,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
@@ -57,7 +47,7 @@ import com.markbuikema.juliana32.ui.Button;
 
 public class MainActivity extends FragmentActivity implements OnSlideMenuItemClickListener {
 
-	public static final String BASE_SERVER_URL = "http://192.168.178.20:8080/JulianaServer/api";
+	public static final String BASE_SERVER_URL = "http://192.168.1.213:8080/JulianaServer/api";
 	public static final int NOTIFICATION_INTERVAL = 1;// minutes
 	private static final String TAG = "JulianaActivity";
 

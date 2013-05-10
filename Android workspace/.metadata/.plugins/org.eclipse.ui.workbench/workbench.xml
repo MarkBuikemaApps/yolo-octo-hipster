@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="17" version="2.0">
+<workbench progressCount="18" version="2.0">
 <workbenchAdvisor/>
-<window height="768" maximized="true" width="1024" x="119" y="-25">
+<window height="768" maximized="true" width="1024" x="1808" y="103">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="250"/>
@@ -18,7 +18,7 @@
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="76" y="22"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="107" y="22"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="61" y="22"/>
 <coolItem id="org.eclipse.debug.ui.launch.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.main.toolbar" itemType="typeToolBarContribution" x="38" y="22"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -41,151 +41,28 @@
 <part id="2"/>
 <part id="3"/>
 <part id="4"/>
-<part id="5"/>
-<part id="6"/>
-<part id="7"/>
-<part id="8"/>
-<part id="9"/>
-<part id="10"/>
-<part id="11"/>
-<part id="12"/>
-<part id="13"/>
-<part id="14"/>
-<part id="15"/>
-<part id="16"/>
-<part id="17"/>
-<part id="18"/>
-<part id="19"/>
-<part id="20"/>
-<part id="21"/>
-<part id="22"/>
-<part id="23"/>
-<part id="24"/>
-<part id="25"/>
-<part id="26"/>
-<part id="27"/>
-<part id="28"/>
-<part id="29"/>
-<part id="30"/>
-<part id="31"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teams.java" partName="Teams.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java" title="Teams.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teams.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4171" selectionTopPixel="1881"/>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NieuwsDetail.java" partName="NieuwsDetail.java" path="C:/Users/Mark/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/NieuwsDetail.java" title="NieuwsDetail.java" tooltip="MainActivity/src/com/markbuikema/juliana32/sections/NieuwsDetail.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MainActivity/src/com/markbuikema/juliana32/sections/NieuwsDetail.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3188" selectionTopPixel="1264"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Team.java" partName="Team.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/Team.java" title="Team.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/Team.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/Team.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2269" selectionTopPixel="1537"/>
+<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="nieuwsdetail.xml" partName="nieuwsdetail.xml" path="C:/Users/Mark/yolo-octo-hipster/Android client/Juliana32/res/layout/nieuwsdetail.xml" title="nieuwsdetail.xml" tooltip="MainActivity/res/layout/nieuwsdetail.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MainActivity/res/layout/nieuwsdetail.xml"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MainActivity.java" partName="MainActivity.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/activities/MainActivity.java" title="MainActivity.java" tooltip="Juliana32/src/com/markbuikema/juliana32/activities/MainActivity.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/activities/MainActivity.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3362" selectionTopPixel="233"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NieuwsItem.java" partName="NieuwsItem.java" path="C:/Users/Mark/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/NieuwsItem.java" title="NieuwsItem.java" tooltip="MainActivity/src/com/markbuikema/juliana32/model/NieuwsItem.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MainActivity/src/com/markbuikema/juliana32/model/NieuwsItem.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="924" selectionTopPixel="762"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TeamDetail.java" partName="TeamDetail.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/TeamDetail.java" title="TeamDetail.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/TeamDetail.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/TeamDetail.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="1254" selectionOffset="5073" selectionTopPixel="2720"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TeamDetail.java" partName="TeamDetail.java" path="C:/Users/Mark/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/TeamDetail.java" title="TeamDetail.java" tooltip="MainActivity/src/com/markbuikema/juliana32/sections/TeamDetail.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MainActivity/src/com/markbuikema/juliana32/sections/TeamDetail.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6204" selectionTopPixel="2175"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TableRow.java" partName="TableRow.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/TableRow.java" title="TableRow.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/TableRow.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/TableRow.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="999" selectionTopPixel="704"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Home.java" partName="Home.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Home.java" title="Home.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Home.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/Home.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3348" selectionTopPixel="1025"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="FixtureAdapter.java" partName="FixtureAdapter.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/tools/FixtureAdapter.java" title="FixtureAdapter.java" tooltip="Juliana32/src/com/markbuikema/juliana32/tools/FixtureAdapter.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/tools/FixtureAdapter.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="726" selectionTopPixel="38"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TableAdapter.java" partName="TableAdapter.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/tools/TableAdapter.java" title="TableAdapter.java" tooltip="Juliana32/src/com/markbuikema/juliana32/tools/TableAdapter.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/tools/TableAdapter.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1450" selectionTopPixel="1288"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="colors.xml" partName="colors.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/values/colors.xml" title="colors.xml" tooltip="Juliana32/res/values/colors.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/values/colors.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="strings.xml" partName="strings.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/values/strings.xml" title="strings.xml" tooltip="Juliana32/res/values/strings.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/values/strings.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="listitem_tablerow.xml" partName="listitem_tablerow.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/listitem_tablerow.xml" title="listitem_tablerow.xml" tooltip="Juliana32/res/layout/listitem_tablerow.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/listitem_tablerow.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="listitem_tablerow.xml" partName="land\listitem_tablerow.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout-land/listitem_tablerow.xml" title="land\listitem_tablerow.xml" tooltip="Juliana32/res/layout-land/listitem_tablerow.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout-land/listitem_tablerow.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="activity_main.xml" partName="activity_main.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/activity_main.xml" title="activity_main.xml" tooltip="Juliana32/res/layout/activity_main.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/activity_main.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="listitem_game.xml" partName="listitem_game.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/listitem_game.xml" title="listitem_game.xml" tooltip="Juliana32/res/layout/listitem_game.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/listitem_game.xml"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Photo.java" partName="Photo.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/Photo.java" title="Photo.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/Photo.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/Photo.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="44" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NieuwsDetail.java" partName="NieuwsDetail.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/NieuwsDetail.java" title="NieuwsDetail.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/NieuwsDetail.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/NieuwsDetail.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2294" selectionTopPixel="621"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NieuwsItem.java" partName="NieuwsItem.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/NieuwsItem.java" title="NieuwsItem.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/NieuwsItem.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/NieuwsItem.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="674" selectionTopPixel="81"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NormalNieuwsItem.java" partName="NormalNieuwsItem.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/NormalNieuwsItem.java" title="NormalNieuwsItem.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/NormalNieuwsItem.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/NormalNieuwsItem.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1203" selectionTopPixel="312"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="nieuwsdetail.xml" partName="nieuwsdetail.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/nieuwsdetail.xml" title="nieuwsdetail.xml" tooltip="Juliana32/res/layout/nieuwsdetail.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/nieuwsdetail.xml"/>
-</editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Nieuws.java" partName="Nieuws.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Nieuws.java" title="Nieuws.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Nieuws.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/Nieuws.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6859" selectionTopPixel="2906"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SlideMenu.java" partName="SlideMenu.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android workspace/LibSlideMenu/src/com/coboltforge/slidemenu/SlideMenu.java" title="SlideMenu.java" tooltip="LibSlideMenu/src/com/coboltforge/slidemenu/SlideMenu.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/LibSlideMenu/src/com/coboltforge/slidemenu/SlideMenu.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="9213" selectionTopPixel="4136"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Button.java" partName="Button.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/ui/Button.java" title="Button.java" tooltip="Juliana32/src/com/markbuikema/juliana32/ui/Button.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/ui/Button.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NotificationService.java" partName="NotificationService.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/service/NotificationService.java" title="NotificationService.java" tooltip="Juliana32/src/com/markbuikema/juliana32/service/NotificationService.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/service/NotificationService.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6052" selectionTopPixel="2444"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="listitem_nieuwsitem.xml" partName="listitem_nieuwsitem.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/listitem_nieuwsitem.xml" title="listitem_nieuwsitem.xml" tooltip="Juliana32/res/layout/listitem_nieuwsitem.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/listitem_nieuwsitem.xml"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Table.java" partName="Table.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/model/Table.java" title="Table.java" tooltip="Juliana32/src/com/markbuikema/juliana32/model/Table.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/model/Table.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="602" selectionTopPixel="0"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="table_item.xml" partName="table_item.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/table_item.xml" title="table_item.xml" tooltip="Juliana32/res/layout/table_item.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/table_item.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" partName="LibViewPagerIndicator Manifest" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android workspace/LibViewPagerIndicator/AndroidManifest.xml" title="LibViewPagerIndicator Manifest" tooltip="LibViewPagerIndicator/AndroidManifest.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/LibViewPagerIndicator/AndroidManifest.xml"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teams.xml" partName="teams.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/teams.xml" title="teams.xml" tooltip="Juliana32/res/layout/teams.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/teams.xml"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Tools.java" partName="Tools.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/tools/Tools.java" title="Tools.java" tooltip="Juliana32/src/com/markbuikema/juliana32/tools/Tools.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/tools/Tools.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2270" selectionTopPixel="937"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teletekst.xml" partName="teletekst.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/teletekst.xml" title="teletekst.xml" tooltip="Juliana32/res/layout/teletekst.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/teletekst.xml"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teletekst.java" partName="Teletekst.java" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java" title="Teletekst.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2930" selectionTopPixel="973"/>
-</editor>
-<editor id="com.android.ide.eclipse.editors.CommonXmlEditor" name="failure.xml" partName="failure.xml" path="C:/Users/Mark/Juliana32/yolo-octo-hipster/Android client/Juliana32/res/layout/failure.xml" title="failure.xml" tooltip="Juliana32/res/layout/failure.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Juliana32/res/layout/failure.xml"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PictureRetriever.java" partName="PictureRetriever.java" path="C:/Users/Mark/yolo-octo-hipster/Android client/Juliana32/src/com/markbuikema/juliana32/tools/PictureRetriever.java" title="PictureRetriever.java" tooltip="MainActivity/src/com/markbuikema/juliana32/tools/PictureRetriever.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/MainActivity/src/com/markbuikema/juliana32/tools/PictureRetriever.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="292" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -205,7 +82,7 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings (12 items)"/>
+<category IMemento.internal.id="Warnings (30 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="451"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -245,13 +122,12 @@
 </customFilters>
 </viewState>
 </view>
-<view id="com.android.ide.eclipse.ddms.views.SysInfoView" partName="System Information"/>
 <view id="com.android.ide.eclipse.ddms.views.EmulatorControlView" partName="Emulator Control"/>
 <view id="org.eclipse.jdt.ui.SourceView" partName="Declaration">
 <viewState/>
 </view>
-<view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 <view id="com.android.ide.eclipse.ddms.views.AllocTrackerView" partName="Allocation Tracker"/>
+<view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 </views>
 <perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="0" fixed="0" version="0.016">
@@ -293,7 +169,7 @@
 <view id="com.android.ide.eclipse.ddms.views.NetworkStatsView"/>
 <view id="com.android.ide.eclipse.ddms.views.FileExplorerView"/>
 <view id="com.android.ide.eclipse.ddms.views.EmulatorControlView"/>
-<view id="com.android.ide.eclipse.ddms.views.SysInfoView"/>
+<view id="com.android.ide.eclipse.ddms.views.SysInfoView" removed="true"/>
 <fastViewBars/>
 <layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="devices">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="com.android.ide.eclipse.ddms.views.DeviceView:*" label="LabelNotFound"/>
 <page content="com.android.ide.eclipse.ddms.views.DeviceView" label="Devices"/>
@@ -412,8 +288,8 @@
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.20516606" ratioLeft="278" ratioRight="1077" relationship="2" relative="left"/>
-<info folder="true" part="bottom" ratio="0.6365105" ratioLeft="394" ratioRight="225" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
+<info folder="true" part="bottom" ratio="0.4711934" ratioLeft="458" ratioRight="514" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="com.android.ide.eclipse.ddms.views.LogCatView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.jdt.ui.JavadocView" label="Javadoc"/>
 <page content="org.eclipse.jdt.ui.SourceView" label="Declaration"/>
@@ -451,108 +327,133 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/sections/NieuwsDetail.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/model/NieuwsItem.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/Juliana32/res/layout/nieuwsdetail.xml"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/sections/Teams.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/ui/ScrollingViewPager.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/ui/DynamicScrollView.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/ui/LockableScrollView.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/activities/MainActivity.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Juliana32/src/com/markbuikema/juliana32/sections/Nieuws.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MainActivity/src/com/markbuikema/juliana32/sections/NieuwsDetail.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/MainActivity/res/layout/nieuwsdetail.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MainActivity/src/com/markbuikema/juliana32/model/NieuwsItem.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MainActivity/src/com/markbuikema/juliana32/sections/TeamDetail.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MainActivity/src/com/markbuikema/juliana32/tools/Loader.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/MainActivity/src/com/markbuikema/juliana32/tools/PictureRetriever.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="" path="/MainActivity/res/layout/nieuwsdetail.xml"/>
 </editors>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3725" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3709" y="3"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3725" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="992" y="0"/>
+<position info="not_deleted" x="2273" y="0"/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
 <position/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3994" y="0"/>
-</item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="NieuwsItem.java" index="1">
-<position info="not_deleted" x="614" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3994" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3916" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3936" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3946" y="0"/>
-</item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="Teams.java" index="3">
-<position info="not_deleted" x="3567" y="0"/>
-</item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="Teams.java" index="3">
-<position info="not_deleted" x="3570" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="3946" y="0"/>
-</item>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="4590" y="0"/>
+<position/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
 <position/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="4358" y="0"/>
+<position/>
 </item>
-<item historyLabel="ScrollingViewPager.java" index="4">
-<position info="not_deleted" x="194" y="0"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position/>
 </item>
-<item historyLabel="DynamicScrollView.java" index="5">
+<item historyLabel="nieuwsdetail.xml" index="1"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2462" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2331" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2052" y="0"/>
+</item>
+<item historyLabel="NieuwsItem.java" index="2">
+<position info="not_deleted" x="924" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2213" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2824" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3835" y="0"/>
+</item>
+<item historyLabel="TeamDetail.java" index="3">
+<position info="not_deleted" x="6204" y="0"/>
+</item>
+<item historyLabel="Loader.java" index="4">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="DynamicScrollView.java" index="5">
-<position info="not_deleted" x="365" y="0"/>
+<item historyLabel="PictureRetriever.java" index="5">
+<position info="not_deleted" x="126" y="0"/>
 </item>
-<item historyLabel="LockableScrollView.java" index="6">
-<position info="not_deleted" x="961" y="0"/>
+<item historyLabel="TeamDetail.java" index="3">
+<position info="not_deleted" x="6204" y="0"/>
 </item>
-<item historyLabel="ScrollingViewPager.java" index="4">
-<position info="not_deleted" x="288" y="0"/>
+<item historyLabel="PictureRetriever.java" index="5">
+<position info="not_deleted" x="126" y="0"/>
 </item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="4200" y="0"/>
+<position info="not_deleted" x="3835" y="0"/>
 </item>
-<item historyLabel="MainActivity.java" index="7">
-<position info="not_deleted" x="3470" y="41"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2984" y="0"/>
 </item>
-<item historyLabel="ScrollingViewPager.java" index="4">
-<position info="not_deleted" x="288" y="0"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3533" y="0"/>
 </item>
-<item historyLabel="ScrollingViewPager.java" index="4">
-<position info="not_deleted" x="412" y="0"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3533" y="0"/>
 </item>
-<item historyLabel="MainActivity.java" index="7">
-<position info="not_deleted" x="3362" y="0"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3535" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2967" y="1"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3535" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3072" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3566" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2912" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2002" y="0"/>
+</item>
+<item historyLabel="nieuwsdetail.xml" index="1"/>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2479" y="0"/>
+</item>
+<item historyLabel="nieuwsdetail.xml" index="1">
+<position info="not_deleted" x="2375" y="0"/>
+</item>
+<item historyLabel="nieuwsdetail.xml" index="6">
+<position info="not_deleted" x="2157" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2479" y="0"/>
+</item>
+<item historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="2773" y="0"/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
 <position/>
 </item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="ScrollingViewPager.java" index="4">
-<position info="not_deleted" x="412" y="0"/>
-</item>
 <item historyLabel="NieuwsDetail.java" index="0">
 <position/>
 </item>
@@ -560,40 +461,25 @@
 <position/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position/>
+<position info="not_deleted" x="2942" y="0"/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="1954" y="0"/>
-</item>
-<item historyLabel="ScrollingViewPager.java" index="4">
-<position info="not_deleted" x="86" y="58"/>
+<position info="not_deleted" x="2946" y="0"/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="1181" y="0"/>
-</item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position/>
-</item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="1958" y="0"/>
-</item>
-<item historyLabel="nieuwsdetail.xml" index="2"/>
-<item historyLabel="Teams.java" index="3">
-<position info="not_deleted" x="4171" y="0"/>
-</item>
-<item historyLabel="NieuwsItem.java" index="1">
-<position info="not_deleted" x="674" y="0"/>
+<position info="not_deleted" x="2950" y="0"/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="1958" y="0"/>
+<position info="not_deleted" x="3059" y="0"/>
+</item>
+<item historyLabel="PictureRetriever.java" index="5">
+<position info="not_deleted" x="292" y="0"/>
 </item>
 <item historyLabel="NieuwsDetail.java" index="0">
-<position info="not_deleted" x="2294" y="0"/>
+<position info="not_deleted" x="3059" y="0"/>
 </item>
-<item active="true" historyLabel="Nieuws.java" index="8">
-<position info="not_deleted" x="7535" y="0"/>
+<item active="true" historyLabel="NieuwsDetail.java" index="0">
+<position info="not_deleted" x="3224" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -613,6 +499,42 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Loader.java" tooltip="MainActivity/src/com/markbuikema/juliana32/tools/Loader.java">
+<persistable path="/MainActivity/src/com/markbuikema/juliana32/tools/Loader.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TeamDetail.java" tooltip="MainActivity/src/com/markbuikema/juliana32/sections/TeamDetail.java">
+<persistable path="/MainActivity/src/com/markbuikema/juliana32/sections/TeamDetail.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NieuwsItem.java" tooltip="MainActivity/src/com/markbuikema/juliana32/model/NieuwsItem.java">
+<persistable path="/MainActivity/src/com/markbuikema/juliana32/model/NieuwsItem.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="nieuwsdetail.xml" tooltip="MainActivity/res/layout/nieuwsdetail.xml">
+<persistable path="/MainActivity/res/layout/nieuwsdetail.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NieuwsDetail.java" tooltip="MainActivity/src/com/markbuikema/juliana32/sections/NieuwsDetail.java">
+<persistable path="/MainActivity/src/com/markbuikema/juliana32/sections/NieuwsDetail.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="failure.xml" tooltip="MainActivity/res/layout/failure.xml">
+<persistable path="/MainActivity/res/layout/failure.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="R.java" tooltip="MainActivity/gen/com/markbuikema/juliana32/R.java">
+<persistable path="/MainActivity/gen/com/markbuikema/juliana32/R.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="slidemenu_listitem.xml" tooltip="LibSlideMenu/res/layout/slidemenu_listitem.xml">
+<persistable path="/LibSlideMenu/res/layout/slidemenu_listitem.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="slidemenu.xml" tooltip="LibSlideMenu/res/layout/slidemenu.xml">
+<persistable path="/LibSlideMenu/res/layout/slidemenu.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="activity_main.xml" tooltip="MainActivity/res/layout/activity_main.xml">
+<persistable path="/MainActivity/res/layout/activity_main.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MainActivity.java" tooltip="MainActivity/src/com/markbuikema/juliana32/activities/MainActivity.java">
+<persistable path="/MainActivity/src/com/markbuikema/juliana32/activities/MainActivity.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CirclePageIndicator.java" tooltip="LibViewPagerIndicator/src/com/viewpagerindicator/CirclePageIndicator.java">
+<persistable path="/LibViewPagerIndicator/src/com/viewpagerindicator/CirclePageIndicator.java"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DynamicScrollView.java" tooltip="Juliana32/src/com/markbuikema/juliana32/ui/DynamicScrollView.java">
 <persistable path="/Juliana32/src/com/markbuikema/juliana32/ui/DynamicScrollView.java"/>
 </file>
@@ -621,42 +543,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teamdetail.xml" tooltip="Juliana32/res/layout/teamdetail.xml">
 <persistable path="/Juliana32/res/layout/teamdetail.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="failure.xml" tooltip="Juliana32/res/layout/failure.xml">
-<persistable path="/Juliana32/res/layout/failure.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Teletekst.java" tooltip="Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java">
-<persistable path="/Juliana32/src/com/markbuikema/juliana32/sections/Teletekst.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teletekst.xml" tooltip="Juliana32/res/layout/teletekst.xml">
-<persistable path="/Juliana32/res/layout/teletekst.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teletekst.xml" tooltip="Juliana32/res/layout-port/teletekst.xml">
-<persistable path="/Juliana32/res/layout-port/teletekst.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teletekst.xml" tooltip="Juliana32/res/layout-land/teletekst.xml">
-<persistable path="/Juliana32/res/layout-land/teletekst.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Tools.java" tooltip="Juliana32/src/com/markbuikema/juliana32/tools/Tools.java">
-<persistable path="/Juliana32/src/com/markbuikema/juliana32/tools/Tools.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" name="teams.xml" tooltip="Juliana32/res/layout/teams.xml">
-<persistable path="/Juliana32/res/layout/teams.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.systemExternalEditor" name="divider.png" tooltip="Juliana32/res/drawable/divider.png">
-<persistable path="/Juliana32/res/drawable/divider.png"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TitlePageIndicator.java" tooltip="LibViewPagerIndicator/src/com/viewpagerindicator/TitlePageIndicator.java">
-<persistable path="/LibViewPagerIndicator/src/com/viewpagerindicator/TitlePageIndicator.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="IconPageIndicator.java" tooltip="LibViewPagerIndicator/src/com/viewpagerindicator/IconPageIndicator.java">
-<persistable path="/LibViewPagerIndicator/src/com/viewpagerindicator/IconPageIndicator.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CirclePageIndicator.java" tooltip="LibViewPagerIndicator/src/com/viewpagerindicator/CirclePageIndicator.java">
-<persistable path="/LibViewPagerIndicator/src/com/viewpagerindicator/CirclePageIndicator.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" tooltip="LibViewPagerIndicator/AndroidManifest.xml">
-<persistable path="/LibViewPagerIndicator/AndroidManifest.xml"/>
 </file>
 </mruList>
 </workbench>

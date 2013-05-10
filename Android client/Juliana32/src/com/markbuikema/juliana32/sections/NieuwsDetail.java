@@ -1,7 +1,8 @@
 package com.markbuikema.juliana32.sections;
 
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +21,7 @@ import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
-import com.markbuikema.juliana32.tools.Tools;
+import com.markbuikema.juliana32.tools.PictureRetriever;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class NieuwsDetail {
@@ -32,15 +33,18 @@ public class NieuwsDetail {
 
 	private TextView title;
 	private TextView subTitle;
-	private TextView content;
 	private TextView date;
 
-//	private ViewPager photoPager;
-//	private UnderlinePageIndicator photoIndicator;
+	private TextView content;
+
+	private ViewPager photoPager;
+	private UnderlinePageIndicator photoIndicator;
+	
+	private MenuDrawer mMenuDrawer;
 
 	private boolean teaser;
 
-	public NieuwsDetail(MainActivity act, NieuwsItem item) {
+	public NieuwsDetail(final MainActivity act, NieuwsItem item) {
 		this.activity = act;
 		this.item = item;
 
@@ -50,24 +54,21 @@ public class NieuwsDetail {
 
 		title = (TextView) mainView.findViewById(R.id.nieuwsDetailTitle);
 		subTitle = (TextView) mainView.findViewById(R.id.nieuwsDetailSubtitle);
-		content = (TextView) mainView.findViewById(R.id.nieuwsDetailContent);
 		date = (TextView) mainView.findViewById(R.id.nieuwsDetailDate);
-//		photoPager = (ViewPager) mainView.findViewById(R.id.newsPhotoPager);
-//		photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.newsPhotoIndicator);
+		photoPager = (ViewPager) mainView.findViewById(R.id.newsPhotoPager);
+		photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.newsPhotoIndicator);
 
-		
-//		photoPager.setVisibility(item.getPhotoCount() < 1 ? View.GONE : View.VISIBLE);
-//		photoIndicator.setVisibility(item.getPhotoCount() < 1 ? View.GONE : View.VISIBLE);
+		photoPager.setVisibility(item.getPhotoCount() < 1 ? View.GONE : View.VISIBLE);
+		photoIndicator.setVisibility(item.getPhotoCount() < 1 ? View.GONE : View.VISIBLE);
 
 		title.setText(item.getTitle());
 		subTitle.setText(Html.fromHtml("<i>" + item.getSubTitle() + "</i>"));
-		content.setText(Html.fromHtml(item.getContent()));
 
 		if (item instanceof NormalNieuwsItem) {
 			date.setText(((NormalNieuwsItem) item).getCreatedAtString());
 		}
-//		photoPager.setAdapter(new PhotoPagerAdapter(act.getSupportFragmentManager()));
-//		photoIndicator.setViewPager(photoPager);
+		photoPager.setAdapter(new PhotoPagerAdapter(act.getSupportFragmentManager()));
+		photoIndicator.setViewPager(photoPager);
 
 	}
 
@@ -118,7 +119,7 @@ public class NieuwsDetail {
 			final String url = args.getString("url");
 
 			Log.d(TAG, url);
-			new Loader() {
+			new PictureRetriever() {
 				protected void onPostExecute(Bitmap result) {
 					if (result == null) return;
 					view.setImageBitmap(result);
@@ -129,13 +130,7 @@ public class NieuwsDetail {
 			return mainView;
 		}
 
-		private class Loader extends AsyncTask<String, Void, Bitmap> {
-			@Override
-			protected Bitmap doInBackground(String... params) {
-				return Tools.getPictureFromUrl(params[0]);
-			}
-		}
+		
 	}
 
-	
 }

@@ -59,9 +59,18 @@ public class NewsItem implements Comparable<NewsItem> {
 			content = content.split("<div id='crumbtail'>")[0];
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
+		
+		content = Jsoup.clean(content, new Whitelist().addTags("img","br","p"));
 
-		content = content.replaceAll("<br>", "<br/><br/>");
-		content = content.replaceAll("<BR>", "<br/><br/>");
+
+		content = content.replaceAll("<br>", "<br/>");
+		content = content.replaceAll("<BR>", "<br/>");
+		content = content.replaceAll("<br/>","\n");
+		content = content.replaceAll("<br />", "\n");
+		content = content.replaceAll("<p>", "\n");
+		content = content.replaceAll("</p>", "\n");
+		content = content.replaceAll("<img", "IMAGEREFERENCE<img");
+
 		System.out.println("<!---");
 		System.out.println(content);
 		System.out.println("--->");
@@ -77,6 +86,7 @@ public class NewsItem implements Comparable<NewsItem> {
 
 //		content = Jsoup.parse(content).text();
 //		content = Jsoup.clean(content, Whitelist.basic());
+		
 	}
 
 	public String getDetailUrl() {

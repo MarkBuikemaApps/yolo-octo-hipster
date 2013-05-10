@@ -1,7 +1,0 @@
-package com.markbuikema.juliana32.ui;
-
-import android.widget.ScrollView;
-
-public class DynamicScrollView extends ScrollView {
-
-}

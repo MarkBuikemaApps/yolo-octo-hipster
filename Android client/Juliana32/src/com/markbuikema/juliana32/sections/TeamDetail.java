@@ -32,10 +32,12 @@ import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.tools.FixtureAdapter;
+import com.markbuikema.juliana32.tools.PictureRetriever;
 import com.markbuikema.juliana32.tools.TableAdapter;
 import com.markbuikema.juliana32.tools.Tools;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.UnderlinePageIndicator;
+
 
 public class TeamDetail {
 
@@ -186,7 +188,7 @@ public class TeamDetail {
 					new PhotoSharer().execute(url, teamName);
 				}
 			});
-			new Loader() {
+			new PictureRetriever() {
 				protected void onPostExecute(Bitmap result) {
 					if (result == null) return;
 					view.setImageBitmap(result);
@@ -196,12 +198,7 @@ public class TeamDetail {
 			return mainView;
 		}
 
-		private class Loader extends AsyncTask<String, Void, Bitmap> {
-			@Override
-			protected Bitmap doInBackground(String... params) {
-				return Tools.getPictureFromUrl(params[0]);
-			}
-		}
+		
 
 		private class PhotoSharer extends AsyncTask<String, Void, String> {
 

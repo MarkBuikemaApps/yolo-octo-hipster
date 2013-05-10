@@ -8,15 +8,15 @@ package com.coboltforge.slidemenu;
 
 public final class R {
 	public static final class id {
-		public static final int menu_label = 0x7f04004e;
-		public static final int menu_listview = 0x7f04004b;
-		public static final int menu_header = 0x7f04004a;
-		public static final int overlay = 0x7f04004c;
-		public static final int menu_icon = 0x7f04004d;
+		public static final int menu_label = 0x7f050059;
+		public static final int menu_listview = 0x7f050056;
+		public static final int menu_header = 0x7f050055;
+		public static final int overlay = 0x7f050057;
+		public static final int menu_icon = 0x7f050058;
 	}
 	public static final class color {
-		public static final int transparenticsblue = 0x7f050012;
-		public static final int icsblue = 0x7f050011;
+		public static final int transparenticsblue = 0x7f040013;
+		public static final int icsblue = 0x7f040012;
 	}
 	public static final class layout {
 		public static final int slidemenu_listitem = 0x7f030011;

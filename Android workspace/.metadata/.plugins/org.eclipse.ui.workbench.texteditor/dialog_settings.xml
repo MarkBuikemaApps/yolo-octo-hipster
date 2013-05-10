@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="NieuwsRe" key="selection"/>
+		<item value="Loader" key="selection"/>
 		<list key="findhistory">
+			<item value="loader"/>
+			<item value="content"/>
+			<item value="R.id.content"/>
 			<item value="nieuwsre"/>
 			<item value="onpre"/>
 			<item value="onpr"/>
 			<item value="retr"/>
 			<item value="reloa"/>
-			<item value="checkne"/>
-			<item value="requestf"/>
-			<item value="timeout"/>
 		</list>
 		<list key="replacehistory">
 			<item value="private"/>
