@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity {
 	private ImageButton overflowToggler;
 	private ImageButton refreshButton;
 	private ImageButton shareButton;
+	private ImageButton picturesButton;
 	private Spinner seasonButton;
 	private ProgressBar loader;
 	private TextView title;
@@ -127,6 +128,7 @@ public class MainActivity extends FragmentActivity {
 		menuToggler = (ImageButton) findViewById(R.id.menuToggler);
 		overflowToggler = (ImageButton) findViewById(R.id.menuToggler2);
 		shareButton = (ImageButton) findViewById(R.id.menuShare);
+		picturesButton = (ImageButton) findViewById(R.id.menuPictures);
 		title = (TextView) findViewById(R.id.titleText);
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
 		seasonButton = (Spinner) findViewById(R.id.menuSeason);
@@ -143,7 +145,7 @@ public class MainActivity extends FragmentActivity {
 				if (isNieuwsDetailShown())
 					hideNieuwsDetail();
 				else if (isTeamDetailShown())
-					hideNieuwsDetail();
+					hideTeamDetail();
 				else
 					drawer.toggleMenu();
 			}
@@ -275,14 +277,15 @@ public class MainActivity extends FragmentActivity {
 
 		activePageView.setVisibility(View.VISIBLE);
 
-		fixActionBar();
-
 		if (isFailurePageShown()) {
 			title = getResources().getString(R.string.failure);
 		}
 		setTitle(title);
 
 		if (menuAdapter != null) menuAdapter.notifyDataSetChanged();
+
+		fixActionBar();
+
 	}
 
 	public void retry() {
@@ -305,30 +308,34 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void fixActionBar() {
-		if (activePageView.getVisibility() == View.VISIBLE) switch (page) {
+		switch (page) {
 		case HOME:
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
+			picturesButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
 			break;
 		case NIEUWS:
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
 			seasonButton.setVisibility(View.GONE);
 			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
+			picturesButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
 			break;
 		case TEAMS:
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(isTeamDetailShown() ? View.GONE : View.VISIBLE);
+			picturesButton.setVisibility(View.GONE);
 			break;
 		case TELETEKST:
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(View.GONE);
+			picturesButton.setVisibility(View.GONE);
 			break;
 		}
 		if (isFailurePageShown()) {
@@ -339,6 +346,7 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			menuToggler.setEnabled(true);
 		}
+
 
 	}
 
@@ -382,13 +390,12 @@ public class MainActivity extends FragmentActivity {
 
 		teamDetail = new TeamDetail(this, team);
 
-		seasonButton.setVisibility(View.GONE);
-
 		activePageView.setVisibility(View.GONE);
 		teamDetailView.setVisibility(View.VISIBLE);
 
 		setTitle(team.getName());
 
+		fixActionBar();
 	}
 
 	public void requestNiewsDetailPage(NieuwsItem item) {
@@ -399,9 +406,7 @@ public class MainActivity extends FragmentActivity {
 		activePageView.setVisibility(View.GONE);
 		nieuwsDetailView.setVisibility(View.VISIBLE);
 
-		shareButton.setVisibility(View.VISIBLE);
-		refreshButton.setVisibility(View.GONE);
-
+		fixActionBar();
 	}
 
 	@Override
@@ -427,10 +432,10 @@ public class MainActivity extends FragmentActivity {
 			hideNieuwsDetail();
 		} else if (waitingForSecondBackPress)
 			super.onBackPressed();
-		else startBackPressTimer();
+		else
+			startBackPressTimer();
 	}
-	
-	
+
 	private void startBackPressTimer() {
 		waitingForSecondBackPress = true;
 		Toast.makeText(this, getResources().getString(R.string.second_back_press), Toast.LENGTH_LONG).show();
@@ -440,7 +445,7 @@ public class MainActivity extends FragmentActivity {
 			public void run() {
 				waitingForSecondBackPress = false;
 			}
-			
+
 		}, SECOND_BACK_PRESS_TIMEOUT);
 	}
 
@@ -448,19 +453,16 @@ public class MainActivity extends FragmentActivity {
 		nieuwsDetailView.setVisibility(View.GONE);
 		activePageView.setVisibility(View.VISIBLE);
 		nieuwsDetail = null;
-		shareButton.setVisibility(View.GONE);
-		if (page == Page.NIEUWS) {
-			refreshButton.setVisibility(View.VISIBLE);
-		}
+
+		fixActionBar();
 	}
 
 	public void hideTeamDetail() {
 		teamDetailView.setVisibility(View.GONE);
 		activePageView.setVisibility(View.VISIBLE);
 		teamDetail = null;
-		if (page == Page.TEAMS) {
-			seasonButton.setVisibility(View.VISIBLE);
-		}
+
+		fixActionBar();
 	}
 
 	public boolean isTeamDetailShown() {

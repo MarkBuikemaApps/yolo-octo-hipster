@@ -15,6 +15,7 @@ import com.markbuikema.juliana32.server.tools.Tools;
 
 @XmlRootElement
 public class NewsItem implements Comparable<NewsItem> {
+	private static final String NEW_LINE = "NEWLINEREFERENCE1337";
 	@XmlElement
 	private int id;
 	@XmlElement
@@ -65,11 +66,11 @@ public class NewsItem implements Comparable<NewsItem> {
 
 		content = content.replaceAll("<br>", "<br/>");
 		content = content.replaceAll("<BR>", "<br/>");
-		content = content.replaceAll("<br/>","\n");
-		content = content.replaceAll("<br />", "\n");
-		content = content.replaceAll("<p>", "\n");
-		content = content.replaceAll("</p>", "\n");
-		content = content.replaceAll("<img", "IMAGEREFERENCE<img");
+		content = content.replaceAll("<br/>",NEW_LINE);
+		content = content.replaceAll("<br />", NEW_LINE);
+		content = content.replaceAll("<p>", NEW_LINE);
+		content = content.replaceAll("</p>", NEW_LINE);
+		content = content.replaceAll("\n","");
 
 		System.out.println("<!---");
 		System.out.println(content);

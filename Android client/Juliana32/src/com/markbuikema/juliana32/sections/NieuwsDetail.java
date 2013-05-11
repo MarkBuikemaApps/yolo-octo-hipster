@@ -1,7 +1,6 @@
 package com.markbuikema.juliana32.sections;
 
 import net.simonvt.menudrawer.MenuDrawer;
-import net.simonvt.menudrawer.Position;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +27,10 @@ public class NieuwsDetail {
 
 	private static final String TAG = "NieuwsDetail";
 
+	private static final String NEW_LINE = "NEWLINEREFERENCE1337";
+
+	private static final String IMAGE = "IMAGEREFERENCE1337";
+
 	private MainActivity activity;
 	private NieuwsItem item;
 
@@ -40,8 +43,6 @@ public class NieuwsDetail {
 	private ViewPager photoPager;
 	private UnderlinePageIndicator photoIndicator;
 	
-	private MenuDrawer mMenuDrawer;
-
 	private boolean teaser;
 
 	public NieuwsDetail(final MainActivity act, NieuwsItem item) {
@@ -54,6 +55,7 @@ public class NieuwsDetail {
 
 		title = (TextView) mainView.findViewById(R.id.nieuwsDetailTitle);
 		subTitle = (TextView) mainView.findViewById(R.id.nieuwsDetailSubtitle);
+		content = (TextView) mainView.findViewById(R.id.nieuwsContent);
 		date = (TextView) mainView.findViewById(R.id.nieuwsDetailDate);
 		photoPager = (ViewPager) mainView.findViewById(R.id.newsPhotoPager);
 		photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.newsPhotoIndicator);
@@ -63,7 +65,12 @@ public class NieuwsDetail {
 
 		title.setText(item.getTitle());
 		subTitle.setText(Html.fromHtml("<i>" + item.getSubTitle() + "</i>"));
-
+		String contentString = item.getContent();
+		contentString = contentString.replaceAll(NEW_LINE, "\n");
+		contentString = contentString.replaceAll(Character.toString((char) 65532), "");
+		
+		content.setText(contentString);
+		
 		if (item instanceof NormalNieuwsItem) {
 			date.setText(((NormalNieuwsItem) item).getCreatedAtString());
 		}

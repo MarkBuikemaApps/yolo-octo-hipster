@@ -48,6 +48,17 @@
                 android:visibility="gone" />
 
             <ImageButton
+                android:id="@+id/menuPictures"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/fotos"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@android:drawable/ic_menu_camera"
+                android:visibility="gone" />
+
+            <ImageButton
                 android:id="@+id/menuShare"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
