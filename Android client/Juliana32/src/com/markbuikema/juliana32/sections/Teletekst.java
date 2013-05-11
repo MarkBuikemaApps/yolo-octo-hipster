@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import net.simonvt.menudrawer.MenuDrawer;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -34,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.tools.Tools;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
@@ -41,7 +44,7 @@ public class Teletekst {
 
 	public static final String TAG = "Teletekst";
 
-	private Activity activity;
+	private MainActivity activity;
 	private ProgressBar progressBar;
 	private FragmentManager fm;
 
@@ -54,9 +57,9 @@ public class Teletekst {
 
 	private int maxIndex = 0;
 
-	public Teletekst(Activity act) {
+	public Teletekst(final MainActivity act) {
 		activity = act;
-		View mainView = activity.findViewById(R.id.teletekst);
+		View mainView = activity.findViewById(R.id.teletekstView);
 		progressBar = (ProgressBar) mainView.findViewById(R.id.teletekstProgress);
 		pagerIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.teletekstIndicator);
 		swipeHint = (TextView) mainView.findViewById(R.id.swipehint);
@@ -65,13 +68,12 @@ public class Teletekst {
 		pagerIndicator.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
-			public void onPageSelected(int arg0) {
-				if (arg0 == ViewPager.SCROLL_STATE_SETTLING) hideHint();
+			public void onPageSelected(int position) {
+				if (position == ViewPager.SCROLL_STATE_SETTLING) hideHint();
 			}
 
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-
 			}
 
 			@Override
@@ -83,7 +85,6 @@ public class Teletekst {
 
 		if (act.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
 			if (!Tools.shouldShowTeletekstHint(act)) hideHint();
-
 
 		new RetrieveTeletekst().execute();
 

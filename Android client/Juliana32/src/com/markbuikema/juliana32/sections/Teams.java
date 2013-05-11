@@ -58,7 +58,7 @@ public class Teams {
 		this.activity = act;
 		loader = (ProgressBar) act.findViewById(R.id.loading);
 		seasonSpinner = (Spinner) act.findViewById(R.id.menuSeason);
-		View mainView = activity.findViewById(R.id.teams);
+		View mainView = activity.findViewById(R.id.teamsView);
 		teamsList = (ListView) mainView.findViewById(R.id.teams_list);
 		teamAdapter = new TeamAdapter(activity);
 		teamsList.setAdapter(teamAdapter);

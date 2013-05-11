@@ -1,5 +1,6 @@
 package net.simonvt.menudrawer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,6 +21,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 
+@SuppressLint("NewApi")
 public abstract class MenuDrawer extends ViewGroup {
 
     /**
@@ -500,7 +502,8 @@ public abstract class MenuDrawer extends ViewGroup {
             mActiveIndicator = BitmapFactory.decodeResource(getResources(), indicatorResId);
         }
 
-        mDropShadowEnabled = a.getBoolean(R.styleable.MenuDrawer_mdDropShadowEnabled, true);
+        mDropShadowEnabled = false; 
+//        		a.getBoolean(R.styleable.MenuDrawer_mdDropShadowEnabled, false);
 
         mDropShadowDrawable = a.getDrawable(R.styleable.MenuDrawer_mdDropShadow);
 
@@ -523,12 +526,12 @@ public abstract class MenuDrawer extends ViewGroup {
 
         mMenuContainer = new BuildLayerFrameLayout(context);
         mMenuContainer.setId(R.id.md__menu);
-        mMenuContainer.setBackgroundDrawable(menuBackground);
+//        mMenuContainer.setBackgroundDrawable(menuBackground);
         super.addView(mMenuContainer, -1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         mContentContainer = new NoClickThroughFrameLayout(context);
         mContentContainer.setId(R.id.md__content);
-        mContentContainer.setBackgroundDrawable(contentBackground);
+//        mContentContainer.setBackgroundDrawable(contentBackground);
         super.addView(mContentContainer, -1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         mMenuOverlay = new ColorDrawable(0xFF000000);
@@ -741,7 +744,7 @@ public abstract class MenuDrawer extends ViewGroup {
             mIndicatorOffset = mIndicatorScroller.getCurr();
             invalidate();
 
-            if (!mIndicatorScroller.isFinished()) {
+            if (!mIndicatorScroller.isFinished() && android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 postOnAnimation(mIndicatorRunnable);
                 return;
             }
@@ -1055,7 +1058,8 @@ public abstract class MenuDrawer extends ViewGroup {
      */
     public abstract int getTouchBezelSize();
 
-    @Override
+    @SuppressLint("NewApi")
+		@Override
     public void postOnAnimation(Runnable action) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             super.postOnAnimation(action);
@@ -1135,7 +1139,6 @@ public abstract class MenuDrawer extends ViewGroup {
             dest.writeBundle(mState);
         }
 
-        @SuppressWarnings("UnusedDeclaration")
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {

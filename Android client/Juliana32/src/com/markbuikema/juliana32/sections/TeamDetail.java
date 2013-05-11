@@ -44,7 +44,7 @@ public class TeamDetail {
 	private static final String TAG = "TeamDetail";
 
 	private Team team;
-	private MainActivity activity;
+	private MainActivity act;
 
 	private Button uitslagenButton;
 	private Button programmaButton;
@@ -73,7 +73,7 @@ public class TeamDetail {
 
 	public TeamDetail(MainActivity act, Team team) {
 		this.team = team;
-		activity = act;
+		this.act = act;
 
 		View mainView = act.findViewById(R.id.teamDetailView);
 
@@ -324,5 +324,4 @@ public class TeamDetail {
 			return team.getTableName(position);
 		}
 	}
-
 }

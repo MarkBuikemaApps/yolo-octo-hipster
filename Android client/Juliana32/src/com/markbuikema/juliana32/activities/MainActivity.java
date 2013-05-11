@@ -1,7 +1,11 @@
 package com.markbuikema.juliana32.activities;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import net.simonvt.menudrawer.MenuDrawer;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -25,13 +29,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.coboltforge.slidemenu.SlideMenu;
-import com.coboltforge.slidemenu.SlideMenuInterface.OnSlideMenuItemClickListener;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NieuwsItem;
@@ -45,13 +53,13 @@ import com.markbuikema.juliana32.sections.Teletekst;
 import com.markbuikema.juliana32.service.NotificationService;
 import com.markbuikema.juliana32.ui.Button;
 
-public class MainActivity extends FragmentActivity implements OnSlideMenuItemClickListener {
+public class MainActivity extends FragmentActivity {
 
 	public static final String BASE_SERVER_URL = "http://192.168.1.213:8080/JulianaServer/api";
 	public static final int NOTIFICATION_INTERVAL = 1;// minutes
 	private static final String TAG = "JulianaActivity";
+	private static final long SECOND_BACK_PRESS_TIMEOUT = 3000;
 
-	private SlideMenu menu;
 	private ImageButton menuToggler;
 	private ImageButton overflowToggler;
 	private ImageButton refreshButton;
@@ -77,8 +85,13 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	private Nieuws nieuws;
 	private Teams teams;
 
+	private MenuDrawer drawer;
+	private ListView menu;
+	private MenuAdapter menuAdapter;
+
 	public Page page;
 	private boolean showAbout = false;
+	private boolean waitingForSecondBackPress = false;
 
 	public enum Page {
 		HOME, NIEUWS, TEAMS, TELETEKST
@@ -92,9 +105,23 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 
-		menu = (SlideMenu) findViewById(R.id.slideMenu1);
+		drawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW);
+		drawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+		drawer.setContentView(R.layout.activity_main);
+		drawer.setMenuView(R.layout.menu_main);
+
+		menu = (ListView) findViewById(R.id.menuDrawer);
+		menuAdapter = new MenuAdapter(this);
+		menu.setAdapter(menuAdapter);
+		menu.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				onPageChanged(Page.values()[arg2]);
+				drawer.toggleMenu();
+			}
+		});
+
 		teamDetailView = findViewById(R.id.teamDetailView);
 		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
 		menuToggler = (ImageButton) findViewById(R.id.menuToggler);
@@ -108,6 +135,20 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		failureLoader = (ProgressBar) failurePage.findViewById(R.id.failureLoader);
 		failureText = (TextView) failurePage.findViewById(R.id.failureText);
 		failureButton = (Button) failurePage.findViewById(R.id.failureButton);
+
+		menuToggler.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (isNieuwsDetailShown())
+					hideNieuwsDetail();
+				else if (isTeamDetailShown())
+					hideNieuwsDetail();
+				else
+					drawer.toggleMenu();
+			}
+		});
+
 		failureButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -136,16 +177,6 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		onPageChanged(Page.HOME);
 
-		menu.init(this, R.menu.slide, this, 333);
-		menuToggler.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				menu.show();
-			}
-
-		});
-
 		overflowToggler.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -163,6 +194,10 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 		}
 
+	}
+
+	public MenuDrawer getMenu() {
+		return drawer;
 	}
 
 	public boolean isOnline() {
@@ -247,6 +282,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 		}
 		setTitle(title);
 
+		if (menuAdapter != null) menuAdapter.notifyDataSetChanged();
 	}
 
 	public void retry() {
@@ -263,7 +299,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 			requestFailurePage(FailureReason.NO_INTERNET);
 
 			Log.d(TAG, "NO INTERNET ACCESS");
-		}  else {
+		} else {
 			hideFailurePage();
 		}
 	}
@@ -356,7 +392,7 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	}
 
 	public void requestNiewsDetailPage(NieuwsItem item) {
-		if (page != Page.NIEUWS || isNieuwsDetailShown()) return;
+		if ((page != Page.NIEUWS && page != Page.HOME) || isNieuwsDetailShown()) return;
 
 		nieuwsDetail = new NieuwsDetail(this, item);
 
@@ -376,9 +412,11 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 	@Override
 	public void onBackPressed() {
-		if (menu.isMenuShown())
-			menu.hide();
-		else if (isTeamDetailShown()) {
+		if (drawer.isMenuVisible()) {
+			drawer.toggleMenu();
+			return;
+		}
+		if (isTeamDetailShown()) {
 			if (teamDetail.isACloudOpened()) {
 				teamDetail.closeClouds();
 			} else {
@@ -387,8 +425,23 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 			}
 		} else if (isNieuwsDetailShown()) {
 			hideNieuwsDetail();
-		} else
+		} else if (waitingForSecondBackPress)
 			super.onBackPressed();
+		else startBackPressTimer();
+	}
+	
+	
+	private void startBackPressTimer() {
+		waitingForSecondBackPress = true;
+		Toast.makeText(this, getResources().getString(R.string.second_back_press), Toast.LENGTH_LONG).show();
+		new Timer().schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				waitingForSecondBackPress = false;
+			}
+			
+		}, SECOND_BACK_PRESS_TIMEOUT);
 	}
 
 	public void hideNieuwsDetail() {
@@ -508,25 +561,6 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 	}
 
 	@Override
-	public void onSlideMenuItemClick(int itemId) {
-
-		switch (itemId) {
-		case R.id.menu_home:
-			onPageChanged(Page.HOME);
-			break;
-		case R.id.menu_nieuws:
-			onPageChanged(Page.NIEUWS);
-			break;
-		case R.id.menu_teams:
-			onPageChanged(Page.TEAMS);
-			break;
-		case R.id.menu_teletekst:
-			onPageChanged(Page.TELETEKST);
-			break;
-		}
-	}
-
-	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 
 		outState.putString("page", page.toString());
@@ -555,5 +589,26 @@ public class MainActivity extends FragmentActivity implements OnSlideMenuItemCli
 
 	public Page getPage() {
 		return page;
+	}
+
+	private class MenuAdapter extends ArrayAdapter<String> {
+
+		public MenuAdapter(Context context) {
+			super(context, 0, context.getResources().getStringArray(R.array.menu_items));
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_menu, null);
+
+			TextView text = (TextView) convertView.findViewById(R.id.menuItemTitle);
+			View indicator = convertView.findViewById(R.id.menuItemIndicator);
+			text.setText(getItem(position));
+			indicator.setBackgroundResource(page == Page.values()[position] ? R.drawable.listitem_arrow
+					: R.drawable.listitem_background);
+
+			return convertView;
+		}
+
 	}
 }

@@ -60,7 +60,7 @@ public class Nieuws {
 
 	public Nieuws(final Activity act) {
 		activity = (MainActivity) act;
-		View mainView = act.findViewById(R.id.nieuws);
+		View mainView = act.findViewById(R.id.nieuwsView);
 		nieuwsList = (ListView) mainView.findViewById(R.id.nieuwsList);
 		refreshButton = (ImageButton) act.findViewById(R.id.menuRefresh);
 		loading = (ProgressBar) act.findViewById(R.id.loading);

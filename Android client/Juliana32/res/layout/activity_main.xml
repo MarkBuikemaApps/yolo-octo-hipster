@@ -14,7 +14,7 @@
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/actionbar"
+            android:background="@drawable/actionbar2"
             android:orientation="horizontal" >
 
             <ImageButton
@@ -22,11 +22,11 @@
                 android:layout_width="64dp"
                 android:layout_height="48dp"
                 android:layout_margin="0dp"
-                android:background="@android:color/transparent"
+                android:background="@drawable/menu_borderless"
                 android:contentDescription="@string/content_description_menubutton"
                 android:padding="0dp"
                 android:scaleType="fitStart"
-                android:src="@drawable/menu" />
+                android:src="@drawable/listselector" />
 
             <TextView
                 android:id="@+id/titleText"
@@ -48,11 +48,11 @@
                 android:visibility="gone" />
 
             <ImageButton
-                android:contentDescription="@string/share"
                 android:id="@+id/menuShare"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/listselector"
+                android:contentDescription="@string/share"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
                 android:src="@android:drawable/ic_menu_share"
@@ -85,10 +85,10 @@
                 android:id="@+id/menuToggler2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@android:color/transparent"
+                android:background="@drawable/overflow_borderless"
                 android:contentDescription="@string/menu"
                 android:scaleType="fitStart"
-                android:src="@drawable/overflow" />
+                android:src="@drawable/listselector" />
         </LinearLayout>
 
         <include
@@ -112,64 +112,33 @@
             layout="@layout/teamdetail"
             android:visibility="gone" />
 
-        <LinearLayout
+        <include
             android:id="@+id/homeView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            layout="@layout/home"
+            android:visibility="gone" />
 
-            <include
-                android:id="@+id/home"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/home" />
-        </LinearLayout>
-
-        <LinearLayout
+        <include
             android:id="@+id/nieuwsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            layout="@layout/nieuws"
+            android:visibility="gone" />
 
-            <include
-                android:id="@+id/nieuws"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/nieuws" />
-        </LinearLayout>
-
-        <LinearLayout
+        <include
             android:id="@+id/teamsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone" >
+            layout="@layout/teams"
+            android:visibility="gone" />
 
-            <include
-                android:id="@+id/teams"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/teams" />
-        </LinearLayout>
-
-        <LinearLayout
+        <include
             android:id="@+id/teletekstView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <include
-                android:id="@+id/teletekst"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/teletekst" />
-        </LinearLayout>
+            layout="@layout/teletekst"
+            android:visibility="gone" />
     </LinearLayout>
-
-    <com.coboltforge.slidemenu.SlideMenu
-        android:id="@+id/slideMenu1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.coboltforge.slidemenu.SlideMenu>
 
 </FrameLayout>

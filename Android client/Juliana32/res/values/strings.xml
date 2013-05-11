@@ -42,5 +42,13 @@
     <string name="no_tables_found">Er is voor dit team geen stand gevonden.</string>
     <string name="no_photos_found">Er zijn voor dit team geen foto\'s gevonden.</string>
     <string name="fotos">Foto\'s</string>
+    <string name="second_back_press">Druk nogmaals op terug om te sluiten</string>
+
+    <string-array name="menu_items">
+        <item>Home</item>
+        <item>Nieuws</item>
+        <item>Teams</item>
+        <item>Teletekst</item>
+    </string-array>
 
 </resources>
