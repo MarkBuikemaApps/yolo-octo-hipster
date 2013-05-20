@@ -44,8 +44,6 @@ public class NewsItem implements Comparable<NewsItem> {
 		this.createdAt = createdAt;
 		this.content = Tools.getContent(detailUrl);
 
-		
-		
 		photos = new ArrayList<>();
 
 		try {
@@ -60,34 +58,45 @@ public class NewsItem implements Comparable<NewsItem> {
 			content = content.split("<div id='crumbtail'>")[0];
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
-		
-		content = Jsoup.clean(content, new Whitelist().addTags("img","br","p"));
 
+		content = Jsoup.clean(content, Whitelist.basicWithImages().addTags("a").addAttributes("a", "href"));
 
 		content = content.replaceAll("<br>", "<br/>");
 		content = content.replaceAll("<BR>", "<br/>");
-		content = content.replaceAll("<br/>",NEW_LINE);
+		content = content.replaceAll("<br/>", NEW_LINE);
 		content = content.replaceAll("<br />", NEW_LINE);
 		content = content.replaceAll("<p>", NEW_LINE);
 		content = content.replaceAll("</p>", NEW_LINE);
-		content = content.replaceAll("\n","");
+		content = content.replaceAll("\n", "");
+		content = content.replaceAll("&nbsp;", " ");
 
-		System.out.println("<!---");
-		System.out.println(content);
-		System.out.println("--->");
-		
-//		content = content.replaceAll("<br>", "\n");
-//		content = content.replaceAll("<BR>", "\n");
-//
-//		content = content.replaceAll("&nbsp;", " ");
-//		content = content.replaceAll("&acirc;??", "'");
-//		content = content.replaceAll(";??", "");
+		while (content.startsWith(NEW_LINE)) {
+			content = content.replaceFirst(NEW_LINE, "");
+		}
+
+		content = content.replaceAll(NEW_LINE + NEW_LINE + NEW_LINE, NEW_LINE + NEW_LINE);
+		content = content.trim();
+
+//		System.out.println("<!---");
+//		System.out.println(content);
+//		System.out.println("--->");
+
+		// content = content.replaceAll("<br>", "\n");
+		// content = content.replaceAll("<BR>", "\n");
+		//
+		// content = content.replaceAll("&nbsp;", " ");
+		// content = content.replaceAll("&acirc;??", "'");
+		// content = content.replaceAll(";??", "");
 
 		generatePhotosFromHtml(content);
+		content = Jsoup.clean(content, Whitelist.basic().addTags("a").addAttributes("a", "href"));
 
-//		content = Jsoup.parse(content).text();
-//		content = Jsoup.clean(content, Whitelist.basic());
-		
+
+		// content = Jsoup.parse(content).text();
+		// content = Jsoup.clean(content, Whitelist.basic());
+
+		System.out.println(id + ": " + content);
+
 	}
 
 	public String getDetailUrl() {
@@ -100,7 +109,10 @@ public class NewsItem implements Comparable<NewsItem> {
 		for (int i = 0; i < elements.size(); i++) {
 			photos.add(elements.get(i).absUrl("src"));
 		}
-		System.out.println("NewsItem " + id + " has " + photos.size() + " photos");
+		System.out.println("NewsItem " + id + " has " + photos.size() + " photos: ");
+		for (String photo: photos) {
+			System.out.println(photo);
+		}
 	}
 
 	@Override

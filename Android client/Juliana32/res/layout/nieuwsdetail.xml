@@ -57,7 +57,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin" >
+            android:layout_marginTop="@dimen/default_margin"
+            android:scrollbarThumbVertical="@drawable/listitem_background" >
 
             <TextView
                 android:id="@+id/nieuwsContent"
@@ -68,40 +69,5 @@
             </TextView>
         </ScrollView>
     </LinearLayout>
-
-    <SlidingDrawer
-        android:id="@+id/nieuwsPhotoSlider"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:content="@+id/content"
-        android:handle="@+id/handle" >
-
-        <Button
-            android:id="@+id/handle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="@string/fotos" />
-
-        <LinearLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/newsPhotoPager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.viewpagerindicator.UnderlinePageIndicator
-                android:id="@+id/newsPhotoIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/grey"
-                app:fades="false"
-                app:selectedColor="@color/blue" />
-        </LinearLayout>
-    </SlidingDrawer>
 
 </FrameLayout>

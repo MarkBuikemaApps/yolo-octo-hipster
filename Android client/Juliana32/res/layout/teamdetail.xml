@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@android:color/black"
             android:text="@string/no_tables_found"
+            android:textColor="@android:color/black"
             android:visibility="gone" />
 
         <FrameLayout
@@ -58,6 +58,7 @@
                 android:cacheColorHint="@color/white"
                 android:gravity="bottom"
                 android:listSelector="@android:color/transparent"
+                android:scrollbarThumbVertical="@drawable/listitem_background"
                 android:transcriptMode="alwaysScroll" >
             </ListView>
         </FrameLayout>
@@ -134,7 +135,7 @@
             android:text="@string/no_photos_found"
             android:textColor="@android:color/black"
             android:visibility="gone" />
-        
+
         <FrameLayout
             android:id="@+id/programmaContainer"
             android:layout_width="match_parent"
@@ -149,6 +150,7 @@
                 android:cacheColorHint="@color/white"
                 android:gravity="top"
                 android:listSelector="@android:color/transparent"
+                android:scrollbarThumbVertical="@drawable/listitem_background"
                 android:transcriptMode="alwaysScroll" >
             </ListView>
         </FrameLayout>

@@ -8,7 +8,7 @@ public class NormalNieuwsItem extends NieuwsItem implements Comparable<NormalNie
 
 	public NormalNieuwsItem(int id, String title, String subTitle, String content, long createdAt, String detailUrl) {
 		
-		super(id, android.text.Html.fromHtml(title).toString(), android.text.Html.fromHtml(subTitle).toString(), android.text.Html.fromHtml(content).toString(), detailUrl);
+		super(id, title, subTitle, content, detailUrl);
 		this.createdAt = new GregorianCalendar();
 		this.createdAt.setTimeInMillis(createdAt);
 	}

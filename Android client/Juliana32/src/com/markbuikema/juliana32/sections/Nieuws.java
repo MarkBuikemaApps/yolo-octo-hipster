@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
@@ -65,7 +66,7 @@ public class Nieuws {
 		refreshButton = (ImageButton) act.findViewById(R.id.menuRefresh);
 		loading = (ProgressBar) act.findViewById(R.id.loading);
 
-		facebookIcon = BitmapFactory.decodeResource(act.getResources(), R.drawable.facebook);
+//		facebookIcon = BitmapFactory.decodeResource(act.getResources(), R.drawable.facebook);
 		julianaIcon = BitmapFactory.decodeResource(act.getResources(), R.drawable.ic_launcher);
 
 		nieuwsAdapter = new NieuwsAdapter(act);
@@ -213,6 +214,7 @@ public class Nieuws {
 		}
 
 		private void processJSONObject(ArrayList<NieuwsItem> items, JSONObject obj) {
+			Log.d(TAG, "Processing JSON Object for news item");
 			try {
 				int id = obj.getInt("id");
 				String content = obj.getString("content");
@@ -227,6 +229,8 @@ public class Nieuws {
 					for (int i = 0; i < photos.length(); i++) {
 						String photo = photos.getString(i);
 						item.addPhoto(photo);
+						
+						Log.d(TAG, "Photo added to newsitem " + item.getId() + ": " + photo);
 					}
 				} catch (JSONException e) {
 					String photo = obj.getString("photos");

@@ -32,6 +32,7 @@ import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.tools.FixtureAdapter;
+import com.markbuikema.juliana32.tools.PhotoSharer;
 import com.markbuikema.juliana32.tools.PictureRetriever;
 import com.markbuikema.juliana32.tools.TableAdapter;
 import com.markbuikema.juliana32.tools.Tools;
@@ -185,7 +186,7 @@ public class TeamDetail {
 
 				@Override
 				public void onClick(View v) {
-					new PhotoSharer().execute(url, teamName);
+					new PhotoSharer(getActivity()).execute(url, teamName);
 				}
 			});
 			new PictureRetriever() {
@@ -200,51 +201,7 @@ public class TeamDetail {
 
 		
 
-		private class PhotoSharer extends AsyncTask<String, Void, String> {
-
-			private String teamName;
-
-			@Override
-			protected String doInBackground(String... params) {
-				teamName = params[1];
-				return cacheImage(Tools.getPhotoInputStreamFromUrl(params[0]), teamName);
-			}
-
-			@Override
-			protected void onPostExecute(String result) {
-				Intent share = new Intent(android.content.Intent.ACTION_SEND);
-				share.setType("image/*");
-				share.putExtra(Intent.EXTRA_SUBJECT, "Foto " + teamName);
-				share.putExtra(Intent.EXTRA_TEXT, teamName);
-				share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + result));
-				try {
-					startActivity(Intent.createChooser(share, getResources().getString(R.string.sharePhoto)));
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-
-			private String cacheImage(InputStream is, String teamName) {
-				String path = "";
-				try {
-					File cacheDir = getActivity().getExternalCacheDir();
-					File downloadingMediaFile = new File(cacheDir, "Foto " + teamName + ".jpg");
-					byte[] buf = new byte[256];
-					FileOutputStream out = new FileOutputStream(downloadingMediaFile);
-					while (true) {
-						int rd = is.read(buf, 0, 256);
-						if (rd == -1 || rd == 0) break;
-						out.write(buf, 0, rd);
-					}
-					is.close();
-					out.close();
-					return downloadingMediaFile.getPath();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				return path;
-			}
-		}
+		
 	}
 
 	public class PhotoPagerAdapter extends FragmentStatePagerAdapter {

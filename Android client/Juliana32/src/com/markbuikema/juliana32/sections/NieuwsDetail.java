@@ -1,27 +1,25 @@
 package com.markbuikema.juliana32.sections;
 
-import net.simonvt.menudrawer.MenuDrawer;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.Html;
-import android.util.Log;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
-import com.markbuikema.juliana32.model.TeaserNieuwsItem;
+import com.markbuikema.juliana32.tools.PhotoSharer;
 import com.markbuikema.juliana32.tools.PictureRetriever;
-import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class NieuwsDetail {
 
@@ -31,25 +29,20 @@ public class NieuwsDetail {
 
 	private static final String IMAGE = "IMAGEREFERENCE1337";
 
-	private MainActivity activity;
+	private MainActivity act;
 	private NieuwsItem item;
 
 	private TextView title;
 	private TextView subTitle;
 	private TextView date;
 
+	private LinearLayout photoContainer;
+
 	private TextView content;
 
-	private ViewPager photoPager;
-	private UnderlinePageIndicator photoIndicator;
-	
-	private boolean teaser;
-
 	public NieuwsDetail(final MainActivity act, NieuwsItem item) {
-		this.activity = act;
+		this.act = act;
 		this.item = item;
-
-		teaser = item instanceof TeaserNieuwsItem;
 
 		View mainView = act.findViewById(R.id.nieuwsDetailView);
 
@@ -57,26 +50,53 @@ public class NieuwsDetail {
 		subTitle = (TextView) mainView.findViewById(R.id.nieuwsDetailSubtitle);
 		content = (TextView) mainView.findViewById(R.id.nieuwsContent);
 		date = (TextView) mainView.findViewById(R.id.nieuwsDetailDate);
-		photoPager = (ViewPager) mainView.findViewById(R.id.newsPhotoPager);
-		photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.newsPhotoIndicator);
-
-		photoPager.setVisibility(item.getPhotoCount() < 1 ? View.GONE : View.VISIBLE);
-		photoIndicator.setVisibility(item.getPhotoCount() < 1 ? View.GONE : View.VISIBLE);
 
 		title.setText(item.getTitle());
+		
+		
 		subTitle.setText(Html.fromHtml("<i>" + item.getSubTitle() + "</i>"));
+		
 		String contentString = item.getContent();
 		contentString = contentString.replaceAll(NEW_LINE, "\n");
 		contentString = contentString.replaceAll(Character.toString((char) 65532), "");
-		
-		content.setText(contentString);
-		
+
+		content.setText(android.text.Html.fromHtml(contentString.replace("\n", "<br />")));
+		content.setMovementMethod(LinkMovementMethod.getInstance());
+
 		if (item instanceof NormalNieuwsItem) {
 			date.setText(((NormalNieuwsItem) item).getCreatedAtString());
 		}
-		photoPager.setAdapter(new PhotoPagerAdapter(act.getSupportFragmentManager()));
-		photoIndicator.setViewPager(photoPager);
 
+		photoContainer = (LinearLayout) act.getPhotoDrawerView().findViewById(R.id.newsPhotoContainer);
+		populatePhotos();
+	}
+
+	private void populatePhotos() {
+		photoContainer.removeAllViews();
+
+		for (int i = 0; i < item.getPhotoCount(); i++) {
+			final String url = item.getPhoto(i);
+			View view = LayoutInflater.from(act).inflate(R.layout.photo_item, null);
+			final ImageView image = (ImageView) view.findViewById(R.id.photoView);
+			final ImageButton shareButton = (ImageButton) view.findViewById(R.id.photoShareButton);
+
+			shareButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					new PhotoSharer(act).execute(url, item.getTitle());
+				}
+			});
+			new PictureRetriever() {
+				protected void onPostExecute(Bitmap result) {
+					image.setImageBitmap(result);
+					shareButton.setVisibility(View.VISIBLE);
+				};
+
+			}.execute(url);
+			view.setPadding(15, 15, 15, 15);
+			photoContainer.addView(view);
+		}
 	}
 
 	public String getTitle() {
@@ -87,57 +107,8 @@ public class NieuwsDetail {
 		return item.getDetailUrl();
 	}
 
-	public class PhotoPagerAdapter extends FragmentStatePagerAdapter {
-
-		public PhotoPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int i) {
-			Fragment fragment = new PhotoSectionFragment();
-			Bundle args = new Bundle();
-			args.putString("url", item.getPhoto(i));
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			return item.getPhotoCount();
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return Integer.toString(position);
-		}
-	}
-
-	public static class PhotoSectionFragment extends Fragment {
-
-		public PhotoSectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			Bundle args = getArguments();
-			View mainView = inflater.inflate(R.layout.photo_item, null);
-			final ImageView view = (ImageView) mainView.findViewById(R.id.photoView);
-			final String url = args.getString("url");
-
-			Log.d(TAG, url);
-			new PictureRetriever() {
-				protected void onPostExecute(Bitmap result) {
-					if (result == null) return;
-					view.setImageBitmap(result);
-					Log.d(TAG, "imagebitmap set, bitmap == null: " + (result == null));
-				};
-			}.execute(url);
-
-			return mainView;
-		}
-
-		
+	public boolean hasPhotos() {
+		return item.getPhotoCount() > 0;
 	}
 
 }

@@ -178,7 +178,8 @@ public class UnderlinePageIndicator extends View implements PageIndicator {
         canvas.drawRect(left, top, right, bottom, mPaint);
     }
 
-    public boolean onTouchEvent(MotionEvent ev) {
+    @Override
+		public boolean onTouchEvent(MotionEvent ev) {
         if (super.onTouchEvent(ev)) {
             return true;
         }

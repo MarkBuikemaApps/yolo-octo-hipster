@@ -15,7 +15,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Display;
@@ -29,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activities.MainActivity;
@@ -70,7 +71,9 @@ public class Home {
 		fixtureAdapter = new FixtureAdapter(activity, games);
 		fixtures.setAdapter(fixtureAdapter);
 	}
+
 	
+
 	private void setTeaserDimensions() {
 		WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
 		Display d = wm.getDefaultDisplay();
@@ -102,13 +105,11 @@ public class Home {
 			@Override
 			public void onClick(View v) {
 				activity.requestNiewsDetailPage(item);
-			} 
+			}
 		});
 
 		teaserContainer.addView(view);
 	}
-
-	
 
 	private class TeaserRetriever extends AsyncTask<Void, TeaserNieuwsItem, Void> {
 

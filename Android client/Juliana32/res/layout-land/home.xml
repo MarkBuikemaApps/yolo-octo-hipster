@@ -8,9 +8,10 @@
         android:id="@+id/fixtures"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:listSelector="@color/white"
+        android:layout_weight="1"
         android:cacheColorHint="@android:color/white"
-        android:layout_weight="1" >
+        android:listSelector="@color/white"
+        android:scrollbarThumbVertical="@drawable/listitem_background" >
     </ListView>
 
     <ScrollView

@@ -59,7 +59,8 @@ public class IconPageIndicator extends HorizontalScrollView implements PageIndic
             removeCallbacks(mIconSelector);
         }
         mIconSelector = new Runnable() {
-            public void run() {
+            @Override
+						public void run() {
                 final int scrollPos = iconView.getLeft() - (getWidth() - iconView.getWidth()) / 2;
                 smoothScrollTo(scrollPos, 0);
                 mIconSelector = null;
@@ -124,7 +125,8 @@ public class IconPageIndicator extends HorizontalScrollView implements PageIndic
         notifyDataSetChanged();
     }
 
-    public void notifyDataSetChanged() {
+    @Override
+		public void notifyDataSetChanged() {
         mIconsLayout.removeAllViews();
         IconPagerAdapter iconAdapter = (IconPagerAdapter) mViewPager.getAdapter();
         int count = iconAdapter.getCount();

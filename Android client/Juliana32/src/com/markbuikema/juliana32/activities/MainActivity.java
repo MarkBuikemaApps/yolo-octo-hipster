@@ -1,11 +1,14 @@
 package com.markbuikema.juliana32.activities;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener;
+import net.simonvt.menudrawer.Position;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -16,12 +19,17 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,6 +48,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Request.Callback;
+import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NieuwsItem;
@@ -65,6 +81,8 @@ public class MainActivity extends FragmentActivity {
 	private ImageButton refreshButton;
 	private ImageButton shareButton;
 	private ImageButton picturesButton;
+	private ImageButton facebookButton;
+	private ImageButton twitterButton;
 	private Spinner seasonButton;
 	private ProgressBar loader;
 	private TextView title;
@@ -86,9 +104,12 @@ public class MainActivity extends FragmentActivity {
 	private Nieuws nieuws;
 	private Teams teams;
 
-	private MenuDrawer drawer;
+	private MenuDrawer menuDrawer;
+	private MenuDrawer photoDrawer;
 	private ListView menu;
 	private MenuAdapter menuAdapter;
+
+	private Session session;
 
 	public Page page;
 	private boolean showAbout = false;
@@ -107,10 +128,29 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		drawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW);
-		drawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
-		drawer.setContentView(R.layout.activity_main);
-		drawer.setMenuView(R.layout.menu_main);
+		logHashKey();
+		
+		menuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW);
+		menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+		menuDrawer.setContentView(R.layout.activity_main);
+		menuDrawer.setMenuView(R.layout.menu_main);
+
+		photoDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW, Position.RIGHT);
+		photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
+		photoDrawer.setContentView(R.layout.activity_main);
+		photoDrawer.setMenuView(R.layout.menu_photo);
+
+		menuDrawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener() {
+
+			@Override
+			public void onDrawerStateChange(int oldState, int newState) {
+				if (newState == MenuDrawer.STATE_OPEN)
+					photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
+				else
+					photoDrawer.setTouchMode(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? MenuDrawer.TOUCH_MODE_BEZEL
+							: MenuDrawer.TOUCH_MODE_NONE);
+			}
+		});
 
 		menu = (ListView) findViewById(R.id.menuDrawer);
 		menuAdapter = new MenuAdapter(this);
@@ -119,7 +159,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				onPageChanged(Page.values()[arg2]);
-				drawer.toggleMenu();
+				menuDrawer.toggleMenu();
 			}
 		});
 
@@ -129,6 +169,8 @@ public class MainActivity extends FragmentActivity {
 		overflowToggler = (ImageButton) findViewById(R.id.menuToggler2);
 		shareButton = (ImageButton) findViewById(R.id.menuShare);
 		picturesButton = (ImageButton) findViewById(R.id.menuPictures);
+		facebookButton = (ImageButton) findViewById(R.id.menuFacebook);
+		twitterButton = (ImageButton) findViewById(R.id.menuTwitter);
 		title = (TextView) findViewById(R.id.titleText);
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
 		seasonButton = (Spinner) findViewById(R.id.menuSeason);
@@ -147,7 +189,7 @@ public class MainActivity extends FragmentActivity {
 				else if (isTeamDetailShown())
 					hideTeamDetail();
 				else
-					drawer.toggleMenu();
+					menuDrawer.toggleMenu();
 			}
 		});
 
@@ -175,6 +217,41 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 
+		picturesButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				photoDrawer.toggleMenu();
+			}
+		});
+
+		facebookButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				try {
+					getPackageManager().getPackageInfo("com.facebook.katana", 0);
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/294105307313875")));
+				} catch (Exception e) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/svjuliana32")));
+				}
+			}
+		});
+		twitterButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				try {
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=svjuliana32"));
+					startActivity(intent);
+				} catch (Exception e) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/svjuliana32")));
+				}
+			}
+		});
+
 		initializePages();
 
 		onPageChanged(Page.HOME);
@@ -196,10 +273,18 @@ public class MainActivity extends FragmentActivity {
 
 		}
 
+		
+		
+		
 	}
 
 	public MenuDrawer getMenu() {
-		return drawer;
+		return menuDrawer;
+	}
+
+	public View getPhotoDrawerView() {
+		if (photoDrawer == null) return null;
+		return photoDrawer.getMenuView();
 	}
 
 	public boolean isOnline() {
@@ -313,15 +398,20 @@ public class MainActivity extends FragmentActivity {
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(View.GONE);
-			shareButton.setVisibility(View.GONE);
-			picturesButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
+			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
+			picturesButton.setVisibility(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? View.VISIBLE : View.GONE);
+			facebookButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
+			twitterButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
 			break;
 		case NIEUWS:
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
 			seasonButton.setVisibility(View.GONE);
 			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
-			picturesButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
+			picturesButton.setVisibility(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? View.VISIBLE : View.GONE);
+			facebookButton.setVisibility(View.GONE);
+			twitterButton.setVisibility(View.GONE);
+
 			break;
 		case TEAMS:
 			loader.setVisibility(View.GONE);
@@ -329,6 +419,9 @@ public class MainActivity extends FragmentActivity {
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(isTeamDetailShown() ? View.GONE : View.VISIBLE);
 			picturesButton.setVisibility(View.GONE);
+			facebookButton.setVisibility(View.GONE);
+			twitterButton.setVisibility(View.GONE);
+
 			break;
 		case TELETEKST:
 			loader.setVisibility(View.GONE);
@@ -336,6 +429,9 @@ public class MainActivity extends FragmentActivity {
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(View.GONE);
 			picturesButton.setVisibility(View.GONE);
+			facebookButton.setVisibility(View.GONE);
+			twitterButton.setVisibility(View.GONE);
+
 			break;
 		}
 		if (isFailurePageShown()) {
@@ -346,8 +442,11 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			menuToggler.setEnabled(true);
 		}
+	}
 
-
+	private boolean currentNewsItemHasPhotos() {
+		if (nieuwsDetail == null) return false;
+		return nieuwsDetail.hasPhotos();
 	}
 
 	public void requestFailurePage(FailureReason reason) {
@@ -406,6 +505,10 @@ public class MainActivity extends FragmentActivity {
 		activePageView.setVisibility(View.GONE);
 		nieuwsDetailView.setVisibility(View.VISIBLE);
 
+		if (item.getPhotoCount() > 0) {
+			photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+		}
+
 		fixActionBar();
 	}
 
@@ -417,8 +520,12 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (drawer.isMenuVisible()) {
-			drawer.toggleMenu();
+		if (menuDrawer.isMenuVisible()) {
+			menuDrawer.toggleMenu();
+			return;
+		}
+		if (photoDrawer.isMenuVisible()) {
+			photoDrawer.toggleMenu();
 			return;
 		}
 		if (isTeamDetailShown()) {
@@ -453,6 +560,8 @@ public class MainActivity extends FragmentActivity {
 		nieuwsDetailView.setVisibility(View.GONE);
 		activePageView.setVisibility(View.VISIBLE);
 		nieuwsDetail = null;
+
+		photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
 
 		fixActionBar();
 	}
@@ -585,9 +694,9 @@ public class MainActivity extends FragmentActivity {
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 
-	public static String filter(String input) {
-		return android.text.Html.fromHtml(input).toString();
-	}
+	// public static String filter(String input) {
+	// return android.text.Html.fromHtml(input).toString();
+	// }
 
 	public Page getPage() {
 		return page;
@@ -612,5 +721,29 @@ public class MainActivity extends FragmentActivity {
 			return convertView;
 		}
 
+	}
+	
+	public void logHashKey() {
+		Log.d(TAG, "Now checking haskey");
+		PackageInfo info;
+
+		try {
+		    info = getPackageManager().getPackageInfo("com.markbuikema.juliana32", PackageManager.GET_SIGNATURES);
+		    for (Signature signature : info.signatures) {
+		        MessageDigest md;
+		        md = MessageDigest.getInstance("SHA");
+		        md.update(signature.toByteArray());
+		        String something = new String(Base64.encode(md.digest(), 0));
+		        //String something = new String(Base64.encodeBytes(md.digest()));
+		        Log.e(TAG, "HASH KEY:" + something);
+		    }
+		} catch (NameNotFoundException e1) {
+		    Log.e(TAG, e1.toString());
+		} catch (NoSuchAlgorithmException e) {
+		    Log.e(TAG, e.toString());
+		} catch (Exception e) {
+		    Log.e(TAG, e.toString());
+		}
+		Log.d(TAG,  "Done printing hashkey");
 	}
 }

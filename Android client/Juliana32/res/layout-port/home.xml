@@ -3,20 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
- 
+
     <ListView
         android:id="@+id/fixtures"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:listSelector="@color/white"
+        android:layout_weight="1"
         android:cacheColorHint="@android:color/white"
-        android:layout_weight="1" >
+        android:listSelector="@color/white" >
     </ListView>
 
     <ScrollView
         android:id="@+id/teaserScroller"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:scrollbarThumbVertical="@drawable/listitem_background" >
 
         <LinearLayout
             android:id="@+id/teaserContainer"
