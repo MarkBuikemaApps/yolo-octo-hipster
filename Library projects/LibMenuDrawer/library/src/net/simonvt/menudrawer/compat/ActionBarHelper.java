@@ -27,9 +27,9 @@ public final class ActionBarHelper {
             Method m = clazz.getMethod("getSupportActionBar");
             mUsesSherlock = true;
         } catch (NoSuchMethodException e) {
-            if (BuildConfig.DEBUG) {
-                Log.e(TAG, "Activity " + activity.getClass().getSimpleName() + " does not use ActionBarSherlock", e);
-            }
+//            if (BuildConfig.DEBUG) {
+//                Log.e(TAG, "Activity " + activity.getClass().getSimpleName() + " does not use ActionBarSherlock", e);
+//            }
         }
 
         mIndicatorInfo = getIndicatorInfo();

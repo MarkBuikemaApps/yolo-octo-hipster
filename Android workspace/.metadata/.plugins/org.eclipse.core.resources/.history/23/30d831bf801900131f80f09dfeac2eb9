@@ -1,0 +1,41 @@
+package com.markbuikema.juliana32.tools;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.model.Comment;
+
+public class CommentAdapter extends ArrayAdapter<Comment> {
+
+	public CommentAdapter(Context context) {
+		super(context, 0);
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+
+		if (convertView == null)
+			convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_comment, null);
+
+		TextView name = (TextView) convertView.findViewById(R.id.commentName);
+		TextView date = (TextView) convertView.findViewById(R.id.commentDate);
+		TextView text = (TextView) convertView.findViewById(R.id.commentMessage);
+		ImageView pic = (ImageView) convertView.findViewById(R.id.commentPicture);
+		
+		Comment comment = getItem(position);
+		
+		name.setText(comment.getName());
+		date.setText(comment.getDateString());
+		text.setText(comment.getText());
+		pic.setImageBitmap(comment.getImage());
+		
+		return convertView;
+	}
+
+}

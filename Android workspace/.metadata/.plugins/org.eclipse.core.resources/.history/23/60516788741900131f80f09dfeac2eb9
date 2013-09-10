@@ -1,0 +1,151 @@
+package com.markbuikema.juliana32.tools;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import com.facebook.android.Facebook;
+import com.markbuikema.juliana32.model.Comment;
+import com.markbuikema.juliana32.model.FacebookNieuwsItem;
+import com.markbuikema.juliana32.model.NieuwsItem;
+
+@SuppressWarnings("deprecation")
+public class FacebookHelper {
+	private static final String TAG = "FacebookHelperJuliana";
+
+	public static final String JULIANA_ID = "294105307313875";
+	public static final String APP_ID = "281741915275542";
+	public static final String ACCESS_TOKEN = "281741915275542|uc5YqxhvQIBkMga9srZNMx_3UBU";
+
+	private static Facebook facebook;
+
+	public static Facebook getFacebook() {
+		if (facebook == null)
+			facebook = new Facebook(APP_ID);
+		return facebook;
+	}
+
+	public static void addFacebookFeed(ArrayList<NieuwsItem> items) {
+		Bundle params = new Bundle();
+		params.putString("access_token", ACCESS_TOKEN);
+		params.putString("fields", "feed,picture");
+		params.putInt("limit", 150);
+		String json = null;
+		try {
+			json = getFacebook().request("/" + JULIANA_ID, params);
+		} catch (MalformedURLException e) {
+			return;
+		} catch (IOException e) {
+			return;
+		}
+		try {
+
+			JSONObject all = new JSONObject(json);
+			JSONObject feed = all.getJSONObject("feed");
+			try {
+				JSONArray array = feed.getJSONArray("data");
+				for (int i = 0; i < array.length(); i++) {
+					FacebookNieuwsItem item = processJSONObject(array.getJSONObject(i));
+					if (item != null)
+						items.add(item);
+				}
+			} catch (JSONException e) {
+				FacebookNieuwsItem item = processJSONObject(feed.getJSONObject("data"));
+				if (item != null)
+					items.add(item);
+			}
+		} catch (JSONException e) {
+		}
+	}
+
+	private static FacebookNieuwsItem processJSONObject(JSONObject o) {
+		try {
+			if (o.getString("type").equals("photo"))
+				return null;
+		} catch (JSONException e) {
+		}
+
+		Log.d(TAG, "data:" + o.toString());
+
+		String id;
+		String content;
+		String dateString;
+		String link;
+		String imgUrl;
+		int likeCount;
+
+		try {
+			id = o.getString("id");
+		} catch (JSONException e) {
+			id = null;
+		}
+
+		try {
+			content = o.getString("message");
+		} catch (JSONException e) {
+			return null;
+		}
+
+		try {
+			dateString = o.getString("created_time");
+		} catch (JSONException e) {
+			dateString = null;
+		}
+
+		try {
+			link = o.getString("link");
+		} catch (JSONException e) {
+			link = null;
+		}
+
+		try {
+			imgUrl = o.getString("picture");
+		} catch (JSONException e) {
+			imgUrl = null;
+		}
+
+		try {
+			JSONObject likeJSON = o.getJSONObject("likes");
+			likeCount = likeJSON.getInt("count");
+		} catch (JSONException e) {
+			likeCount = 0;
+		}
+
+		FacebookNieuwsItem item = new FacebookNieuwsItem(id, content, dateString, link, imgUrl, likeCount);
+		return item;
+
+	}
+
+	public static List<Comment> getComments(String id) {
+		List<Comment> comments = new ArrayList<Comment>();
+
+		Bundle params = new Bundle();
+		params.putString("access_token", ACCESS_TOKEN);
+		params.putString("fields", "picture");
+		params.putInt("limit", 150);
+		String json = null;
+		Log.d("Comments", "1");
+		try {
+			Log.d("Comments", "2");
+			json = getFacebook().request("/" + id + "/comments", params);
+			Log.d("Comments", "3");
+		} catch (MalformedURLException e) {
+			return null;
+		} catch (IOException e) {
+			return null;
+		}
+
+		Log.d("Comments", "JSON: " + json);
+
+		return comments;
+	}
+
+}

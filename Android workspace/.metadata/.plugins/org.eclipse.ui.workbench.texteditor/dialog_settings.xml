@@ -13,21 +13,21 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="application" key="selection"/>
+		<item value="facebookButton.setOn" key="selection"/>
 		<list key="findhistory">
-			<item value="application"/>
-			<item value="applicationi"/>
-			<item value="Request."/>
-			<item value="Reques"/>
-			<item value="reques"/>
-			<item value="app"/>
-			<item value="app_id"/>
-			<item value="id"/>
+			<item value="facebookButton.seton"/>
+			<item value="facebook"/>
+			<item value="pict"/>
+			<item value="onpagech"/>
+			<item value="onback"/>
+			<item value="menutoggler"/>
+			<item value="menubutton"/>
+			<item value="menu"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
 			<item value="private"/>
 			<item value="ro"/>
-			<item value=""/>
 			<item value="@dimen/table_column_width"/>
 		</list>
 	</section>

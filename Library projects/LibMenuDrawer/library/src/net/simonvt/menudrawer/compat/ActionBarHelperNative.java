@@ -66,7 +66,7 @@ final class ActionBarHelperNative {
     }
 
     public static void setDisplayHomeAsUpEnabled(Activity activity, boolean b) {
-        activity.getActionBar().setDisplayHomeAsUpEnabled(b);
+//        activity.getActionBar().setDisplayHomeAsUpEnabled(b);
     }
 
     private static class SetIndicatorInfo {

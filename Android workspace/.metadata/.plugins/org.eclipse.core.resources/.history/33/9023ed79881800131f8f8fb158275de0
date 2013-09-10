@@ -1,0 +1,68 @@
+package com.markbuikema.juliana32.tools;
+
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.model.TeaserNieuwsItem;
+
+public class TeasersRetriever extends AsyncTask<Void, TeaserNieuwsItem, Void> {
+
+	@Override
+	protected Void doInBackground(Void... arg0) {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet teaserGet = new HttpGet(MainActivity.BASE_SERVER_URL + "/teasers/get");
+		try {
+			HttpResponse response = client.execute(teaserGet);
+
+			String jsonString = EntityUtils.toString(response.getEntity(), "UTF-8");
+			JSONObject obj = null;
+			try {
+				obj = new JSONObject(jsonString);
+				JSONArray array = obj.getJSONArray("teaserNewsItem");
+				for (int i = 0; i < array.length(); i++) {
+					processTeaserJSONObject(array.getJSONObject(i));
+				}
+			} catch (JSONException jsone) {
+				try {
+					JSONObject singleObject = obj.getJSONObject("teaserNewsItem");
+					processTeaserJSONObject(singleObject);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private void processTeaserJSONObject(JSONObject obj) {
+		try {
+			int id = obj.getInt("id");
+			String title = obj.getString("title");
+			String content = obj.getString("content");
+			String subTitle = obj.getString("subTitle");
+			String detailUrl = obj.getString("detailUrl");
+			String imgUrl = obj.getString("imgUrl");
+			TeaserNieuwsItem item = new TeaserNieuwsItem(id, title, subTitle, content, imgUrl, detailUrl);
+			publishProgress(item);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+}

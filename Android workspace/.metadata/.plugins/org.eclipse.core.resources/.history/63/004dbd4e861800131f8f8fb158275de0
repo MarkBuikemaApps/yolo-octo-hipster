@@ -1,0 +1,67 @@
+package com.markbuikema.juliana32.activities;
+
+import java.io.Serializable;
+import java.util.List;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.model.TeaserNieuwsItem;
+import com.markbuikema.juliana32.tools.NieuwsRetriever;
+import com.markbuikema.juliana32.tools.TeamsRetriever;
+
+public class SplashActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.splash);
+
+		new DataLoader() {
+			protected void onPostExecute(ServerCheckResult result) {
+
+			}
+		}.execute();
+	}
+
+	private class DataLoader extends AsyncTask<Void, Void, ServerCheckResult> {
+
+		private static final long TIMEOUT = 6000;
+
+		@Override
+		protected ServerCheckResult doInBackground(Void... params) {
+
+			NieuwsRetriever nieuwsRetriever = new NieuwsRetriever();
+			nieuwsRetriever.execute();
+
+			TeamsRetriever teamsRetriever = new TeamsRetriever();
+			teamsRetriever.execute();
+
+			return null;
+		}
+
+	}
+
+	private enum Result {
+		SUCCESS, TIMEOUT, ERROR
+	}
+
+	private class ServerCheckResult implements Serializable {
+		private Result result;
+		private List<NieuwsItem> nieuwsItems;
+		private List<TeaserNieuwsItem> teaserItems;
+		private List<Team> teams;
+
+		public ServerCheckResult(Result result, List<NieuwsItem> nieuwsItems, List<TeaserNieuwsItem> teaserItems,
+				List<Team> teams) {
+			this.result = result;
+			this.nieuwsItems = nieuwsItems;
+			this.teaserItems = teaserItems;
+			this.teams = teams;
+		}
+	}
+}

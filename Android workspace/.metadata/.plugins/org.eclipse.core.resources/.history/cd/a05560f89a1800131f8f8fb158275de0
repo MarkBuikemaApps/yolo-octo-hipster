@@ -1,0 +1,30 @@
+package com.markbuikema.juliana32.model;
+
+import java.io.Serializable;
+
+
+public class Like implements Serializable{
+
+	private static final long serialVersionUID = -8876565499661763677L;
+	private String id;
+	private String name;
+	private String imgUrl;
+
+	public Like(String id, String name, String imgUrl) {
+		this.id = id;
+		this.name = name;
+		this.imgUrl = imgUrl;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public String getId() {
+		return id;
+	}
+}
