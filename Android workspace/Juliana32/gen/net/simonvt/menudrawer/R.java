@@ -8,21 +8,21 @@ package net.simonvt.menudrawer;
 
 public final class R {
 	public static final class attr {
-		public static final int mdActiveIndicator = 0x7f010016;
-		public static final int mdAllowIndicatorAnimation = 0x7f01001c;
-		public static final int mdContentBackground = 0x7f010013;
-		public static final int mdDrawerClosedUpContentDescription = 0x7f010020;
-		public static final int mdDrawerOpenUpContentDescription = 0x7f01001f;
-		public static final int mdDropShadow = 0x7f01001a;
-		public static final int mdDropShadowColor = 0x7f010019;
-		public static final int mdDropShadowEnabled = 0x7f010017;
-		public static final int mdDropShadowSize = 0x7f010018;
-		public static final int mdMaxAnimationDuration = 0x7f01001d;
-		public static final int mdMenuBackground = 0x7f010014;
-		public static final int mdMenuSize = 0x7f010015;
-		public static final int mdSlideDrawable = 0x7f01001e;
-		public static final int mdTouchBezelSize = 0x7f01001b;
-		public static final int menuDrawerStyle = 0x7f010012;
+		public static final int mdActiveIndicator = 0x7f010019;
+		public static final int mdAllowIndicatorAnimation = 0x7f01001f;
+		public static final int mdContentBackground = 0x7f010016;
+		public static final int mdDrawerClosedUpContentDescription = 0x7f010023;
+		public static final int mdDrawerOpenUpContentDescription = 0x7f010022;
+		public static final int mdDropShadow = 0x7f01001d;
+		public static final int mdDropShadowColor = 0x7f01001c;
+		public static final int mdDropShadowEnabled = 0x7f01001a;
+		public static final int mdDropShadowSize = 0x7f01001b;
+		public static final int mdMaxAnimationDuration = 0x7f010020;
+		public static final int mdMenuBackground = 0x7f010017;
+		public static final int mdMenuSize = 0x7f010018;
+		public static final int mdSlideDrawable = 0x7f010021;
+		public static final int mdTouchBezelSize = 0x7f01001e;
+		public static final int menuDrawerStyle = 0x7f010015;
 	}
 	public static final class color {
 		public static final int md__defaultBackground = 0x7f060007;
@@ -44,7 +44,7 @@ public final class R {
 		public static final int Widget_MenuDrawer = 0x7f080003;
 	}
 	public static final class styleable {
-		public static final int[] MenuDrawer = { 0x7f010013, 0x7f010014, 0x7f010015, 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a, 0x7f01001b, 0x7f01001c, 0x7f01001d, 0x7f01001e, 0x7f01001f, 0x7f010020 };
+		public static final int[] MenuDrawer = { 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a, 0x7f01001b, 0x7f01001c, 0x7f01001d, 0x7f01001e, 0x7f01001f, 0x7f010020, 0x7f010021, 0x7f010022, 0x7f010023 };
 		public static final int MenuDrawer_mdActiveIndicator = 3;
 		public static final int MenuDrawer_mdAllowIndicatorAnimation = 9;
 		public static final int MenuDrawer_mdContentBackground = 0;

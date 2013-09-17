@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="facebookButton.setOn" key="selection"/>
+		<item value="Callback" key="selection"/>
 		<list key="findhistory">
-			<item value="facebookButton.seton"/>
-			<item value="facebook"/>
-			<item value="pict"/>
-			<item value="onpagech"/>
-			<item value="onback"/>
-			<item value="menutoggler"/>
-			<item value="menubutton"/>
-			<item value="menu"/>
+			<item value="callback"/>
+			<item value="onclicklogin"/>
+			<item value="onl"/>
+			<item value="50"/>
+			<item value="onop"/>
+			<item value="class nieuwsada"/>
+			<item value="nieuwsada"/>
+			<item value="refres"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

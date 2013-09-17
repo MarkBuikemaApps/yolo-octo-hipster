@@ -43,8 +43,7 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="#d2d2d2"
         android:dividerHeight="1dp"
-        android:drawSelectorOnTop="true"
-        android:listSelector="@drawable/listselector" >
+        android:listSelector="@android:color/transparent" >
     </ListView>
 
 </LinearLayout>

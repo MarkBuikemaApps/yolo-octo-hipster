@@ -9,8 +9,8 @@ import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.markbuikema.juliana32.activities.MainActivity;
-import com.markbuikema.juliana32.activities.SettingsActivity;
+import com.markbuikema.juliana32.activity.MainActivity;
+import com.markbuikema.juliana32.activity.SettingsActivity;
 
 public class BootReceiver extends BroadcastReceiver{
 	

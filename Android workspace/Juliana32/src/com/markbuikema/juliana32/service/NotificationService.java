@@ -24,7 +24,7 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 import com.markbuikema.juliana32.R;
-import com.markbuikema.juliana32.activities.MainActivity;
+import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 

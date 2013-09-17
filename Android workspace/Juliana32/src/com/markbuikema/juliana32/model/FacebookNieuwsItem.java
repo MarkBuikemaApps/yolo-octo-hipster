@@ -10,11 +10,13 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	private int commentCount;
 	private GregorianCalendar createdAt;
 	private String imgUrl;
+	private String albumId;
 
-	public FacebookNieuwsItem(String id, String content, String dateString, String link, String imgUrl, int likeCount,
-			int commentCount) {
-		super(-1, "Facebook", null, content);
+	public FacebookNieuwsItem(String id, String title, String content, String dateString, String link, String imgUrl,
+			int likeCount, int commentCount, String albumId) {
+		super(-1, title, null, content);
 
+		this.albumId = albumId;
 		fbId = id;
 		String yearString = dateString.substring(0, 4);
 		String monthString = dateString.substring(5, 7);
@@ -50,5 +52,13 @@ public class FacebookNieuwsItem extends NieuwsItem {
 
 	public int getCommentCount() {
 		return commentCount;
+	}
+
+	public boolean isPhoto() {
+		return albumId != null;
+	}
+
+	public String getAlbumId() {
+		return albumId;
 	}
 }

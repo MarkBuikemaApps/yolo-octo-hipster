@@ -22,3 +22,26 @@
 1378763041975	Rename local variable 'string'
 1378767991749	Copy file
 1378812262171	Copy file
+1378849492867	Copy file
+1378902506265	Rename method 'saveProfilePicture'
+1378922630987	Delete element
+1378923928793	Rename method 'processJSONObject'
+1378925075726	Move file
+1378925085301	Copy file
+1378929511398	Infer generic type arguments
+1378984932869	Rename local variable 'item'
+1378987496280	Copy file
+1378987833745	Move compilation unit
+1378987847633	Move compilation units
+1378987940411	Delete element
+1378987953989	Move compilation units
+1378987958898	Rename package 'com.markbuikema.juliana32.adapters'
+1378987963183	Rename package 'com.markbuikema.juliana32.sections'
+1378987971049	Rename package 'com.markbuikema.juliana32.tools'
+1378989251522	Rename type 'SectionsPagerAdapter'
+1379003191931	Copy file
+1379003233745	Delete element
+1379003243826	Copy file
+1379021358991	Rename local variable 'teasermageView'
+1379021503535	Rename local variable 'fbItem'
+1379028952896	Rename package 'com.markbuikema.juliana32.activities'
