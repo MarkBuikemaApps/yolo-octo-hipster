@@ -5,11 +5,13 @@ import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener;
+import net.simonvt.menudrawer.MenuDrawer.Type;
 import net.simonvt.menudrawer.Position;
 
 import org.json.JSONException;
@@ -29,6 +31,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
@@ -47,6 +50,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -64,6 +68,9 @@ import com.facebook.Settings;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NormalNieuwsItem;
+import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
+import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.section.Home;
 import com.markbuikema.juliana32.section.Nieuws;
@@ -73,16 +80,15 @@ import com.markbuikema.juliana32.section.Teams;
 import com.markbuikema.juliana32.section.Teletekst;
 import com.markbuikema.juliana32.service.NotificationService;
 import com.markbuikema.juliana32.ui.Button;
+import com.markbuikema.juliana32.ui.PhotoPagerDialog;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper;
+import com.markbuikema.juliana32.util.Util;
 
 public class MainActivity extends FragmentActivity {
 
 	public static final boolean OFFLINE_MODE = true;
 
-	public static final String IP_ADDRESS = "192.168.1.201";
-	public static final String BASE_URL = "http://" + IP_ADDRESS + ":1994/JulianaServer";
-	public static final String BASE_SERVER_URL = BASE_URL + "/api";
 	public static final int NOTIFICATION_INTERVAL = 1;// minutes
 	private static final String TAG = "JulianaActivity";
 	private static final long SECOND_BACK_PRESS_TIMEOUT = 3000;
@@ -113,6 +119,8 @@ public class MainActivity extends FragmentActivity {
 	private Nieuws nieuws;
 	private Teams teams;
 
+	private PhotoPagerDialog photoDialog;
+
 	private MenuDrawer menuDrawer;
 	private MenuDrawer photoDrawer;
 	private ListView menu;
@@ -141,12 +149,14 @@ public class MainActivity extends FragmentActivity {
 
 		logHashKey();
 
-		menuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW);
+		Util.onOrientationChanged(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+
+		menuDrawer = MenuDrawer.attach(this, Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW);
 		menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
 		menuDrawer.setContentView(R.layout.activity_main);
 		menuDrawer.setMenuView(R.layout.menu_main);
 
-		photoDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW, Position.RIGHT);
+		photoDrawer = MenuDrawer.attach(this, Type.BEHIND, Position.RIGHT, MenuDrawer.MENU_DRAG_WINDOW);
 		photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
 		photoDrawer.setContentView(R.layout.activity_main);
 		photoDrawer.setMenuView(R.layout.menu_photo);
@@ -305,18 +315,54 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		updateView();
+
+		// RESTORE ACTIVITY STATE ////////////////////
+		if (savedInstanceState != null) {
+
+			if (teletekst != null)
+				teletekst.onRestoreInstanceState(savedInstanceState);
+			onPageChanged(Page.valueOf(savedInstanceState.getString("page")));
+			showAbout = savedInstanceState.getBoolean("showAbout");
+			if (showAbout)
+				showAboutDialog();
+
+			int teamId = savedInstanceState.getInt("teamId", -1);
+			if (teamId > -1) {
+				Team team = findTeamById(teamId);
+				requestTeamDetailPage(team);
+				teamDetail.onRestoreInstanceState(savedInstanceState);
+			}
+
+			int nieuwsId = savedInstanceState.getInt("nieuwsId", -1);
+			if (nieuwsId > -1) {
+				// TODO Restore nieuws detail
+			}
+
+			int photoDialogPage = savedInstanceState.getInt("photoDialogPage", -1);
+			if (photoDialogPage > -1) {
+				String[] urls = savedInstanceState.getStringArray("photoDialogUrls");
+				showPhotoDialog(urls, photoDialogPage);
+			}
+
+			if (savedInstanceState.getBoolean("menuOpened"))
+				menuDrawer.toggleMenu();
+
+			if (savedInstanceState.getBoolean("photoDrawerOpened"))
+				photoDrawer.toggleMenu();
+		}
 	}
 
 	private void updateView() {
 
 		Session session = Session.getActiveSession();
 
-		String text = "Session opened: " + session.isOpened() + "\nAccess token: " + session.getAccessToken() + "\nPERMISSIONS:";
-
-		for (String string : session.getPermissions())
-			text += "\n" + string;
-
-		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+		// String text = "Session opened: " + session.isOpened() +
+		// "\nAccess token: " + session.getAccessToken() + "\nPERMISSIONS:";
+		//
+		// for (String string : session.getPermissions())
+		// text += "\n" + string;
+		//
+		// Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 
 		Log.d("ACCESS TOKEN", "Token: " + session.getAccessToken());
 
@@ -502,9 +548,23 @@ public class MainActivity extends FragmentActivity {
 		fixActionBar();
 	}
 
-	public void requestNiewsDetailPage(NieuwsItem item) {
+	public void requestNieuwsDetailPage(final NieuwsItem item) {
 		if ((page != Page.NIEUWS && page != Page.HOME) || isNieuwsDetailShown())
 			return;
+
+		if (item instanceof NormalNieuwsItem) {
+			NormalNieuwsItem nni = (NormalNieuwsItem) item;
+			if (!nni.isContentLoaded()) {
+				nni.startLoading(new OnContentLoadedListener() {
+
+					@Override
+					public void onContentLoaded(String content, List<String> photos) {
+						requestNieuwsDetailPage(item);
+					}
+				});
+				return;
+			}
+		}
 
 		nieuwsDetail = new NieuwsDetail(this, item);
 		saveGraphUser();
@@ -527,6 +587,10 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
+		if (isPhotoDialogShown()) {
+			hidePhotoDialog();
+			return;
+		}
 		if (menuDrawer.isMenuVisible()) {
 			menuDrawer.toggleMenu();
 			return;
@@ -697,8 +761,20 @@ public class MainActivity extends FragmentActivity {
 		outState.putString("page", page.toString());
 		outState.putBoolean("showAbout", showAbout);
 
+		if (isTeamDetailShown())
+			teamDetail.onSaveInstanceState(outState);
+
 		if (teletekst != null)
 			teletekst.onSaveInstanceState(outState);
+
+		if (isPhotoDialogShown())
+			photoDialog.onSaveInstanceState(outState);
+
+		if (isNieuwsDetailShown())
+			nieuwsDetail.onSaveInstanceState(outState);
+
+		outState.putBoolean("menuOpened", menuDrawer.isMenuVisible());
+		outState.putBoolean("photoDrawerOpened", photoDrawer.isMenuVisible());
 
 		Session session = Session.getActiveSession();
 		Session.saveSession(session, outState);
@@ -706,18 +782,12 @@ public class MainActivity extends FragmentActivity {
 		super.onSaveInstanceState(outState);
 	}
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		initializePages();
-
-		if (teletekst != null)
-			teletekst.onRestoreInstanceState(savedInstanceState);
-		onPageChanged(Page.valueOf(savedInstanceState.getString("page")));
-		showAbout = savedInstanceState.getBoolean("showAbout");
-		if (showAbout)
-			showAboutDialog();
-
-		super.onRestoreInstanceState(savedInstanceState);
+	private Team findTeamById(int teamId) {
+		for (Season season : DataManager.getInstance().getTeams())
+			for (Team t : season.getTeams())
+				if (t.getId() == teamId)
+					return t;
+		return null;
 	}
 
 	// public static String filter(String input) {
@@ -802,17 +872,16 @@ public class MainActivity extends FragmentActivity {
 				saveGraphUser();
 				Log.d("ACCESS_TOKEN", session.getAccessToken());
 			}
-
 		}
 	}
 
 	public void onClickLogin() {
 		Session session = Session.getActiveSession();
+
 		if (!session.isOpened() && !session.isClosed())
-			session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
+			session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback)); // FIXME
 		else
 			Session.openActiveSession(this, true, statusCallback);
-
 	}
 
 	@SuppressWarnings("deprecation")
@@ -853,4 +922,61 @@ public class MainActivity extends FragmentActivity {
 			}
 		}.start();
 	}
+
+	public void showPhotoDialog(String[] urls, int position) {
+		if (urls == null || urls.length < 1)
+			return;
+		if (photoDialog != null)
+			hidePhotoDialog();
+
+		photoDialog = new PhotoPagerDialog(this, urls);
+		photoDialog.show(position);
+
+		hideTitle();
+	}
+
+	public boolean isPhotoDialogShown() {
+		return photoDialog != null;
+	}
+
+	public void hidePhotoDialog() {
+		if (photoDialog == null)
+			return;
+
+		photoDialog.destroy();
+		photoDialog = null;
+
+		showTitle();
+	}
+
+	public void hidePhotoDrawer() {
+		if (photoDrawer.isMenuVisible())
+			photoDrawer.toggleMenu();
+	}
+
+	public void setDrawersEnabled(boolean enabled) {
+		menuDrawer.setOffsetMenuEnabled(enabled);
+		photoDrawer.setOffsetMenuEnabled(enabled);
+	}
+
+	public void hideTitle() {
+		try {
+			((View) findViewById(android.R.id.title).getParent()).setVisibility(View.GONE);
+		} catch (Exception e) {
+		}
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+
+	}
+
+	public void showTitle() {
+		try {
+			((View) findViewById(android.R.id.title).getParent()).setVisibility(View.VISIBLE);
+		} catch (Exception e) {
+		}
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+	}
+
 }

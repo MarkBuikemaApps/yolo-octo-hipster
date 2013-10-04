@@ -2,12 +2,6 @@ package com.markbuikema.juliana32.service;
 
 import java.util.ArrayList;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,26 +67,28 @@ public class NotificationService extends Service {
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			Log.d(TAG, "Polling...");
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL + "/news/count");
-
-			try {
-				HttpResponse response = client.execute(get);
-				String countText = EntityUtils.toString(response.getEntity());
-				int count = Integer.valueOf(countText);
-				if (count > originalCount && originalCount > 0) {
-					int difference = count - originalCount;
-					originalCount = count;
-					Log.d(TAG, "Original: " + originalCount + ", New: " + count + ", Difference: " + difference);
-					return difference;
-				}
-				if (originalCount == 0) {
-					originalCount = count;
-				}
-			} catch (Exception e) {
-
-			}
+			// Log.d(TAG, "Polling...");
+			// HttpClient client = new DefaultHttpClient();
+			// HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL +
+			// "/news/count");
+			//
+			// try {
+			// HttpResponse response = client.execute(get);
+			// String countText = EntityUtils.toString(response.getEntity());
+			// int count = Integer.valueOf(countText);
+			// if (count > originalCount && originalCount > 0) {
+			// int difference = count - originalCount;
+			// originalCount = count;
+			// Log.d(TAG, "Original: " + originalCount + ", New: " + count +
+			// ", Difference: " + difference);
+			// return difference;
+			// }
+			// if (originalCount == 0) {
+			// originalCount = count;
+			// }
+			// } catch (Exception e) {
+			//
+			// }
 
 			return 0;
 		}
@@ -110,13 +106,10 @@ public class NotificationService extends Service {
 		 */
 		@Override
 		protected void onPostExecute(Integer result) {
-			if (result > 0) {
-
+			if (result > 0)
 				new NewNewsRetriever().execute(result);
-
-			} else {
+			else
 				stopSelf();
-			}
 
 		}
 	}
@@ -129,27 +122,27 @@ public class NotificationService extends Service {
 			Log.d(TAG, "NewNewsRetriever started");
 
 			ArrayList<NieuwsItem> items = new ArrayList<NieuwsItem>();
-			int count = params[0];
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL + "/news/get");
-			try {
-				HttpResponse response = client.execute(get);
-				String jsonString = EntityUtils.toString(response.getEntity());
-
-				JSONObject json = new JSONObject(jsonString);
-				try {
-					JSONArray array = json.getJSONArray("newsItem");
-					for (int i = array.length() - 1; i > array.length() - 1 - count; i--) {
-						processJSONObject(items, array.getJSONObject(i));
-					}
-				} catch (JSONException e) {
-					JSONObject singleObject = json.getJSONObject("newsItem");
-					processJSONObject(items, singleObject);
-				}
-
-			} catch (Exception e) {
-
-			}
+			// int count = params[0];
+			// HttpClient client = new DefaultHttpClient();
+			// HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL + "/news/get");
+			// try {
+			// HttpResponse response = client.execute(get);
+			// String jsonString = EntityUtils.toString(response.getEntity());
+			//
+			// JSONObject json = new JSONObject(jsonString);
+			// try {
+			// JSONArray array = json.getJSONArray("newsItem");
+			// for (int i = array.length() - 1; i > array.length() - 1 - count; i--) {
+			// processJSONObject(items, array.getJSONObject(i));
+			// }
+			// } catch (JSONException e) {
+			// JSONObject singleObject = json.getJSONObject("newsItem");
+			// processJSONObject(items, singleObject);
+			// }
+			//
+			// } catch (Exception e) {
+			//
+			// }
 			return items;
 		}
 
@@ -161,8 +154,9 @@ public class NotificationService extends Service {
 				String title = obj.getString("title");
 				String subTitle = obj.getString("subTitle");
 				String detailUrl = obj.getString("detailUrl");
-				NieuwsItem item = new NormalNieuwsItem(id, title, subTitle, content, createdAt, detailUrl);
-				items.add(item);
+				// NieuwsItem item = new NormalNieuwsItem(id, title, subTitle, content,
+				// createdAt, detailUrl);
+				// items.add(item);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -177,9 +171,9 @@ public class NotificationService extends Service {
 
 			String title = "";
 			String text = NotificationService.this.getResources().getString(R.string.app_name);
-			if (result.size() > 1) {
+			if (result.size() > 1)
 				text = NotificationService.this.getResources().getString(R.string.multiple_notifications, result.size());
-			} else {
+			else {
 				text = result.get(0).getTitle();
 				cIntent.putExtra(NEWS_ID, result.get(0).getId());
 			}
@@ -195,7 +189,9 @@ public class NotificationService extends Service {
 			not.ledARGB = Color.MAGENTA;
 			not.tickerText = result.size() > 1 ? (result.size() + " nieuwe nieuwsberichten") : "1 nieuw nieuwsbericht";
 			not.when = ((NormalNieuwsItem) result.get(result.size() - 1)).getCreatedAt().getTimeInMillis();
-			not.vibrate = new long[] { 50, 50, 50 };
+			not.vibrate = new long[] {
+					50, 50, 50
+			};
 			not.contentIntent = clickIntent;
 			nm.notify(0, not);
 
@@ -231,6 +227,7 @@ public class NotificationService extends Service {
 	 * Service stops (killed for resources, stopSelf() called, etc.), the wake
 	 * lock will be released.
 	 */
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		mWakeLock.release();

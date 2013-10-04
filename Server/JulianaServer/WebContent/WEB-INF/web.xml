@@ -29,7 +29,7 @@
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.markbuikema.juliana32.server.resources</param-value>
+			<param-value>com.markbuikema.juliana32.server.resource</param-value>
 		</init-param>
 		
 	</servlet>

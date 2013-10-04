@@ -1,0 +1,45 @@
+package com.markbuikema.juliana32.ui;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activity.MainActivity;
+import com.markbuikema.juliana32.adapter.PhotoPagerDialogAdapter;
+
+public class PhotoPagerDialog {
+
+	private Context context;
+	private ViewPager photoPager;
+	private String[] urls;
+
+	public PhotoPagerDialog(Context context, String[] urls) {
+		this.context = context;
+		this.urls = urls;
+		photoPager = (ViewPager) ((MainActivity) context).findViewById(R.id.photoDialogPager);
+
+		PhotoPagerDialogAdapter ppda = new PhotoPagerDialogAdapter(context, urls);
+		photoPager.setAdapter(ppda);
+
+	}
+
+	public void show(int position) {
+		((MainActivity) context).setDrawersEnabled(false);
+		photoPager.setCurrentItem(position, true);
+		photoPager.setVisibility(View.VISIBLE);
+	}
+
+	public void destroy() {
+		((MainActivity) context).setDrawersEnabled(true);
+		photoPager.setVisibility(View.GONE);
+		photoPager.setAdapter(null);
+	}
+
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putStringArray("photoDialogUrls", urls);
+		outState.putInt("photoDialogPage", photoPager.getCurrentItem());
+	}
+
+}

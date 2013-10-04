@@ -1,0 +1,188 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/actionbar2"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/menuToggler"
+                android:layout_width="64dp"
+                android:layout_height="48dp"
+                android:layout_margin="0dp"
+                android:background="@drawable/menu_borderless"
+                android:contentDescription="@string/content_description_menubutton"
+                android:padding="0dp"
+                android:scaleType="fitStart"
+                android:src="@drawable/listselector" />
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="@string/app_name"
+                android:textColor="@android:color/black"
+                android:textIsSelectable="false"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/menuFacebook"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/facebook"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_action_facebook"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/menuTwitter"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/twitter"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_action_twitter"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/menuPictures"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/fotos"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@android:drawable/ic_menu_camera"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="@dimen/small_margin"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/menuComments"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/comments"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_menu_start_conversation"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/menuShare"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/share"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@android:drawable/ic_menu_share"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/menuRefresh"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/listselector"
+                android:contentDescription="@string/refresh"
+                android:padding="@dimen/small_margin"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_menu_refresh"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/menuSeason"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_margin="0dp"
+                android:background="@drawable/listselector"
+                android:paddingBottom="0dp"
+                android:paddingLeft="@dimen/small_margin"
+                android:paddingRight="@dimen/small_margin"
+                android:paddingTop="0dp"
+                android:scrollbarThumbVertical="@drawable/listitem_background"
+                android:spinnerMode="dropdown"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/menuToggler2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/overflow_borderless"
+                android:contentDescription="@string/menu"
+                android:scaleType="fitStart"
+                android:src="@drawable/listselector" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/nieuwsDetailView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/nieuwsdetail"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/teamDetailView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            layout="@layout/teamdetail"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/homeView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/home"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/nieuwsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/nieuws"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/teamsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/teams"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/teletekstView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/teletekst"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/photoDialogPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

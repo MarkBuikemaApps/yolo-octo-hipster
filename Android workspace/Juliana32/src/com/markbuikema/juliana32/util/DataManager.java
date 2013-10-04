@@ -1,5 +1,6 @@
 package com.markbuikema.juliana32.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
@@ -31,15 +32,24 @@ public class DataManager {
 	}
 
 	public List<NieuwsItem> getNieuwsItems() {
-		return nieuwsItems;
+		if (nieuwsItems == null)
+			return new ArrayList<NieuwsItem>();
+		else
+			return nieuwsItems;
 	}
 
 	public List<TeaserNieuwsItem> getTeaserItems() {
-		return teaserItems;
+		if (teaserItems == null)
+			return new ArrayList<TeaserNieuwsItem>();
+		else
+			return teaserItems;
 	}
 
 	public List<Season> getTeams() {
-		return teams;
+		if (teams == null)
+			return new ArrayList<Season>();
+		else
+			return teams;
 	}
 
 	public void setNieuwsItems(List<NieuwsItem> nieuwsItems) {

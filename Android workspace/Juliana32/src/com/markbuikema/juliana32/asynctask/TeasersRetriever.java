@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 
+//FIXME
 public class TeasersRetriever extends AsyncTask<Void, Void, List<TeaserNieuwsItem>> {
 
 	private static final String TAG = "SplashActivity";
@@ -30,7 +31,7 @@ public class TeasersRetriever extends AsyncTask<Void, Void, List<TeaserNieuwsIte
 			return items;
 
 		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL + "/teasers/get");
+		HttpGet get = new HttpGet("/teasers/get");
 		try {
 			HttpResponse response = client.execute(get);
 
@@ -70,8 +71,9 @@ public class TeasersRetriever extends AsyncTask<Void, Void, List<TeaserNieuwsIte
 			String subTitle = obj.getString("subTitle");
 			String detailUrl = obj.getString("detailUrl");
 			String imgUrl = obj.getString("imgUrl");
-			TeaserNieuwsItem item = new TeaserNieuwsItem(id, title, subTitle, content, imgUrl, detailUrl);
-			return item;
+			// TeaserNieuwsItem item = new TeaserNieuwsItem(id, title, subTitle,
+			// content, imgUrl, detailUrl);
+			// return item;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

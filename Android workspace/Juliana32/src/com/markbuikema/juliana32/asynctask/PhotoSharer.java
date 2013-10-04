@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.markbuikema.juliana32.R;
-import com.markbuikema.juliana32.util.Tools;
+import com.markbuikema.juliana32.util.Util;
 
 public class PhotoSharer extends AsyncTask<String, Void, String> {
 
@@ -25,7 +25,7 @@ public class PhotoSharer extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... params) {
 		teamName = params[1];
-		return cacheImage(Tools.getPhotoInputStreamFromUrl(params[0]), teamName);
+		return cacheImage(Util.getPhotoInputStreamFromUrl(params[0]), teamName);
 	}
 
 	@Override

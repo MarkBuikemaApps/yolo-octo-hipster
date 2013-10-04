@@ -1,0 +1,65 @@
+package com.markbuikema.juliana32.model;
+
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import android.os.AsyncTask;
+
+public class NormalNieuwsItem extends NieuwsItem {
+
+	private String detailUrl;
+
+	public NormalNieuwsItem(int id, String title, String subTitle, GregorianCalendar createdAt, String detailUrl) {
+
+		super(id, title, subTitle, null, createdAt);
+		this.detailUrl = detailUrl;
+	}
+
+	public String getDetailUrl() {
+		return detailUrl;
+	}
+
+	public boolean isContentLoaded() {
+		return content != null;
+	}
+
+	public void startLoading(OnContentLoadedListener callback) {
+		if (!isContentLoaded())
+			new ContentLoader(callback).execute();
+	}
+
+	public interface OnContentLoadedListener {
+		public void onContentLoaded(String content, List<String> photos);
+	}
+
+	private class ContentLoader extends AsyncTask<Void, String, String> {
+
+		private OnContentLoadedListener callback;
+		private List<String> photos;
+
+		private ContentLoader(OnContentLoadedListener callback) {
+			this.callback = callback;
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+
+			if (detailUrl == null)
+				return null;
+
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(String... values) {
+			for (String value : values)
+				photos.add(value);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			callback.onContentLoaded(result, photos);
+		}
+
+	}
+}

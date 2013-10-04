@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;fbi&apos; in &apos;com.markbuikema.juliana32.section.Nieuws.refresh().new NieuwsRetriever() {...}.onPostExecute(...)&apos; to &apos;fbni&apos;&#x0D;&#x0A;- Original project: &apos;Juliana32&apos;&#x0D;&#x0A;- Original element: &apos;com.markbuikema.juliana32.section.Nieuws.refresh().new NieuwsRetriever() {...}.onPostExecute(List&lt;NieuwsItem&gt;).fbi&apos;&#x0D;&#x0A;- Renamed element: &apos;fbi&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;fbi&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;com.markbuikema.juliana32.section{Nieuws.java[Nieuws~refresh[~onPostExecute~QList\&lt;QNieuwsItem;&gt;;@fbi!3036!3094!3061!3063!QFacebookNieuwsItem;!67108880!false" name="fbni" references="true" stamp="1380555119412" version="1.0"/>
+</session>

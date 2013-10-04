@@ -1,0 +1,32 @@
+package com.markbuikema.juliana32.ui;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.model.NieuwsItem;
+
+public class PhotoPagerDialog {
+
+	private NieuwsItem item;
+	private AlertDialog dialog;
+	private Context context;
+	private ViewPager photoPager;
+
+	public PhotoPagerDialog(Context context, NieuwsItem item) {
+		this.item = item;
+		this.context = context;
+		View view = LayoutInflater.from(context).inflate(R.layout.listitem_facebookitem_photo, null);
+
+		photoPager = (ViewPager) view.findViewById(R.id.facebookPhotoPager);
+
+	}
+
+	public void show(int position) {
+
+	}
+
+}

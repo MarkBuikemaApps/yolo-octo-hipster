@@ -1,0 +1,51 @@
+package com.markbuikema.juliana32.ui;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.markbuikema.juliana32.R;
+
+public class PhotoSectionFragment extends Fragment {
+
+	private ImageView image;
+	private String url;
+
+	public static PhotoSectionFragment newInstance(String url) {
+		PhotoSectionFragment fragment = new PhotoSectionFragment();
+		fragment.setUrl(url);
+		return fragment;
+	}
+
+	private void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public PhotoSectionFragment() {
+	}
+
+	public void setImage(Bitmap bmp) {
+		Bitmap scaled = Bitmap.createScaledBitmap(bmp, 100, 60, true);
+		bmp.recycle();
+		image.setImageBitmap(scaled);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d("photo_oncreateview_start", "url: " + url);
+
+		View view = inflater.inflate(R.layout.fb_photo_item, null);
+		image = (ImageView) view.findViewById(R.id.facebookPhoto);
+
+		return view;
+	}
+}

@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Session;
 import com.markbuikema.juliana32.R;
@@ -182,14 +181,15 @@ public class SettingsActivity extends Activity {
 				@Override
 				protected void onPostExecute(Bitmap result) {
 					if (result == null)
-						picture.setBackground(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(),
+						picture.setBackgroundDrawable(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(),
 								R.drawable.silhouette)));
 					else
-						picture.setBackground(new BitmapDrawable(getResources(), result));
+						picture.setBackgroundDrawable(new BitmapDrawable(getResources(), result));
 				}
 			}.execute(userPicUrl);
 
-			Toast.makeText(SettingsActivity.this, userName, Toast.LENGTH_LONG).show();
+			// Toast.makeText(SettingsActivity.this, userName,
+			// Toast.LENGTH_LONG).show();
 
 		}
 	}

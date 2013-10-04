@@ -19,10 +19,13 @@ import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper.PhotoGetter;
+import com.markbuikema.juliana32.util.Util;
 
 public class SplashActivity extends Activity {
 
 	public static final String TAG = "SplashActivity";
+	public static final boolean TIMEOUT_ENABLED = false;
+	private DataLoader loader;
 
 	// public static final boolean OFFLINE_MODE = true;
 
@@ -31,7 +34,7 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash);
 
-		new DataLoader() {
+		loader = new DataLoader() {
 			@Override
 			protected void onPostExecute(Boolean result) {
 				if (!result.booleanValue())
@@ -42,7 +45,14 @@ public class SplashActivity extends Activity {
 				}
 				finish();
 			}
-		}.execute();
+		};
+		loader.execute();
+	}
+
+	@Override
+	public void onBackPressed() {
+		loader.cancel(true);
+		super.onBackPressed();
 	}
 
 	private class DataLoader extends AsyncTask<Void, Void, Boolean> {
@@ -73,23 +83,21 @@ public class SplashActivity extends Activity {
 				@Override
 				protected void onPostExecute(List<NieuwsItem> result) {
 					manager.setNieuwsItems(result);
-					for (NieuwsItem item : result) {
-						if (!item.isFromFacebook())
-							continue;
-						final FacebookNieuwsItem fbi = ((FacebookNieuwsItem) item);
-						if (fbi.isPhoto())
-							new PhotoGetter() {
-								@Override
-								protected void onPostExecute(List<String> result) {
-									for (String photo : result)
-										fbi.addPhoto(photo);
-									Log.d("ADDED_PHOTOS", "title: " + fbi.getTitle() + "count: " + fbi.getPhotoCount());
+					for (NieuwsItem item : result)
+						if (item.isFromFacebook()) {
+							final FacebookNieuwsItem fbi = ((FacebookNieuwsItem) item);
+							if (fbi.isPhoto())
+								new PhotoGetter() {
+									@Override
+									protected void onPostExecute(List<String> result) {
+										for (String photo : result)
+											fbi.addPhoto(photo);
+									}
 
-								}
+								}.execute(fbi);
+						}
 
-							}.execute(fbi);
-					}
-
+					Util.linkPhotosToTeam();
 				}
 
 			};
@@ -100,7 +108,7 @@ public class SplashActivity extends Activity {
 			long timeout = System.currentTimeMillis() + TIMEOUT;
 
 			while (manager.requiresData()) {
-				if (System.currentTimeMillis() > timeout) {
+				if (System.currentTimeMillis() > timeout && TIMEOUT_ENABLED) {
 					teasersRetriever.cancel(true);
 					nieuwsRetriever.cancel(true);
 					teamsRetriever.cancel(true);

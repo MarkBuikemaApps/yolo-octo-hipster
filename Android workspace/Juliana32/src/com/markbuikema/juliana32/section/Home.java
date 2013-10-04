@@ -93,7 +93,7 @@ public class Home {
 
 			@Override
 			public void onClick(View v) {
-				activity.requestNiewsDetailPage(item);
+				activity.requestNieuwsDetailPage(item);
 			}
 		});
 

@@ -7,13 +7,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/facebookPhotoPager"
         android:layout_width="match_parent"
-        android:layout_height="160dp" >
+        android:layout_height="192dp" >
     </android.support.v4.view.ViewPager>
 
-    <TextView
-        android:id="@+id/dummyTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="not set" />
 
 </LinearLayout>

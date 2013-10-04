@@ -3,12 +3,14 @@ package com.markbuikema.juliana32.section;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,7 +106,7 @@ public class TeamDetail {
 		noTables = (TextView) mainView.findViewById(R.id.noTablesFound);
 
 		fm = ((FragmentActivity) act).getSupportFragmentManager();
-		ppa = new PhotoPagerAdapter(fm);
+		ppa = new PhotoPagerAdapter(act);
 		tpa = new TablePagerAdapter(fm);
 
 		photoPager.setAdapter(ppa);
@@ -139,6 +141,21 @@ public class TeamDetail {
 		return (uitslagenContainer.getVisibility() == View.VISIBLE || programmaContainer.getVisibility() == View.VISIBLE);
 	}
 
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt("teamId", team.getId());
+		outState.putBoolean("uitslagenExpanded", uitslagenContainer.getVisibility() == View.VISIBLE);
+		outState.putBoolean("programmaExpanded", programmaContainer.getVisibility() == View.VISIBLE);
+		outState.putInt("tablePagerIndex", tablePager.getCurrentItem());
+		outState.putInt("photoPagerIndex", photoPager.getCurrentItem());
+	}
+
+	public void onRestoreInstanceState(Bundle state) {
+		uitslagenContainer.setVisibility(state.getBoolean("uitslagenExpanded", false) ? View.VISIBLE : View.GONE);
+		programmaContainer.setVisibility(state.getBoolean("programmaExpanded", false) ? View.VISIBLE : View.GONE);
+		tablePager.setCurrentItem(state.getInt("tablePagerIndex"));
+		photoPager.setCurrentItem(state.getInt("photoPagerIndex"));
+	}
+
 	public void closeClouds() {
 		uitslagenContainer.setVisibility(View.GONE);
 		programmaContainer.setVisibility(View.GONE);
@@ -159,27 +176,37 @@ public class TeamDetail {
 			programmaContainer.setVisibility(View.VISIBLE);
 	}
 
-	public static class PhotoSectionFragment extends Fragment {
+	public class PhotoPagerAdapter extends PagerAdapter {
 
-		public PhotoSectionFragment() {
+		private Context context;
+
+		public PhotoPagerAdapter(Context context) {
+			this.context = context;
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			Bundle args = getArguments();
-			View mainView = inflater.inflate(R.layout.photo_item, null);
+		public Object instantiateItem(ViewGroup container, final int position) {
+			View mainView = LayoutInflater.from(context).inflate(R.layout.photo_item, null);
 			final ImageView view = (ImageView) mainView.findViewById(R.id.photoView);
 			final ImageButton shareButton = (ImageButton) mainView.findViewById(R.id.photoShareButton);
 			shareButton.setVisibility(View.GONE);
 
-			final String teamName = args.getString("teamname");
-			final String url = args.getString("url");
+			view.setClickable(true);
+			view.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					((MainActivity) context).showPhotoDialog(team.getPhotoUrls(), position);
+				}
+			});
+
+			final String url = team.getPhotos().get(position).getUrl();
 
 			shareButton.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					new PhotoSharer(getActivity()).execute(url, teamName);
+					new PhotoSharer(context).execute(url, team.getName());
 				}
 			});
 			new PictureChanger() {
@@ -191,24 +218,10 @@ public class TeamDetail {
 					shareButton.setVisibility(View.VISIBLE);
 				};
 			}.execute(url);
+
+			((ViewPager) container).addView(mainView);
+
 			return mainView;
-		}
-	}
-
-	public class PhotoPagerAdapter extends FragmentStatePagerAdapter {
-
-		public PhotoPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int i) {
-			Fragment fragment = new PhotoSectionFragment();
-			Bundle args = new Bundle();
-			args.putString("teamname", team.getName());
-			args.putString("url", team.getPhotos().get(i).getUrl());
-			fragment.setArguments(args);
-			return fragment;
 		}
 
 		@Override
@@ -219,6 +232,16 @@ public class TeamDetail {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return Integer.toString(position);
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
 		}
 	}
 

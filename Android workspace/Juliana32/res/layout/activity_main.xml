@@ -40,13 +40,6 @@
                 android:textIsSelectable="false"
                 android:textSize="20sp" />
 
-            <ProgressBar
-                android:id="@+id/loading"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="@dimen/small_margin"
-                android:visibility="gone" />
-
             <ImageButton
                 android:id="@+id/menuFacebook"
                 android:layout_width="48dp"
@@ -78,6 +71,13 @@
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
                 android:src="@android:drawable/ic_menu_camera"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="@dimen/small_margin"
                 android:visibility="gone" />
 
             <ImageButton
@@ -179,5 +179,12 @@
             layout="@layout/teletekst"
             android:visibility="gone" />
     </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/photoDialogPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparentblack" 
+        android:visibility="gone"/>
 
 </FrameLayout>

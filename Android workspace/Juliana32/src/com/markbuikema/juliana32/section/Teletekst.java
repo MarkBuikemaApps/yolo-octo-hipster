@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -15,7 +13,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,7 +34,7 @@ import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
-import com.markbuikema.juliana32.util.Tools;
+import com.markbuikema.juliana32.util.Util;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class Teletekst {
@@ -69,7 +66,8 @@ public class Teletekst {
 
 			@Override
 			public void onPageSelected(int position) {
-				if (position == ViewPager.SCROLL_STATE_SETTLING) hideHint();
+				if (position == ViewPager.SCROLL_STATE_SETTLING)
+					hideHint();
 			}
 
 			@Override
@@ -84,7 +82,8 @@ public class Teletekst {
 		fm = ((FragmentActivity) activity).getSupportFragmentManager();
 
 		if (act.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-			if (!Tools.shouldShowTeletekstHint(act)) hideHint();
+			if (!Util.shouldShowTeletekstHint(act))
+				hideHint();
 
 		new RetrieveTeletekst().execute();
 
@@ -107,14 +106,16 @@ public class Teletekst {
 
 		@Override
 		protected Bitmap[] doInBackground(Integer... v) {
-			if (v.length == 1) page = v[0];
+			if (v.length == 1)
+				page = v[0];
 
 			String url = URL_BASE + 1;
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(url);
 			try {
 				HttpResponse response = client.execute(get);
-				if (maxIndex == 0) setMaxIndex(EntityUtils.toString(response.getEntity()));
+				if (maxIndex == 0)
+					setMaxIndex(EntityUtils.toString(response.getEntity()));
 
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -139,7 +140,11 @@ public class Teletekst {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				html = html.split("<img width=\"440\" height=\"345\" src=\"")[1].split("\" usemap=\"#page\"")[0];
+				try {
+					html = html.split("<img width=\"440\" height=\"345\" src=\"")[1].split("\" usemap=\"#page\"")[0];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
 
 				String imgUrl = "http://www.rtvoost.nl/teletekst/" + html.replace(" ", "%20");
 				imageUrls[i - 1] = imgUrl;
@@ -163,13 +168,14 @@ public class Teletekst {
 		@Override
 		public void onPostExecute(Bitmap[] bmps) {
 			progressBar.setVisibility(View.GONE);
-			Tools.putTeletekst(bmps);
+			Util.putTeletekst(bmps);
 			pagerAdapter = new SectionsPagerAdapter(fm);
 			try {
 				ttPager.setAdapter(pagerAdapter);
 				pagerIndicator.setViewPager(ttPager);
 
-				if (page < maxIndex) ttPager.setCurrentItem(page);
+				if (page < maxIndex)
+					ttPager.setCurrentItem(page);
 			} catch (Exception e) {
 			}
 		}
@@ -223,7 +229,7 @@ public class Teletekst {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			Bundle args = getArguments();
-			bmp = Tools.getTeletekst(args.getInt("index"));
+			bmp = Util.getTeletekst(args.getInt("index"));
 			ImageView view = (ImageView) inflater.inflate(R.layout.teletekst_item, null);
 			view.setImageBitmap(bmp);
 			return view;
@@ -236,8 +242,7 @@ public class Teletekst {
 	}
 
 	public void onRestoreInstanceState(final Bundle savedInstanceState) {
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 			new RetrieveTeletekst().execute(savedInstanceState.getInt("teletekstPage"));
-		}
 	}
 }

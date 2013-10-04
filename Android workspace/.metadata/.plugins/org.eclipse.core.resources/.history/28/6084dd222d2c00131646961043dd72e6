@@ -1,0 +1,90 @@
+package com.markbuikema.juliana32.model;
+
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+public abstract class NieuwsItem implements Comparable<NieuwsItem> {
+
+	protected int id;
+	protected String title;
+	protected String subTitle;
+	protected List<String> photos;
+	protected String content;
+	protected GregorianCalendar createdAt;
+
+	public NieuwsItem(int id, String title, String subTitle, String content, GregorianCalendar createdAt) {
+		this.id = id;
+		this.title = title;
+		this.subTitle = subTitle;
+		this.content = content;
+		this.createdAt = createdAt;
+
+		photos = new ArrayList<String>();
+	}
+
+	public void addPhoto(String url) {
+		photos.add(url);
+	}
+
+	public int getPhotoCount() {
+		return photos.size();
+	}
+
+	public String getPhoto(int index) {
+		return photos.get(index);
+	}
+
+	public GregorianCalendar getCreatedAt() {
+		return createdAt;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public boolean isFromFacebook() {
+		return this instanceof FacebookNieuwsItem && id == -1;
+	}
+
+	public boolean isTeaser() {
+		return this instanceof TeaserNieuwsItem && createdAt == null;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	@Override
+	public String toString() {
+		return id + ": " + title + "," + subTitle + ".";
+	}
+
+	@Override
+	public int compareTo(NieuwsItem another) {
+		if (another instanceof TeaserNieuwsItem)
+			return 0;
+		long thisDate;
+		long otherDate;
+
+		otherDate = another.getCreatedAt().getTimeInMillis();
+
+		thisDate = createdAt.getTimeInMillis();
+
+		return thisDate <= otherDate ? 1 : -1;
+	}
+
+	public String[] getPhotos() {
+
+		return photos.toArray(new String[photos.size()]);
+	}
+
+}

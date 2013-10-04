@@ -16,21 +16,23 @@ public class Team {
 
 	private int id;
 	private String name;
+	private String code;
 	private Category category;
 	private ArrayList<Table> tables;
 	private ArrayList<Game> games;
-	private ArrayList<Photo> photos;
-	
+	private ArrayList<String> photos;
+
 	private static Comparator<Table> tableComparator = new Comparator<Table>() {
 
 		@Override
 		public int compare(Table lhs, Table rhs) {
 			if (lhs.getId() < rhs.getId())
 				return -1;
-			else if (lhs.getId() > rhs.getId())
-				return 1;
 			else
-				return 0;
+				if (lhs.getId() > rhs.getId())
+					return 1;
+				else
+					return 0;
 		}
 
 	};
@@ -41,7 +43,7 @@ public class Team {
 		this.category = category;
 		games = new ArrayList<Game>();
 		tables = new ArrayList<Table>();
-		photos = new ArrayList<Photo>();
+		photos = new ArrayList<String>();
 	}
 
 	// public void addTableRow(TableRow row) {
@@ -54,23 +56,24 @@ public class Team {
 	}
 
 	public void addGame(Game game) {
-		if (game == null) return;
+		if (game == null)
+			return;
 		games.add(game);
 	}
 
 	public ArrayList<Game> getUitslagen() {
 		ArrayList<Game> uitslagen = new ArrayList<Game>();
-		for (Game game : games) {
-			if (game.isPlayed()) uitslagen.add(game);
-		}
+		for (Game game : games)
+			if (game.isPlayed())
+				uitslagen.add(game);
 		return uitslagen;
 	}
 
 	public ArrayList<Game> getProgramma() {
 		ArrayList<Game> programma = new ArrayList<Game>();
-		for (Game game : games) {
-			if (!game.isPlayed()) programma.add(game);
-		}
+		for (Game game : games)
+			if (!game.isPlayed())
+				programma.add(game);
 		return programma;
 	}
 
@@ -90,6 +93,10 @@ public class Team {
 		return category;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
 	@SuppressWarnings("unchecked")
 	public ArrayList<Game> getGames() {
 		return (ArrayList<Game>) games.clone();
@@ -103,28 +110,36 @@ public class Team {
 	public void addTable(Table table) {
 		tables.add(table);
 		Collections.sort(tables, tableComparator);
-		
+
 		Log.d(TAG, "table added");
 	}
 
-	public void addPhoto(Photo photo) {
-		if (photo == null) return;
+	public void addPhoto(String photo) {
+		if (photo == null)
+			return;
 
-		Log.d(TAG, "Photo added to team " + name + ", url: " + photo.getUrl());
+		Log.d(TAG, "String added to team " + name + ", url: " + photo);
 		photos.add(photo);
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Photo> getPhotos() {
-		return (ArrayList<Photo>) photos.clone();
+	public ArrayList<String> getStrings() {
+		return (ArrayList<String>) photos.clone();
 	}
 
-	public int getPhotoCount() {
+	public int getStringCount() {
 		return photos.size();
 	}
 
 	public String getTableName(int position) {
 		return tables.get(position).getName();
+	}
+
+	public String[] getPhotoUrls() {
+		String[] urls = new String[photos.size()];
+		for (int i = 0; i < photos.size(); i++)
+			urls[i] = photos.get(i);
+		return urls;
 	}
 
 }

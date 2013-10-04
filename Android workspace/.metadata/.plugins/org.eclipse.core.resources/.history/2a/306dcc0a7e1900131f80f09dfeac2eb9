@@ -1,7 +1,0 @@
-package com.markbuikema.juliana32.tools;
-
-import android.widget.ArrayAdapter;
-
-public class CommentAdapter extends ArrayAdapter<T> {
-
-}

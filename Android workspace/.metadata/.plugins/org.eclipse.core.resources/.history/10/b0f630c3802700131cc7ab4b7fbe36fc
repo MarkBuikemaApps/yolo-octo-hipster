@@ -1,0 +1,30 @@
+package com.markbuikema.juliana32.asynctask;
+
+import com.markbuikema.juliana32.util.Tools;
+
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+
+public class ResizePictureChanger extends AsyncTask<String, Void, Bitmap> {
+	
+	private int reqWidth;
+	private int reqHeight;
+
+	public ResizePictureChanger(int reqWidth, int reqHeight) {
+		this.reqWidth = reqWidth;
+		this.reqHeight = reqHeight;
+	}
+	
+	@Override
+	protected Bitmap doInBackground(String... arg0) {
+		try {
+			if (arg0[0] == null)
+				return null;
+			else
+				return Tools.getResizedPictureFromUrl(arg0[0], reqWidth, reqHeight);
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}

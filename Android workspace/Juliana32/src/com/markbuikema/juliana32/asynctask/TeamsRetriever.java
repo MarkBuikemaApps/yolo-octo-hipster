@@ -1,7 +1,5 @@
 package com.markbuikema.juliana32.asynctask;
 
-import static com.markbuikema.juliana32.util.Tools.getHttpContent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,7 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.markbuikema.juliana32.activity.MainActivity;
+import com.markbuikema.juliana32.BuildConfig;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Photo;
 import com.markbuikema.juliana32.model.Season;
@@ -21,22 +19,26 @@ import com.markbuikema.juliana32.model.TableRow;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
 
+//FIXME
 public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 
 	private static final String TAG = "SplashActivity";
-	private static final String INFORMATION_URL = MainActivity.BASE_SERVER_URL + "/seasons/get/all";
+	private static final String SAMPLE_JSON = "{\"seasons\":[{\"year\":\"2013\",\"teams\":[{\"id\":\"0\",\"category\":\"SENIOREN\",\"name\":\"Juliana 1\",\"tables\":[{\"id\":\"0\",\"name\":\"Totaalstand\",\"rows\":[{\"teamName\":\"Juliana 1\",\"played\":\"2\",\"won\":\"2\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"13\",\"conceded\":\"1\"},{\"teamName\":\"FC Barcelona\",\"played\":\"2\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"2\",\"minusPoints\":\"0\",\"scored\":\"1\",\"conceded\":\"13\"},{\"teamName\":\"AC Milan\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"}]},{\"id\":\"1\",\"name\":\"Periode 1\",\"rows\":[{\"teamName\":\"Juliana 1\",\"played\":\"2\",\"won\":\"2\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"13\",\"conceded\":\"1\"},{\"teamName\":\"FC Barcelona\",\"played\":\"2\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"2\",\"minusPoints\":\"0\",\"scored\":\"1\",\"conceded\":\"13\"},{\"teamName\":\"AC Milan\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"}]},{\"id\":\"2\",\"name\":\"Periode 2\",\"rows\":[{\"teamName\":\"Juliana 1\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"},{\"teamName\":\"FC Barcelona\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"},{\"teamName\":\"AC Milan\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"}]},{\"id\":\"3\",\"name\":\"Periode 3\",\"rows\":[{\"teamName\":\"Juliana 1\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"},{\"teamName\":\"FC Barcelona\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"},{\"teamName\":\"AC Milan\",\"played\":\"0\",\"won\":\"0\",\"drawn\":\"0\",\"lost\":\"0\",\"minusPoints\":\"0\",\"scored\":\"0\",\"conceded\":\"0\"}]}],\"games\":[{\"id\":\"0\",\"teamName\":\"Juliana 1\",\"otherTeam\":\"FC Barcelona\",\"home\":\"true\",\"date\":\"1379687968075\",\"teamGoals\":\"10\",\"otherGoals\":\"0\"},{\"id\":\"1\",\"teamName\":\"Juliana 1\",\"otherTeam\":\"FC Barcelona\",\"home\":\"false\",\"date\":\"1380232800000\",\"teamGoals\":\"1\",\"otherGoals\":\"3\"}],\"photos\":[{\"id\":\"0\",\"url\":\"https://scontent-a-ams.xx.fbcdn.net/hphotos-prn2/1233509_582087245182345_288712300_n.jpg\"},{\"id\":\"1\",\"url\":\"https://scontent-b-ams.xx.fbcdn.net/hphotos-ash4/1234298_582087225182347_1797955253_n.jpg\"},{\"id\":\"2\",\"url\":\"https://scontent-b-ams.xx.fbcdn.net/hphotos-ash4/1239445_582087238515679_1631509903_n.jpg\"}]},{\"id\":\"1\",\"category\":\"SENIOREN\",\"name\":\"Juliana 2\"},{\"id\":\"2\",\"category\":\"SENIOREN\",\"name\":\"Juliana 3\"},{\"id\":\"3\",\"category\":\"JUNIOREN\",\"name\":\"Juliana A1\"},{\"id\":\"4\",\"category\":\"JUNIOREN\",\"name\":\"Juliana B1\"},{\"id\":\"5\",\"category\":\"JUNIOREN\",\"name\":\"Juliana C1\"},{\"id\":\"6\",\"category\":\"DAMES\",\"name\":\"Juliana DA1\"}],\"name\":\"13/14\"},{\"year\":\"2012\",\"name\":\"12/13\"}]}";
 
 	@Override
 	protected List<Season> doInBackground(Void... params) {
-		if (MainActivity.OFFLINE_MODE)
-			return new ArrayList<Season>();
+
 		List<Season> list = new ArrayList<Season>();
 
 		Log.d(TAG, "Started retrieving teams");
 
-		String json = getHttpContent(INFORMATION_URL);
+		String json = null;
+		if (BuildConfig.DEBUG)
+			json = SAMPLE_JSON;
+		else
+			// json = getHttpContent(INFORMATION_URL);
 
-		Log.d(TAG, "Teams json: " + json);
+			Log.d(TAG, "Teams json: " + json);
 
 		if (json == null) {
 			Log.e(TAG, "null json!");

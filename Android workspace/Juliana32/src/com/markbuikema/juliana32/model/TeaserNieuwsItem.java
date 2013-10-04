@@ -14,13 +14,22 @@ public class TeaserNieuwsItem extends NieuwsItem {
 	private String detailUrl;
 	private Bitmap image;
 
-	public TeaserNieuwsItem(int id, String title, String subTitle, String content, String imgUrl, String detailUrl) {
+	/**
+	 * Should be called asynchronously
+	 * 
+	 * @param id
+	 * @param title
+	 * @param subTitle
+	 * @param imgUrl
+	 * @param detailUrl
+	 */
+	public TeaserNieuwsItem(String title, String subTitle, String imgUrl, String detailUrl) {
 
-		super(id, title, subTitle, content);
+		super(title, subTitle, null, null);
 
 		this.imgUrl = imgUrl;
 		this.detailUrl = detailUrl;
-		
+
 		URL image;
 		try {
 			image = new URL(imgUrl.replaceAll("&amp;", "&"));
@@ -39,13 +48,15 @@ public class TeaserNieuwsItem extends NieuwsItem {
 		return image;
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}
 
 	@Override
 	public String toString() {
-		return "ID: " + id + "\nTITLE: " + title + "\nSUBTITLE: " + subTitle + "\nCONTENT: " + (content==null?"NULL":"NOT NULL") + "\nIMGURL: " + imgUrl + "\nDETAILURL: " + detailUrl+"\n---\n";
+		return "ID: " + id + "\nTITLE: " + title + "\nSUBTITLE: " + subTitle + "\nIMGURL: " + imgUrl + "\nDETAILURL: "
+				+ detailUrl + "\n---\n";
 	}
 
 	public String getImgUrl() {
@@ -55,6 +66,5 @@ public class TeaserNieuwsItem extends NieuwsItem {
 	public String getDetailUrl() {
 		return detailUrl;
 	}
-	
 
 }

@@ -1,20 +1,26 @@
 package com.markbuikema.juliana32.model;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public abstract class NieuwsItem implements Comparable<NieuwsItem> {
+
+	private static int nextId = 0;
 
 	protected int id;
 	protected String title;
 	protected String subTitle;
+	protected List<String> photos;
 	protected String content;
-	protected ArrayList<String> photos;
+	protected GregorianCalendar createdAt;
 
-	public NieuwsItem(int id, String title, String subTitle, String content) {
-		this.id = id;
+	public NieuwsItem(String title, String subTitle, String content, GregorianCalendar createdAt) {
+		id = nextId++;
 		this.title = title;
 		this.subTitle = subTitle;
 		this.content = content;
+		this.createdAt = createdAt;
 
 		photos = new ArrayList<String>();
 	}
@@ -31,8 +37,20 @@ public abstract class NieuwsItem implements Comparable<NieuwsItem> {
 		return photos.get(index);
 	}
 
+	public GregorianCalendar getCreatedAt() {
+		return createdAt;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
 	public boolean isFromFacebook() {
-		return this instanceof FacebookNieuwsItem && id == -1;
+		return this instanceof FacebookNieuwsItem;
+	}
+
+	public boolean isTeaser() {
+		return this instanceof TeaserNieuwsItem && createdAt == null;
 	}
 
 	public int getId() {
@@ -47,13 +65,9 @@ public abstract class NieuwsItem implements Comparable<NieuwsItem> {
 		return subTitle;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
 	@Override
 	public String toString() {
-		return id + ": " + title + "," + subTitle + "," + content + ".";
+		return id + ": " + title + "," + subTitle + ".";
 	}
 
 	@Override
@@ -63,17 +77,16 @@ public abstract class NieuwsItem implements Comparable<NieuwsItem> {
 		long thisDate;
 		long otherDate;
 
-		if (another instanceof NormalNieuwsItem)
-			otherDate = ((NormalNieuwsItem) another).getCreatedAt().getTimeInMillis();
-		else
-			otherDate = ((FacebookNieuwsItem) another).getCreatedAt().getTimeInMillis();
+		otherDate = another.getCreatedAt().getTimeInMillis();
 
-		if (this instanceof NormalNieuwsItem)
-			thisDate = ((NormalNieuwsItem) this).getCreatedAt().getTimeInMillis();
-		else
-			thisDate = ((FacebookNieuwsItem) this).getCreatedAt().getTimeInMillis();
+		thisDate = createdAt.getTimeInMillis();
 
 		return thisDate <= otherDate ? 1 : -1;
+	}
+
+	public String[] getPhotos() {
+
+		return photos.toArray(new String[photos.size()]);
 	}
 
 }

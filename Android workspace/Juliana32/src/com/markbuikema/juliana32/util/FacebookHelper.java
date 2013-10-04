@@ -3,6 +3,7 @@ package com.markbuikema.juliana32.util;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -160,7 +161,13 @@ public class FacebookHelper {
 			commentCount = 0;
 		}
 
-		FacebookNieuwsItem item = new FacebookNieuwsItem(id, title, content, dateString, link, imgUrl, likeCount, commentCount,
+		String yearString = dateString.substring(0, 4);
+		String monthString = dateString.substring(5, 7);
+		String dayString = dateString.substring(8, 10);
+		GregorianCalendar date = new GregorianCalendar(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1,
+				Integer.parseInt(dayString));
+
+		FacebookNieuwsItem item = new FacebookNieuwsItem(id, title, content, date, link, imgUrl, likeCount, commentCount,
 				photo ? albumId : null);
 
 		return item;
@@ -195,7 +202,7 @@ public class FacebookHelper {
 				JSONObject picture = o.getJSONObject("picture");
 				JSONObject data = picture.getJSONObject("data");
 				String url = data.getString("url");
-				Bitmap bmp = Tools.getPictureFromUrl(url);
+				Bitmap bmp = Util.getPictureFromUrl(url);
 				String userId = data.getString("TODO"); // TODO
 				Like like = new Like(o.getString("id"), o.getString("name"), bmp, userId);
 				publishProgress(like);
@@ -211,7 +218,6 @@ public class FacebookHelper {
 		protected Void doInBackground(String... id) {
 
 			Log.d("COMMENT", "Started commentloader");
-
 			Bundle params = new Bundle();
 			params.putString("access_token", FacebookHelper.ACCESS_TOKEN);
 			params.putInt("limit", 150);
@@ -263,7 +269,7 @@ public class FacebookHelper {
 
 				JSONObject person = new JSONObject(FacebookHelper.getFacebook().request("/" + userId, params));
 				String imgUrl = person.getJSONObject("picture").getJSONObject("data").getString("url");
-				image = Tools.getPictureFromUrl(imgUrl);
+				image = Util.getPictureFromUrl(imgUrl);
 
 			} catch (JSONException e1) {
 				e1.printStackTrace();
