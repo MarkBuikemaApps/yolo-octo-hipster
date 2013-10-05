@@ -1,1 +1,0 @@
-INDEX VERSION 1.126+C:\Users\Mark\Development\Projects\yolo-octo-hipster\Server workspace\.metadata\.plugins\org.eclipse.jdt.core

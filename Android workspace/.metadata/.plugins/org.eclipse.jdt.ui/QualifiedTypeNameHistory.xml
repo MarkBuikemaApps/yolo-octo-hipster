@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.view.inputmethod.EditorInfo"/>
-<fullyQualifiedTypeName name="android.widget.TextView.OnEditorActionListener"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.tools.FacebookHelper"/>
 <fullyQualifiedTypeName name="android.view.View.OnFocusChangeListener"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Comment"/>
@@ -39,14 +37,12 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.adapter.NieuwsAdapter.NormalSectionFragment"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.util.DateTimeUtils"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.adapter.NieuwsAdapter.PhotoPagerAdapter"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.util.DataManager"/>
 <fullyQualifiedTypeName name="android.widget.LinearLayout.LayoutParams"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="com.origamilabs.library.views.StaggeredGridView"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.FacebookNieuwsItem"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.TeaserNieuwsItem"/>
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
 <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
@@ -59,5 +55,9 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.adapter.NieuwsAdapter.OnImageLoadedListener"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.BuildConfig"/>
 <fullyQualifiedTypeName name="android.content.res.Resources"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="java.lang.ArrayIndexOutOfBoundsException"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.activity.SplashActivity.CountCallback"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.FacebookNieuwsItem"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.util.Util"/>
 </qualifiedTypeNameHistroy>

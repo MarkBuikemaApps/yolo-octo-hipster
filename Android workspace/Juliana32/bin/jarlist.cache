@@ -1,8 +1,6 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1379673704651 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Android Libraries\MenuDrawer\menudrawer\libs\android-support-v4.jar
-1379673704651 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Android Libraries\ViewPagerIndicator\library\libs\android-support-v4.jar
-1379673704651 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Projects\yolo-octo-hipster\Android workspace\Juliana32\libs\android-support-v4.jar
-1379673704651 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Android Libraries\Facebook\facebook\libs\android-support-v4.jar
-1379673704651 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Android Libraries\StaggeredGridView\libs\android-support-v4.jar
+1380888087097 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Tools\StaggeredGridView\StaggeredGridView-master\libs\android-support-v4.jar
+1380888087097 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Projecten\yolo-octo-hipster\Android workspace\Juliana32\libs\android-support-v4.jar
+1380888087097 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f C:\Users\Mark\Development\Projecten\yolo-octo-hipster\Library projects\LibViewPagerIndicator\library\libs\android-support-v4.jar

@@ -1,6 +1,0 @@
-INDEX VERSION 1.122+C:\Users\Mark\Development\Projects\yolo-octo-hipster\ServerWorkspace2\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-925231227.index
-3757643783.index
-1232403619.index
-2071101644.index
-2758005127.index

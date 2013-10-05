@@ -1,15 +1,15 @@
 int array menu_items 0x7f0b0000
 int attr centered 0x7f010017
 int attr clipPadding 0x7f010022
-int attr confirm_logout 0x7f01003f
-int attr done_button_background 0x7f010039
-int attr done_button_text 0x7f010037
-int attr drawSelectorOnTop 0x7f010030
-int attr extra_fields 0x7f010034
+int attr confirm_logout 0x7f01003c
+int attr done_button_background 0x7f010036
+int attr done_button_text 0x7f010034
+int attr drawSelectorOnTop 0x7f010042
+int attr extra_fields 0x7f010031
 int attr fadeDelay 0x7f01002e
 int attr fadeLength 0x7f01002f
 int attr fades 0x7f01002d
-int attr fetch_user_info 0x7f010040
+int attr fetch_user_info 0x7f01003d
 int attr fillColor 0x7f01001b
 int attr footerColor 0x7f010023
 int attr footerIndicatorHeight 0x7f010026
@@ -18,12 +18,12 @@ int attr footerIndicatorUnderlinePadding 0x7f010027
 int attr footerLineHeight 0x7f010024
 int attr footerPadding 0x7f010028
 int attr gapWidth 0x7f010021
-int attr is_cropped 0x7f010044
-int attr itemMargin 0x7f010032
+int attr is_cropped 0x7f010041
+int attr itemMargin 0x7f010044
 int attr linePosition 0x7f010029
 int attr lineWidth 0x7f010020
-int attr login_text 0x7f010041
-int attr logout_text 0x7f010042
+int attr login_text 0x7f01003e
+int attr logout_text 0x7f01003f
 int attr mdActiveIndicator 0x7f010004
 int attr mdAllowIndicatorAnimation 0x7f01000a
 int attr mdContentBackground 0x7f010001
@@ -41,25 +41,25 @@ int attr mdPosition 0x7f010010
 int attr mdSlideDrawable 0x7f01000c
 int attr mdTouchBezelSize 0x7f010009
 int attr menuDrawerStyle 0x7f010000
-int attr multi_select 0x7f01003a
-int attr numColumns 0x7f010031
+int attr multi_select 0x7f010037
+int attr numColumns 0x7f010043
 int attr pageColor 0x7f01001c
-int attr preset_size 0x7f010043
+int attr preset_size 0x7f010040
 int attr radius 0x7f01001d
-int attr radius_in_meters 0x7f01003b
-int attr results_limit 0x7f01003c
-int attr search_text 0x7f01003d
+int attr radius_in_meters 0x7f010038
+int attr results_limit 0x7f010039
+int attr search_text 0x7f01003a
 int attr selectedBold 0x7f01002a
 int attr selectedColor 0x7f010018
-int attr show_pictures 0x7f010033
-int attr show_search_box 0x7f01003e
-int attr show_title_bar 0x7f010035
+int attr show_pictures 0x7f010030
+int attr show_search_box 0x7f01003b
+int attr show_title_bar 0x7f010032
 int attr snap 0x7f01001e
 int attr strokeColor 0x7f01001f
 int attr strokeWidth 0x7f010019
 int attr titlePadding 0x7f01002b
-int attr title_bar_background 0x7f010038
-int attr title_text 0x7f010036
+int attr title_bar_background 0x7f010035
+int attr title_text 0x7f010033
 int attr topPadding 0x7f01002c
 int attr unselectedColor 0x7f01001a
 int attr vpiCirclePageIndicatorStyle 0x7f010011
@@ -549,7 +549,7 @@ int styleable MenuDrawer_mdMenuSize 2
 int styleable MenuDrawer_mdPosition 15
 int styleable MenuDrawer_mdSlideDrawable 11
 int styleable MenuDrawer_mdTouchBezelSize 8
-int[] styleable StaggeredGridView { 0x7f010030, 0x7f010031, 0x7f010032 }
+int[] styleable StaggeredGridView { 0x7f010042, 0x7f010043, 0x7f010044 }
 int styleable StaggeredGridView_drawSelectorOnTop 0
 int styleable StaggeredGridView_itemMargin 2
 int styleable StaggeredGridView_numColumns 1
@@ -582,14 +582,14 @@ int styleable ViewPagerIndicator_vpiLinePageIndicatorStyle 2
 int styleable ViewPagerIndicator_vpiTabPageIndicatorStyle 4
 int styleable ViewPagerIndicator_vpiTitlePageIndicatorStyle 3
 int styleable ViewPagerIndicator_vpiUnderlinePageIndicatorStyle 5
-int[] styleable com_facebook_friend_picker_fragment { 0x7f01003a }
+int[] styleable com_facebook_friend_picker_fragment { 0x7f010037 }
 int styleable com_facebook_friend_picker_fragment_multi_select 0
-int[] styleable com_facebook_login_view { 0x7f01003f, 0x7f010040, 0x7f010041, 0x7f010042 }
+int[] styleable com_facebook_login_view { 0x7f01003c, 0x7f01003d, 0x7f01003e, 0x7f01003f }
 int styleable com_facebook_login_view_confirm_logout 0
 int styleable com_facebook_login_view_fetch_user_info 1
 int styleable com_facebook_login_view_login_text 2
 int styleable com_facebook_login_view_logout_text 3
-int[] styleable com_facebook_picker_fragment { 0x7f010033, 0x7f010034, 0x7f010035, 0x7f010036, 0x7f010037, 0x7f010038, 0x7f010039 }
+int[] styleable com_facebook_picker_fragment { 0x7f010030, 0x7f010031, 0x7f010032, 0x7f010033, 0x7f010034, 0x7f010035, 0x7f010036 }
 int styleable com_facebook_picker_fragment_done_button_background 6
 int styleable com_facebook_picker_fragment_done_button_text 4
 int styleable com_facebook_picker_fragment_extra_fields 1
@@ -597,11 +597,11 @@ int styleable com_facebook_picker_fragment_show_pictures 0
 int styleable com_facebook_picker_fragment_show_title_bar 2
 int styleable com_facebook_picker_fragment_title_bar_background 5
 int styleable com_facebook_picker_fragment_title_text 3
-int[] styleable com_facebook_place_picker_fragment { 0x7f01003b, 0x7f01003c, 0x7f01003d, 0x7f01003e }
+int[] styleable com_facebook_place_picker_fragment { 0x7f010038, 0x7f010039, 0x7f01003a, 0x7f01003b }
 int styleable com_facebook_place_picker_fragment_radius_in_meters 0
 int styleable com_facebook_place_picker_fragment_results_limit 1
 int styleable com_facebook_place_picker_fragment_search_text 2
 int styleable com_facebook_place_picker_fragment_show_search_box 3
-int[] styleable com_facebook_profile_picture_view { 0x7f010043, 0x7f010044 }
+int[] styleable com_facebook_profile_picture_view { 0x7f010040, 0x7f010041 }
 int styleable com_facebook_profile_picture_view_is_cropped 1
 int styleable com_facebook_profile_picture_view_preset_size 0

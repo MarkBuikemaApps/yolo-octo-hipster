@@ -31,6 +31,7 @@ import com.markbuikema.juliana32.asynctask.PhotoSharer;
 import com.markbuikema.juliana32.asynctask.PictureChanger;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.util.Util;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
@@ -200,7 +201,11 @@ public class TeamDetail {
 				}
 			});
 
-			final String url = team.getPhotos().get(position).getUrl();
+			String urlOrId = team.getPhotos().get(position);
+			if (!urlOrId.startsWith("http"))
+				urlOrId = Util.PHOTO_URL_PREFIX + urlOrId + Util.PHOTO_URL_SUFFIX;
+
+			final String url = urlOrId;
 
 			shareButton.setOnClickListener(new OnClickListener() {
 

@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.markbuikema.juliana32.BuildConfig;
 import com.markbuikema.juliana32.model.Game;
-import com.markbuikema.juliana32.model.Photo;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.TableRow;
@@ -189,11 +188,10 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 		return team;
 	}
 
-	private Photo processPhotoJSON(JSONObject photoJSON) {
+	private String processPhotoJSON(JSONObject photoJSON) {
 		try {
 			String url = photoJSON.getString("url");
-			int id = photoJSON.getInt("id");
-			return new Photo(id, url);
+			return url;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

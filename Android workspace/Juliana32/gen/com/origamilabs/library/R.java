@@ -8,12 +8,12 @@ package com.origamilabs.library;
 
 public final class R {
 	public static final class attr {
-		public static final int drawSelectorOnTop = 0x7f010030;
-		public static final int itemMargin = 0x7f010032;
-		public static final int numColumns = 0x7f010031;
+		public static final int drawSelectorOnTop = 0x7f010042;
+		public static final int itemMargin = 0x7f010044;
+		public static final int numColumns = 0x7f010043;
 	}
 	public static final class styleable {
-		public static final int[] StaggeredGridView = { 0x7f010030, 0x7f010031, 0x7f010032 };
+		public static final int[] StaggeredGridView = { 0x7f010042, 0x7f010043, 0x7f010044 };
 		public static final int StaggeredGridView_drawSelectorOnTop = 0;
 		public static final int StaggeredGridView_itemMargin = 2;
 		public static final int StaggeredGridView_numColumns = 1;

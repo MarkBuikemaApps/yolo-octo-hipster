@@ -9,10 +9,10 @@
         <version>7</version>
     </parent>
 
-    <groupId>net.simonvt</groupId>
-    <artifactId>android-menudrawer-parent</artifactId>
+    <groupId>net.simonvt.menudrawer</groupId>
+    <artifactId>menudrawer-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.4-SNAPSHOT</version>
+    <version>3.0.5-SNAPSHOT</version>
 
     <name>Android MenuDrawer (Parent)</name>
     <description>A menu drawer implementation which allows dragging of both the content, and the entire window.</description>
@@ -20,16 +20,29 @@
     <inceptionYear>2012</inceptionYear>
 
     <modules>
-        <module>library</module>
-        <module>samples</module>
+        <module>menudrawer</module>
+        <module>menudrawer-samples</module>
     </modules>
 
     <scm>
         <url>http://github.com/SimonVT/android-menudrawer/</url>
         <connection>scm:git:git://github.com/SimonVT/android-menudrawer.git</connection>
         <developerConnection>scm:git:git@github.com:SimonVT/android-menudrawer.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Simon Vig Therkildsen</name>
+            <email>simonvt@gmail.com</email>
+            <id>simonvt</id>
+            <url>http://simonvt.net</url>
+            <timezone>1</timezone>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
@@ -80,7 +93,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>3.1</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
@@ -90,13 +103,19 @@
                 <plugin>
                     <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                     <artifactId>android-maven-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>3.6.0</version>
                     <configuration>
                         <sdk>
                             <platform>${android.platform}</platform>
                         </sdk>
                     </configuration>
                     <extensions>true</extensions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.8</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -105,7 +124,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.4.1</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
@@ -114,7 +133,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>2.10</version>
                 <configuration>
                     <failsOnError>true</failsOnError>
                     <!-- Relative to module directory. -->
@@ -127,6 +146,29 @@
                         <goals>
                             <goal>checkstyle</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>gradle</executable>
+                            <arguments>
+                                <argument>-PlibVersion=${project.version}</argument>
+                                <argument>clean</argument>
+                                <argument>assemble</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -3,8 +3,11 @@ package com.markbuikema.juliana32.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import android.util.Log;
+
+import com.markbuikema.juliana32.util.Util;
 
 public class Team {
 
@@ -41,6 +44,13 @@ public class Team {
 		this.id = id;
 		this.name = name;
 		this.category = category;
+
+		try {
+			code = name.split(" ")[1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			code = "error";
+		}
+
 		games = new ArrayList<Game>();
 		tables = new ArrayList<Table>();
 		photos = new ArrayList<String>();
@@ -138,8 +148,19 @@ public class Team {
 	public String[] getPhotoUrls() {
 		String[] urls = new String[photos.size()];
 		for (int i = 0; i < photos.size(); i++)
-			urls[i] = photos.get(i);
+			if (photos.get(i).startsWith("http"))
+				urls[i] = photos.get(i);
+			else
+				urls[i] = Util.PHOTO_URL_PREFIX + photos.get(i) + Util.PHOTO_URL_SUFFIX;
 		return urls;
+	}
+
+	public int getPhotoCount() {
+		return photos.size();
+	}
+
+	public List<String> getPhotos() {
+		return Collections.unmodifiableList(photos);
 	}
 
 }

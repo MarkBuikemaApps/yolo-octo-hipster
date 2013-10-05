@@ -83,6 +83,18 @@ public class SplashActivity extends Activity {
 				@Override
 				protected void onPostExecute(List<NieuwsItem> result) {
 					manager.setNieuwsItems(result);
+					int count = 0;
+					for (NieuwsItem item : result)
+						if (item.isFromFacebook() && ((FacebookNieuwsItem) item).isPhoto())
+							count++;
+
+					final CountCallback callback = new CountCallback(count) {
+						@Override
+						public void onCall() {
+							Log.d("CountCallback", "onCall()");
+							Util.linkPhotosToTeam();
+						}
+					};
 					for (NieuwsItem item : result)
 						if (item.isFromFacebook()) {
 							final FacebookNieuwsItem fbi = ((FacebookNieuwsItem) item);
@@ -92,12 +104,11 @@ public class SplashActivity extends Activity {
 									protected void onPostExecute(List<String> result) {
 										for (String photo : result)
 											fbi.addPhoto(photo);
+										callback.onCallback();
 									}
 
 								}.execute(fbi);
 						}
-
-					Util.linkPhotosToTeam();
 				}
 
 			};
@@ -130,4 +141,27 @@ public class SplashActivity extends Activity {
 		}
 
 	}
+
+	public abstract class CountCallback {
+		private int countLeft;
+		private static final String TAG = "CountCallback";
+
+		public CountCallback(int count) {
+			Log.d(TAG, "CountCallback created with count " + count);
+			countLeft = count;
+		}
+
+		public final void onCallback() {
+			if (countLeft > 1)
+				countLeft--;
+			else
+				onCall();
+
+			Log.d(TAG, "onCallback() called, new count = " + countLeft);
+		}
+
+		public void onCall() {
+		}
+	}
+
 }
