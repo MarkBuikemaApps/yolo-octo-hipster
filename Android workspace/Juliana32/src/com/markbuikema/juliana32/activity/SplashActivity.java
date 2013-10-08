@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,7 +80,11 @@ public class SplashActivity extends Activity {
 				}
 			};
 
-			NieuwsRetriever nieuwsRetriever = new NieuwsRetriever() {
+			SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFERENCES, 0);
+			boolean facebook = prefs.getBoolean(SettingsActivity.FACEBOOK, true);
+			boolean website = prefs.getBoolean(SettingsActivity.WEBSITE, true);
+
+			NieuwsRetriever nieuwsRetriever = new NieuwsRetriever(facebook, website) {
 				@Override
 				protected void onPostExecute(List<NieuwsItem> result) {
 					manager.setNieuwsItems(result);

@@ -197,7 +197,7 @@ public class TeamDetail {
 
 				@Override
 				public void onClick(View arg0) {
-					((MainActivity) context).showPhotoDialog(team.getPhotoUrls(), position);
+					((MainActivity) context).showPhotoDialog(team.getPhotoUrls(), photoPager, position);
 				}
 			});
 

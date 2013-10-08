@@ -1,17 +1,14 @@
 package com.markbuikema.juliana32.service;
 
-import java.util.ArrayList;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -19,8 +16,9 @@ import android.util.Log;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
+import com.markbuikema.juliana32.activity.SettingsActivity;
+import com.markbuikema.juliana32.asynctask.NieuwsRetriever;
 import com.markbuikema.juliana32.model.NieuwsItem;
-import com.markbuikema.juliana32.model.NormalNieuwsItem;
 
 public class NotificationService extends Service {
 
@@ -60,143 +58,59 @@ public class NotificationService extends Service {
 		// }
 
 		// do the actual work, in a separate thread
-		new PollTask().execute();
-	}
-
-	private class PollTask extends AsyncTask<Void, Void, Integer> {
-
-		@Override
-		protected Integer doInBackground(Void... params) {
-			// Log.d(TAG, "Polling...");
-			// HttpClient client = new DefaultHttpClient();
-			// HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL +
-			// "/news/count");
-			//
-			// try {
-			// HttpResponse response = client.execute(get);
-			// String countText = EntityUtils.toString(response.getEntity());
-			// int count = Integer.valueOf(countText);
-			// if (count > originalCount && originalCount > 0) {
-			// int difference = count - originalCount;
-			// originalCount = count;
-			// Log.d(TAG, "Original: " + originalCount + ", New: " + count +
-			// ", Difference: " + difference);
-			// return difference;
-			// }
-			// if (originalCount == 0) {
-			// originalCount = count;
-			// }
-			// } catch (Exception e) {
-			//
-			// }
-
-			return 0;
-		}
-
-		/**
-		 * In here you should interpret whatever you fetched in doInBackground and
-		 * push any notifications you need to the status bar, using the
-		 * NotificationManager. I will not cover this here, go check the docs on
-		 * NotificationManager.
-		 * 
-		 * What you HAVE to do is call stopSelf() after you've pushed your
-		 * notification(s). This will: 1) Kill the service so it doesn't waste
-		 * precious resources 2) Call onDestroy() which will release the wake lock,
-		 * so the device can go to sleep again and save precious battery.
-		 */
-		@Override
-		protected void onPostExecute(Integer result) {
-			if (result > 0)
-				new NewNewsRetriever().execute(result);
-			else
-				stopSelf();
-
-		}
-	}
-
-	private class NewNewsRetriever extends AsyncTask<Integer, Void, ArrayList<NieuwsItem>> {
-
-		@Override
-		protected ArrayList<NieuwsItem> doInBackground(Integer... params) {
-
-			Log.d(TAG, "NewNewsRetriever started");
-
-			ArrayList<NieuwsItem> items = new ArrayList<NieuwsItem>();
-			// int count = params[0];
-			// HttpClient client = new DefaultHttpClient();
-			// HttpGet get = new HttpGet(MainActivity.BASE_SERVER_URL + "/news/get");
-			// try {
-			// HttpResponse response = client.execute(get);
-			// String jsonString = EntityUtils.toString(response.getEntity());
-			//
-			// JSONObject json = new JSONObject(jsonString);
-			// try {
-			// JSONArray array = json.getJSONArray("newsItem");
-			// for (int i = array.length() - 1; i > array.length() - 1 - count; i--) {
-			// processJSONObject(items, array.getJSONObject(i));
-			// }
-			// } catch (JSONException e) {
-			// JSONObject singleObject = json.getJSONObject("newsItem");
-			// processJSONObject(items, singleObject);
-			// }
-			//
-			// } catch (Exception e) {
-			//
-			// }
-			return items;
-		}
-
-		private void processJSONObject(ArrayList<NieuwsItem> items, JSONObject obj) {
-			try {
-				int id = obj.getInt("id");
-				String content = obj.getString("content");
-				long createdAt = obj.getLong("createdAt");
-				String title = obj.getString("title");
-				String subTitle = obj.getString("subTitle");
-				String detailUrl = obj.getString("detailUrl");
-				// NieuwsItem item = new NormalNieuwsItem(id, title, subTitle, content,
-				// createdAt, detailUrl);
-				// items.add(item);
-
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		protected void onPostExecute(ArrayList<NieuwsItem> result) {
-
-			Intent cIntent = new Intent(NotificationService.this, MainActivity.class);
-			cIntent.putExtra(FROM_NOTIFICATION, true);
-
-			String title = "";
-			String text = NotificationService.this.getResources().getString(R.string.app_name);
-			if (result.size() > 1)
-				text = NotificationService.this.getResources().getString(R.string.multiple_notifications, result.size());
-			else {
-				text = result.get(0).getTitle();
-				cIntent.putExtra(NEWS_ID, result.get(0).getId());
-			}
-			cIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-
-			PendingIntent clickIntent = PendingIntent.getActivity(NotificationService.this, 0, cIntent, 0);
-			PendingIntent pIntent = PendingIntent.getBroadcast(NotificationService.this, 0, cIntent, 0);
-			NotificationManager nm = (NotificationManager) NotificationService.this.getSystemService(NOTIFICATION_SERVICE);
-			Notification not = new Notification();
-			not.setLatestEventInfo(NotificationService.this, title, text, pIntent);
-			not.icon = R.drawable.ic_launcher;
-			not.flags = Notification.FLAG_AUTO_CANCEL;
-			not.ledARGB = Color.MAGENTA;
-			not.tickerText = result.size() > 1 ? (result.size() + " nieuwe nieuwsberichten") : "1 nieuw nieuwsbericht";
-			not.when = ((NormalNieuwsItem) result.get(result.size() - 1)).getCreatedAt().getTimeInMillis();
-			not.vibrate = new long[] {
-					50, 50, 50
-			};
-			not.contentIntent = clickIntent;
-			nm.notify(0, not);
-
+		SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFERENCES, 0);
+		boolean facebook = prefs.getBoolean(SettingsActivity.FACEBOOK, true);
+		boolean website = prefs.getBoolean(SettingsActivity.WEBSITE, true);
+		if (!facebook && !website)
 			stopSelf();
-		}
+		new NieuwsRetriever(facebook, website) {
+
+			@Override
+			protected void onPostExecute(List<NieuwsItem> result) {
+				if (result.size() > originalCount && originalCount > 0) {
+					pushNotification(result);
+					originalCount = result.size();
+				} else
+					stopSelf();
+
+			}
+		}.execute();
+	}
+
+	public void pushNotification(List<NieuwsItem> items) {
+
+		int newItems = items.size() - originalCount;
+
+		Intent cIntent = new Intent(NotificationService.this, MainActivity.class);
+		cIntent.putExtra(FROM_NOTIFICATION, true);
+
+		String title = "Juliana '32";
+		String text = "";
+
+		if (newItems > 1)
+			text = newItems + " nieuwe nieuwsberichten";
+		else
+			text = items.get(items.size() - 1).getTitle();
+
+		cIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+		PendingIntent clickIntent = PendingIntent.getActivity(NotificationService.this, 0, cIntent, 0);
+		PendingIntent pIntent = PendingIntent.getBroadcast(NotificationService.this, 0, cIntent, 0);
+		NotificationManager nm = (NotificationManager) NotificationService.this.getSystemService(NOTIFICATION_SERVICE);
+		Notification not = new Notification();
+		not.setLatestEventInfo(NotificationService.this, title, text, pIntent);
+		not.icon = R.drawable.ic_launcher;
+		not.flags = Notification.FLAG_AUTO_CANCEL;
+		not.ledARGB = Color.BLUE;
+		not.tickerText = text;
+		not.when = items.get(items.size() - 1).getCreatedAt().getTimeInMillis();
+		not.vibrate = new long[] {
+				50, 50, 50
+		};
+		not.contentIntent = clickIntent;
+		nm.notify(0, not);
+
+		stopSelf();
 	}
 
 	/**

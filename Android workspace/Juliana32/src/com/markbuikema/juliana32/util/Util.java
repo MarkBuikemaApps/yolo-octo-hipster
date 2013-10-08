@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -29,6 +31,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
+import com.markbuikema.juliana32.model.Like;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
@@ -275,5 +278,41 @@ public class Util {
 
 		return null;
 
+	}
+
+	public static String getLikeString(FacebookNieuwsItem item, String username) {
+		List<Like> likes = new ArrayList<Like>(item.getLikes());
+		boolean liked = false;
+		for (Like like : item.getLikes())
+			if (like.getName().equals(username))
+				liked = true;
+		if (item.isLiked() && !liked)
+			likes.add(0, new Like("", username));
+		if (!item.isLiked() && liked)
+			for (Like like : item.getLikes())
+				if (like.getName().equals(username)) {
+					likes.remove(like);
+					break;
+				}
+
+		String s = "";
+		if (likes.isEmpty())
+			return s;
+
+		if (likes.size() == 1)
+			return likes.get(0).getName() + " vindt dit leuk.";
+
+		for (int i = 0; i < likes.size(); i++) {
+			s += likes.get(i).getName();
+
+			if (i < likes.size() - 2)
+				s += ", ";
+			else
+				if (i < likes.size() - 1)
+					s += " en ";
+		}
+
+		s += " vinden dit leuk.";
+		return s;
 	}
 }

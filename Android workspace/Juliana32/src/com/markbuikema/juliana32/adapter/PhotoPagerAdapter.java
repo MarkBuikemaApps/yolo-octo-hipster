@@ -78,7 +78,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
 				@Override
 				public void onClick(View v) {
 					MainActivity act = (MainActivity) context;
-					act.showPhotoDialog(item.getPhotos(), position - 1);
+					act.showPhotoDialog(item.getPhotos(), null, position - 1);
 				}
 			});
 

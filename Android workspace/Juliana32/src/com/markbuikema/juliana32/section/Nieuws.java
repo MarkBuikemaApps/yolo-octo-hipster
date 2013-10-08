@@ -3,6 +3,7 @@ package com.markbuikema.juliana32.section;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.activity.MainActivity.Page;
+import com.markbuikema.juliana32.activity.SettingsActivity;
 import com.markbuikema.juliana32.adapter.NieuwsAdapter;
 import com.markbuikema.juliana32.asynctask.NieuwsRetriever;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
@@ -78,7 +80,11 @@ public class Nieuws {
 	}
 
 	public void refresh() {
-		nieuwsRetriever = new NieuwsRetriever() {
+		SharedPreferences prefs = activity.getSharedPreferences(SettingsActivity.PREFERENCES, 0);
+		boolean facebook = prefs.getBoolean(SettingsActivity.FACEBOOK, true);
+		boolean website = prefs.getBoolean(SettingsActivity.WEBSITE, true);
+
+		nieuwsRetriever = new NieuwsRetriever(facebook, website) {
 
 			@Override
 			protected void onPreExecute() {
@@ -140,4 +146,7 @@ public class Nieuws {
 		itemRequestId = newsId;
 	}
 
+	public void invalidate() {
+		nieuwsAdapter.notifyDataSetChanged();
+	}
 }

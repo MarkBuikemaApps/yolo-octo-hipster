@@ -21,7 +21,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.HttpMethod;
+import com.facebook.Request;
 import com.facebook.Session;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.asynctask.PictureChanger;
@@ -79,10 +82,10 @@ public class SettingsActivity extends Activity {
 			}
 		});
 		adapter.add(new SettingCaption("Nieuwsberichten"));
-		adapter.add(new CheckBoxSetting("Notificaties", "bij nieuwe nieuwsberichten", NOTIFICATIONS));
+		adapter.add(new CheckBoxSetting("Notificaties", "bij nieuwe nieuwsberichten", NOTIFICATIONS, false));
 		adapter.add(new SettingCaption("Bronnen"));
-		adapter.add(new CheckBoxSetting("Facebook", "", FACEBOOK));
-		adapter.add(new CheckBoxSetting("Juliana website", "", WEBSITE));
+		adapter.add(new CheckBoxSetting("Facebook", "", FACEBOOK, true));
+		adapter.add(new CheckBoxSetting("Juliana website", "", WEBSITE, true));
 
 		Session facebookSession = Session.getActiveSession();
 		if (facebookSession.isOpened()) {
@@ -141,10 +144,9 @@ public class SettingsActivity extends Activity {
 
 		CheckBox checkBox;
 
-		public CheckBoxSetting(String title, String subTitle, final String preferenceName) {
+		public CheckBoxSetting(String title, String subTitle, final String preferenceName, boolean defaultValue) {
 			super(title, subTitle, getLayoutInflater().inflate(R.layout.setting_checkbox, null));
 			checkBox = (CheckBox) view.findViewById(R.id.settingCheckBox);
-			checkBox.setChecked(preferences.getBoolean(preferenceName, false));
 			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 				@Override
@@ -154,6 +156,8 @@ public class SettingsActivity extends Activity {
 					edit.commit();
 				}
 			});
+			checkBox.setChecked(preferences.getBoolean(preferenceName, defaultValue));
+
 		}
 
 		public boolean isChecked() {
@@ -163,6 +167,7 @@ public class SettingsActivity extends Activity {
 		public void toggle() {
 			checkBox.setChecked(!checkBox.isChecked());
 		}
+
 	}
 
 	public class FacebookSetting extends Setting {
@@ -199,16 +204,27 @@ public class SettingsActivity extends Activity {
 		public SettingCaption(String title) {
 			super(title, "", getLayoutInflater().inflate(R.layout.setting_caption, null));
 		}
-
 	}
 
 	private void onClickLogout() {
 		Session session = Session.getActiveSession();
+
+		if (session.isOpened() && session.getPermissions().contains("publish_actions")) {
+			Bundle b = new Bundle();
+			b.putString("fields", "publish_actions");
+			Request r = Request.newGraphPathRequest(session, "me/permissions", null);
+			r.setHttpMethod(HttpMethod.DELETE);
+			r.setParameters(b);
+			Request.executeBatchAsync(r);
+		}
+
 		if (!session.isClosed())
 			session.closeAndClearTokenInformation();
 
 		adapter.remove(facebookCaption);
 		adapter.remove(facebookSetting);
+
+		Toast.makeText(this, "U bent uitgelogd", Toast.LENGTH_LONG).show();
 
 	}
 

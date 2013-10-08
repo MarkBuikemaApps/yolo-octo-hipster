@@ -40,27 +40,7 @@
                 android:textIsSelectable="false"
                 android:textSize="20sp" />
 
-            <ImageButton
-                android:id="@+id/menuFacebook"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/listselector"
-                android:contentDescription="@string/facebook"
-                android:padding="@dimen/small_margin"
-                android:scaleType="fitStart"
-                android:src="@drawable/ic_action_facebook"
-                android:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/menuTwitter"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/listselector"
-                android:contentDescription="@string/twitter"
-                android:padding="@dimen/small_margin"
-                android:scaleType="fitStart"
-                android:src="@drawable/ic_action_twitter"
-                android:visibility="gone" />
+           
 
             <ImageButton
                 android:id="@+id/menuPictures"
@@ -127,14 +107,6 @@
                 android:spinnerMode="dropdown"
                 android:textSize="20sp" />
 
-            <ImageButton
-                android:id="@+id/menuToggler2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/overflow_borderless"
-                android:contentDescription="@string/menu"
-                android:scaleType="fitStart"
-                android:src="@drawable/listselector" />
         </LinearLayout>
 
         <include

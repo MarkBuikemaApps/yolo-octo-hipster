@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="onBac" key="selection"/>
 		<list key="findhistory">
-			<item value=" "/>
-			<item value="openF"/>
-			<item value="open"/>
-			<item value="Toast.ma"/>
-			<item value="Callba"/>
-			<item value="callba"/>
-			<item value="},{"/>
-			<item value="dummy"/>
+			<item value="onbac"/>
+			<item value="onclick"/>
+			<item value="profilepic.set"/>
+			<item value="profilepic"/>
+			<item value="profile"/>
+			<item value="onres"/>
+			<item value="toast"/>
+			<item value="(Face"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

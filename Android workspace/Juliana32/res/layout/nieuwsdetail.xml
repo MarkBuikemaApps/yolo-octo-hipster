@@ -69,37 +69,80 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/commentProfilePic"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/small_margin"
-                android:layout_marginRight="@dimen/small_margin"
-                android:background="@drawable/silhouette"
-                android:contentDescription="@string/none"
-                android:scaleType="fitXY"
-                android:src="@drawable/roundedcorner" />
+            <TextView
+                android:id="@+id/likeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black" />
 
-            <EditText
-                android:id="@+id/commentInput"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_unpressed"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:hint="@string/comment"
-                android:imeOptions="actionSend"
-                android:paddingBottom="0dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="0dp"
-                android:singleLine="true" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/small_margin"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/commentProfilePic"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:background="@drawable/silhouette"
+                    android:contentDescription="@string/none"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/roundedcorner" />
+
+                <FrameLayout
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="3dp" >
+
+                    <ImageButton
+                        android:id="@+id/likeButton"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/button"
+                        android:contentDescription="@string/like"
+                        android:padding="5dp"
+                        android:src="@drawable/fb_like" />
+
+                    <ProgressBar
+                        android:id="@+id/likeLoading"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/commentInput"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="-5dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:hint="@string/comment"
+                    android:imeOptions="actionSend"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="0dp"
+                    android:singleLine="true" />
+
+                <com.markbuikema.juliana32.ui.Button
+                    android:id="@+id/commentLoginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/facebooklogin" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

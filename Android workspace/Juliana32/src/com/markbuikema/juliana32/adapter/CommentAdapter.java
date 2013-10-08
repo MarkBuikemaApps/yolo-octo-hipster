@@ -3,6 +3,7 @@ package com.markbuikema.juliana32.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.Comment;
-import com.markbuikema.juliana32.util.DateTimeUtils;
+import com.markbuikema.juliana32.util.Util;
 
 public class CommentAdapter extends ArrayAdapter<Comment> {
 
@@ -20,6 +21,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 		super(context, 0);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -34,12 +36,15 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 		Comment comment = getItem(position);
 
 		name.setText(comment.getName());
-		date.setText(DateTimeUtils.getInstance(getContext()).getTimeDiffString(comment.getCreatedAt().getTimeInMillis()));
+
+		String dateString = Util.getDateString(getContext(), comment.getCreatedAt());
+		Log.d("comment_date_adapter", dateString);
+		date.setText(dateString);
 		text.setText(comment.getText());
 
 		Bitmap picture = comment.getImage();
 		if (picture != null)
-			pic.setBackground(new BitmapDrawable(getContext().getResources(), picture));
+			pic.setBackgroundDrawable(new BitmapDrawable(getContext().getResources(), picture));
 
 		return convertView;
 	}

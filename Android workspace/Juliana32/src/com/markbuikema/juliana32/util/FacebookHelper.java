@@ -89,7 +89,7 @@ public class FacebookHelper {
 		String dateString;
 		String link;
 		String imgUrl;
-		int likeCount;
+		List<Like> likes = new ArrayList<Like>();
 		int commentCount;
 		String albumId = null;
 		if (photo)
@@ -148,9 +148,14 @@ public class FacebookHelper {
 
 		try {
 			JSONObject likeJSON = o.getJSONObject("likes");
-			likeCount = likeJSON.getInt("count");
+			JSONArray data = likeJSON.getJSONArray("data");
+			for (int i = 0; i < data.length(); i++) {
+				JSONObject like = data.getJSONObject(i);
+				String name = like.getString("name");
+				String likeId = like.getString("id");
+				likes.add(new Like(likeId, name));
+			}
 		} catch (JSONException e) {
-			likeCount = 0;
 		}
 
 		try {
@@ -167,49 +172,11 @@ public class FacebookHelper {
 		GregorianCalendar date = new GregorianCalendar(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1,
 				Integer.parseInt(dayString));
 
-		FacebookNieuwsItem item = new FacebookNieuwsItem(id, title, content, date, link, imgUrl, likeCount, commentCount,
+		FacebookNieuwsItem item = new FacebookNieuwsItem(id, title, content, date, link, imgUrl, likes, commentCount,
 				photo ? albumId : null);
 
 		return item;
 
-	}
-
-	public static class LikeLoader extends AsyncTask<String, Like, Void> {
-
-		@Override
-		protected Void doInBackground(String... id) {
-			Bundle params = new Bundle();
-			params.putString("access_token", FacebookHelper.ACCESS_TOKEN);
-			params.putString("fields", "name,picture");
-			params.putInt("limit", 150);
-			try {
-				JSONObject likes = new JSONObject(FacebookHelper.getFacebook().request("/" + id[0] + "/likes", params));
-				JSONArray data = likes.getJSONArray("data");
-				for (int i = 0; i < data.length(); i++)
-					processLikeJSON(data.getJSONObject(i));
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		private void processLikeJSON(JSONObject o) {
-			try {
-				JSONObject picture = o.getJSONObject("picture");
-				JSONObject data = picture.getJSONObject("data");
-				String url = data.getString("url");
-				Bitmap bmp = Util.getPictureFromUrl(url);
-				String userId = data.getString("TODO"); // TODO
-				Like like = new Like(o.getString("id"), o.getString("name"), bmp, userId);
-				publishProgress(like);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public static class CommentLoader extends AsyncTask<String, Comment, Void> {
@@ -334,4 +301,5 @@ public class FacebookHelper {
 
 		return photos;
 	}
+
 }

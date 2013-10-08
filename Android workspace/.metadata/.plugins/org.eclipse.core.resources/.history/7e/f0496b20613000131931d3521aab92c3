@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/corner" />
+
+    <ListView
+        android:id="@+id/menuDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/listitem_background"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:paddingBottom="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingTop="@dimen/default_margin" >
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/menuFacebook"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button"
+            android:contentDescription="@string/facebook"
+            android:padding="@dimen/small_margin"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_action_facebook" />
+
+        <ImageButton
+            android:id="@+id/menuTwitter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button"
+            android:contentDescription="@string/twitter"
+            android:padding="@dimen/small_margin"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_action_twitter" />
+
+        <ImageButton
+            android:id="@+id/menuPrefs"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button"
+            android:contentDescription="@string/prefs"
+            android:padding="@dimen/small_margin"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_menu_settings_holo_light" />
+
+        <ImageButton
+            android:id="@+id/menuHelp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button"
+            android:contentDescription="@string/help"
+            android:padding="@dimen/small_margin"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_menu_help_holo_light" />
+    </LinearLayout>
+
+</LinearLayout>
