@@ -228,14 +228,19 @@ public class Util {
 
 				String title = fbni.getTitle();
 				String afterJul = title.split("Juliana")[1];
-				String first8 = afterJul.substring(3, 8);
+				String checkString;
+				if (afterJul.contains("32"))
+					checkString = afterJul.substring(3, 8);
+				else
+					checkString = afterJul.substring(0, 6);
+
 				String[] teams = new String[] {
 						"A1", "A2", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "E1", "E2", "F1", "F2", "Da", "1", "2", "3", "4",
 						"5", "6", "7", "8", "9", "10"
 				};
 				for (String team : teams)
-					if (first8.contains(team)) {
-						Log.d("photoadder", first8 + " contains " + team);
+					if (checkString.contains(team)) {
+						Log.d("photoadder", checkString + " contains " + team);
 						for (Season s : DataManager.getInstance().getTeams())
 							for (Team t : s.getTeams())
 								if (isTeam(team, t)) {

@@ -65,7 +65,7 @@ public class DataManager {
 	}
 
 	public boolean requiresData() {
-		return (teams == null || teaserItems == null || nieuwsItems == null);
+		return (teams == null || nieuwsItems == null);
 	}
 
 	public void printLoadingStatus() {

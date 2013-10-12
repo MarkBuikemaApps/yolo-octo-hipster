@@ -22,6 +22,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,6 +81,7 @@ public class NieuwsDetail {
 	private Button facebookLoginButton;
 	private View bottomMargin;
 	private ProgressBar likeLoader;
+	private FrameLayout likeButtonContainer;
 
 	public NieuwsDetail(final MainActivity act, final NieuwsItem item) {
 		this.act = act;
@@ -103,6 +105,7 @@ public class NieuwsDetail {
 		likeButton = (ImageButton) mainView.findViewById(R.id.likeButton);
 		likeText = (TextView) mainView.findViewById(R.id.likeText);
 		likeLoader = (ProgressBar) mainView.findViewById(R.id.likeLoading);
+		likeButtonContainer = (FrameLayout) mainView.findViewById(R.id.likeButtonContainer);
 
 		if (item.isFromFacebook()) {
 			FacebookNieuwsItem fbni = (FacebookNieuwsItem) item;
@@ -124,7 +127,10 @@ public class NieuwsDetail {
 		commentInput.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
 		commentProfilePic.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
 				: View.GONE);
+		likeButtonContainer.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
+				: View.GONE);
 		likeButton.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
+
 		likeText.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
 		facebookLoginButton.setVisibility(Session.getActiveSession().isOpened() ? View.GONE : View.VISIBLE);
 		bottomMargin.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
@@ -377,6 +383,11 @@ public class NieuwsDetail {
 		commentInput.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
 		commentProfilePic.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
 				: View.GONE);
+		likeButtonContainer.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
+				: View.GONE);
+		likeButton.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
+
+		likeText.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
 		facebookLoginButton.setVisibility(Session.getActiveSession().isOpened() ? View.GONE : View.VISIBLE);
 	}
 

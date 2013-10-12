@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.internal.QuickAccess">
-		<item value="1440" key="dialogWidth"/>
-		<item value="759" key="dialogHeight"/>
+		<item value="960" key="dialogWidth"/>
+		<item value="717" key="dialogHeight"/>
 		<list key="orderedProviders">
+			<item value="org.eclipse.ui.actions"/>
 			<item value="org.eclipse.e4.ui.parts"/>
 		</list>
 		<list key="textArray">
+			<item value="debug"/>
 			<item value="devices"/>
+			<item value="devi"/>
 		</list>
 		<list key="orderedElements">
+			<item value="org.eclipse.debug.ui.actions.OpenDebugConfigurations"/>
 			<item value="com.android.ide.eclipse.ddms.views.DeviceView"/>
 		</list>
 		<list key="textEntries">
 			<item value="1"/>
+			<item value="2"/>
 		</list>
 	</section>
 	<section name="WorkbenchPreferenceDialogSettings">

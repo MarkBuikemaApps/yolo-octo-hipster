@@ -50,7 +50,7 @@
                 android:contentDescription="@string/fotos"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
-                android:src="@android:drawable/ic_menu_camera"
+                android:src="@drawable/ic_menu_camera"
                 android:visibility="gone" />
 
             <ProgressBar
@@ -79,7 +79,7 @@
                 android:contentDescription="@string/share"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
-                android:src="@android:drawable/ic_menu_share"
+                android:src="@drawable/ic_menu_share"
                 android:visibility="gone" />
 
             <ImageButton
@@ -123,12 +123,7 @@
             layout="@layout/teamdetail"
             android:visibility="gone" />
 
-        <include
-            android:id="@+id/homeView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/home"
-            android:visibility="gone" />
+ 
 
         <include
             android:id="@+id/nieuwsView"

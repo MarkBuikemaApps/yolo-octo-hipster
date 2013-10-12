@@ -2,7 +2,7 @@
 <resources>
 
     <string name="none"></string>
-    <string name="loading">Laden...</string>
+    <string name="loading">Laden…</string>
     <string name="app_name">Juliana \'32</string>
     <string name="menu_settings">Instellingen</string>
     <string name="menu_nieuws">Nieuws</string>
@@ -48,7 +48,6 @@
     <string name="twitter">Open de Twitter pagina</string>
     
     <string-array name="menu_items">
-        <item>Home</item>
         <item>Nieuws</item>
         <item>Teams</item>
         <item>Teletekst</item>

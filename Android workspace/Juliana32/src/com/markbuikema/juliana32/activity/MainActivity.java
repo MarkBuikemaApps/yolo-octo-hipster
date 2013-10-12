@@ -71,7 +71,6 @@ import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
-import com.markbuikema.juliana32.section.Home;
 import com.markbuikema.juliana32.section.Nieuws;
 import com.markbuikema.juliana32.section.NieuwsDetail;
 import com.markbuikema.juliana32.section.TeamDetail;
@@ -115,7 +114,6 @@ public class MainActivity extends FragmentActivity {
 	private TeamDetail teamDetail;
 	private NieuwsDetail nieuwsDetail;
 
-	private Home home;
 	private Teletekst teletekst;
 	private Nieuws nieuws;
 	private Teams teams;
@@ -136,7 +134,7 @@ public class MainActivity extends FragmentActivity {
 	protected String userId;
 
 	public enum Page {
-		HOME, NIEUWS, TEAMS, TELETEKST
+		NIEUWS, TEAMS, TELETEKST
 	}
 
 	public enum FailureReason {
@@ -306,7 +304,7 @@ public class MainActivity extends FragmentActivity {
 
 		initializePages();
 
-		onPageChanged(Page.HOME);
+		onPageChanged(Page.NIEUWS);
 
 		if (getIntent().getBooleanExtra(NotificationService.FROM_NOTIFICATION, false))
 			onPageChanged(Page.NIEUWS);
@@ -412,12 +410,6 @@ public class MainActivity extends FragmentActivity {
 		return teams;
 	}
 
-	public void notifyDoneLoadingSeasons() {
-		if (home == null)
-			return;
-		home.populateGames();
-	}
-
 	private void initializePages() {
 		for (Page page : Page.values())
 			onPageChanged(page);
@@ -431,12 +423,7 @@ public class MainActivity extends FragmentActivity {
 
 		String title = getResources().getString(R.string.app_name);
 		switch (page) {
-		case HOME:
-			title = getResources().getString(R.string.app_name);
-			activePageView = findViewById(R.id.homeView);
-			if (home == null)
-				home = new Home(this);
-			break;
+
 		case NIEUWS:
 			title = getResources().getString(R.string.menu_nieuws);
 			activePageView = findViewById(R.id.nieuwsView);
@@ -483,14 +470,7 @@ public class MainActivity extends FragmentActivity {
 
 	public void fixActionBar() {
 		switch (page) {
-		case HOME:
-			loader.setVisibility(View.GONE);
-			refreshButton.setVisibility(View.GONE);
-			seasonButton.setVisibility(View.GONE);
-			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
-			picturesButton.setVisibility(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? View.VISIBLE : View.GONE);
 
-			break;
 		case NIEUWS:
 			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
@@ -558,7 +538,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void requestNieuwsDetailPage(final NieuwsItem item) {
-		if ((page != Page.NIEUWS && page != Page.HOME) || isNieuwsDetailShown())
+		if ((page != Page.NIEUWS) || isNieuwsDetailShown())
 			return;
 
 		if (item instanceof NormalNieuwsItem) {
@@ -589,9 +569,9 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu, menu);
-		return super.onCreateOptionsMenu(menu);
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		menuDrawer.toggleMenu();
+		return true;
 	}
 
 	@Override

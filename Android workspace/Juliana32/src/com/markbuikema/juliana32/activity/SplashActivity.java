@@ -13,11 +13,9 @@ import android.widget.Toast;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.asynctask.NieuwsRetriever;
 import com.markbuikema.juliana32.asynctask.TeamsRetriever;
-import com.markbuikema.juliana32.asynctask.TeasersRetriever;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.Season;
-import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper.PhotoGetter;
 import com.markbuikema.juliana32.util.Util;
@@ -65,13 +63,13 @@ public class SplashActivity extends Activity {
 
 			final DataManager manager = DataManager.getInstance();
 
-			TeasersRetriever teasersRetriever = new TeasersRetriever() {
-				@Override
-				protected void onPostExecute(List<TeaserNieuwsItem> result) {
-					manager.setTeaserItems(result);
-				}
-			};
-			teasersRetriever.execute();
+			// TeasersRetriever teasersRetriever = new TeasersRetriever() {
+			// @Override
+			// protected void onPostExecute(List<TeaserNieuwsItem> result) {
+			// manager.setTeaserItems(result);
+			// }
+			// };
+			// teasersRetriever.execute();
 
 			TeamsRetriever teamsRetriever = new TeamsRetriever() {
 				@Override
@@ -94,11 +92,13 @@ public class SplashActivity extends Activity {
 							count++;
 
 					final CountCallback callback = new CountCallback(count) {
+
 						@Override
 						public void onCall() {
 							Log.d("CountCallback", "onCall()");
 							Util.linkPhotosToTeam();
 						}
+
 					};
 					for (NieuwsItem item : result)
 						if (item.isFromFacebook()) {
@@ -125,7 +125,6 @@ public class SplashActivity extends Activity {
 
 			while (manager.requiresData()) {
 				if (System.currentTimeMillis() > timeout && TIMEOUT_ENABLED) {
-					teasersRetriever.cancel(true);
 					nieuwsRetriever.cancel(true);
 					teamsRetriever.cancel(true);
 					Log.e(TAG, "TIMEOUT");
@@ -165,8 +164,7 @@ public class SplashActivity extends Activity {
 			Log.d(TAG, "onCallback() called, new count = " + countLeft);
 		}
 
-		public void onCall() {
-		}
+		public abstract void onCall();
 	}
 
 }

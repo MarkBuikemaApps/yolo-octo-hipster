@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="onBac" key="selection"/>
+		<item value="link" key="selection"/>
 		<list key="findhistory">
-			<item value="onbac"/>
-			<item value="onclick"/>
-			<item value="profilepic.set"/>
-			<item value="profilepic"/>
-			<item value="profile"/>
+			<item value="link"/>
 			<item value="onres"/>
-			<item value="toast"/>
-			<item value="(Face"/>
+			<item value="commentInput.setvis"/>
+			<item value="comment"/>
+			<item value="options"/>
+			<item value="twitterButton.set"/>
+			<item value="facebookButton.set"/>
+			<item value="onopt"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

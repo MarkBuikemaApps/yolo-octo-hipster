@@ -21,7 +21,6 @@
 <fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="com.origamilabs.library.views.StaggeredGridView"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.TeaserNieuwsItem"/>
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
 <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.RecyclingBitmapDrawable"/>
@@ -55,9 +54,10 @@
 <fullyQualifiedTypeName name="com.facebook.HttpMethod"/>
 <fullyQualifiedTypeName name="com.facebook.Request.Callback"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemClickListener"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="java.lang.ClassCastException"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Like"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.Comment"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.FacebookNieuwsItem"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.TeaserNieuwsItem"/>
 </qualifiedTypeNameHistroy>

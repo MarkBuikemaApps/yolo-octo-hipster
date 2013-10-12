@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|top"
         android:contentDescription="@string/sharePhoto"
-        android:src="@android:drawable/ic_menu_share"
+        android:src="@drawable/ic_menu_share"
         android:visibility="gone" />
 
 </FrameLayout>

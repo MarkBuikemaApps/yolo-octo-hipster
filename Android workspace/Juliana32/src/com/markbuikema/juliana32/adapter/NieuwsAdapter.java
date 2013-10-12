@@ -3,13 +3,11 @@ package com.markbuikema.juliana32.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
@@ -26,9 +24,8 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	private Context context;
 
 	private static final int VIEW_TYPE_NORMAL = 0;
-	private static final int VIEW_TYPE_TEASER = 1;
-	private static final int VIEW_TYPE_FACEBOOK_PHOTO = 2;
-	private static final int VIEW_TYPE_FACEBOOK = 3;
+	private static final int VIEW_TYPE_FACEBOOK_PHOTO = 1;
+	private static final int VIEW_TYPE_FACEBOOK = 2;
 
 	public NieuwsAdapter(Context context) {
 		super(context, 0);
@@ -47,7 +44,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 
 	@Override
 	public int getViewTypeCount() {
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -57,7 +54,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 			return VIEW_TYPE_NORMAL;
 		else
 			if (item instanceof TeaserNieuwsItem)
-				return VIEW_TYPE_TEASER;
+				return VIEW_TYPE_NORMAL;
 			else
 				return ((FacebookNieuwsItem) item).isPhoto() ? VIEW_TYPE_FACEBOOK_PHOTO : VIEW_TYPE_FACEBOOK;
 	}
@@ -84,18 +81,6 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 				public void onContentLoaded(String content, List<String> photos) {
 				}
 			});
-
-			return convertView;
-		case VIEW_TYPE_TEASER:
-			if (convertView == null)
-				convertView = LayoutInflater.from(context).inflate(R.layout.listitem_teaseritem, null);
-
-			TextView teaserTitleView = (TextView) convertView.findViewById(R.id.teaserTitle);
-			ImageView teaserImageView = (ImageView) convertView.findViewById(R.id.teaserImage);
-			teaserTitleView.setText(item.getTitle());
-			Bitmap bmp = ((TeaserNieuwsItem) item).getImage();
-			if (bmp != null)
-				teaserImageView.setImageBitmap(bmp);
 
 			return convertView;
 		case VIEW_TYPE_FACEBOOK_PHOTO:

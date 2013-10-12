@@ -7,8 +7,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/huge_margin"
+        android:layout_marginRight="@dimen/huge_margin"
         android:background="@drawable/button_unpressed" >
 
         <ProgressBar
@@ -21,7 +21,7 @@
         <ImageView
             android:id="@+id/facebookPhoto"
             android:layout_width="match_parent"
-            android:layout_height="157dp"
+            android:layout_height="222dp"
             android:contentDescription="@string/none"
             android:scaleType="fitCenter" />
     </FrameLayout>
