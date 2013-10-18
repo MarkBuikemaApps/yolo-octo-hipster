@@ -1,6 +1,8 @@
 package com.markbuikema.juliana32.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -18,10 +20,14 @@ import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.Util;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.Animator.AnimatorListener;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 
 	private Context context;
+	private List<NieuwsItem> items;
 
 	private static final int VIEW_TYPE_NORMAL = 0;
 	private static final int VIEW_TYPE_FACEBOOK_PHOTO = 1;
@@ -30,21 +36,43 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	public NieuwsAdapter(Context context) {
 		super(context, 0);
 		this.context = context;
+		items = new ArrayList<NieuwsItem>(DataManager.getInstance().getNieuwsItems());
 	}
 
 	@Override
 	public NieuwsItem getItem(int position) {
-		return DataManager.getInstance().getNieuwsItems().get(position);
+		return items.get(position);
 	}
 
 	@Override
 	public int getCount() {
-		return DataManager.getInstance().getNieuwsItems().size();
+		return items.size();
 	}
 
 	@Override
 	public int getViewTypeCount() {
 		return 3;
+	}
+
+	@Override
+	public void clear() {
+		items.clear();
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * @deprecated use update() after adding all items to
+	 *             DataManager.getInstance().getNieuwsItems();
+	 */
+	@Deprecated
+	@Override
+	public void add(NieuwsItem object) {
+		super.add(object);
+	}
+
+	public void update() {
+		items = new ArrayList<NieuwsItem>(DataManager.getInstance().getNieuwsItems());
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -82,7 +110,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 				}
 			});
 
-			return convertView;
+			break;
 		case VIEW_TYPE_FACEBOOK_PHOTO:
 			FacebookNieuwsItem fbPhotoItem = (FacebookNieuwsItem) item;
 
@@ -93,10 +121,10 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 			pager.setPageMargin((int) Util.pxToDp(-20));
 			pager.setCurrentItem(0, true);
 
-			pager.setOffscreenPageLimit(2);
+			pager.setOffscreenPageLimit(0);
 			pager.setAdapter(adapter);
 
-			return convertView;
+			break;
 		case VIEW_TYPE_FACEBOOK:
 			FacebookNieuwsItem fbItem = (FacebookNieuwsItem) item;
 
@@ -111,15 +139,60 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 			commentCount.setText(Integer.toString(fbItem.getCommentCount()));
 			createdAt.setText(Util.getDateString(getContext(), fbItem.getCreatedAt()));
 
-			return convertView;
+			break;
 		default:
-			return convertView;
+			break;
 		}
+
+		final ViewPropertyAnimator animator = ViewPropertyAnimator.animate(convertView);
+		animator.setDuration(0);
+		animator.translationY(64);
+		animator.setListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				animator.setDuration(250);
+				animator.translationY(0);
+				animator.start();
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+		});
+		animator.start();
+		return convertView;
+
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
+	}
+
+	public void setSearchword(String s) {
+		items.clear();
+		s = s.toLowerCase(Locale.US);
+		for (NieuwsItem item : DataManager.getInstance().getNieuwsItems())
+			if ((item.getTitle() != null && item.getTitle().toLowerCase(Locale.US).contains(s))
+					|| (item.getSubTitle() != null && item.getSubTitle().toLowerCase(Locale.US).contains(s))
+					|| (item.getContent() != null && item.getContent().toLowerCase(Locale.US).contains(s)))
+				items.add(item);
+
+		notifyDataSetChanged();
+	}
+
+	public void clearSearchword() {
+		items = new ArrayList<NieuwsItem>(DataManager.getInstance().getNieuwsItems());
+		notifyDataSetChanged();
 	}
 
 }

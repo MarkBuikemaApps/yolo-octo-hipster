@@ -79,6 +79,7 @@
                 android:textColor="@android:color/black" />
 
             <LinearLayout
+                android:id="@+id/view_bottommargin"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_margin="@dimen/small_margin"
@@ -105,7 +106,7 @@
                         android:id="@+id/likeButton"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:background="@drawable/button"
+                        android:background="@drawable/listselector"
                         android:contentDescription="@string/like"
                         android:padding="5dp"
                         android:src="@drawable/fb_like" />
@@ -117,7 +118,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:visibility="gone" />
-
                 </FrameLayout>
 
                 <EditText
@@ -127,7 +127,7 @@
                     android:layout_marginLeft="-5dp"
                     android:layout_marginTop="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button"
+                    android:background="@drawable/edittext"
                     android:ems="10"
                     android:gravity="center_vertical"
                     android:hint="@string/comment"
@@ -142,8 +142,8 @@
                     android:id="@+id/commentLoginButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="5dp"
                     android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:text="@string/facebooklogin" />
             </LinearLayout>
         </LinearLayout>
@@ -183,7 +183,6 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/view_bottommargin"
             android:layout_width="match_parent"
             android:layout_height="48dp" />
     </LinearLayout>

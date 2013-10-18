@@ -57,8 +57,9 @@
                 android:layout_gravity="bottom"
                 android:cacheColorHint="@color/white"
                 android:gravity="bottom"
-                android:listSelector="@android:color/transparent"
+                android:listSelector="@drawable/listselector"
                 android:scrollbarThumbVertical="@drawable/listitem_background"
+                android:stackFromBottom="true"
                 android:transcriptMode="alwaysScroll" >
             </ListView>
         </FrameLayout>

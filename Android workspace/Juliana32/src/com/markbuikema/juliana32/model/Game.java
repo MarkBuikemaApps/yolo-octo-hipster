@@ -1,5 +1,6 @@
 package com.markbuikema.juliana32.model;
 
+import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 
 public class Game {
@@ -86,9 +87,10 @@ public class Game {
 	public String getDateString() {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(date);
+		DecimalFormat df = new DecimalFormat("00");
 		return cal.get(GregorianCalendar.DAY_OF_MONTH) + "/" + (cal.get(GregorianCalendar.MONTH) + 1) + "/"
-				+ cal.get(GregorianCalendar.YEAR) + " " + cal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
-				+ cal.get(GregorianCalendar.MINUTE);
+				+ cal.get(GregorianCalendar.YEAR) + " " + df.format(cal.get(GregorianCalendar.HOUR_OF_DAY)) + ":"
+				+ df.format(cal.get(GregorianCalendar.MINUTE));
 	}
 
 }

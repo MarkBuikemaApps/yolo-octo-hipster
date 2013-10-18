@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/default_margin" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Standen en uitslagen zijn momenteel nog niet beschikbaar. Binnenkort volgt een update die er voor zal zorgen dat alle standen en uitslagen meteen na elke wedstrijd bijgewerkt zullen worden."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black" />
+    </ScrollView>
+
+    <CheckBox
+        android:id="@+id/do_not_show_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginTop="@dimen/huge_margin"
+        android:text="Niet meer tonen"
+        android:textColor="@android:color/black
+        " />
+
+</LinearLayout>

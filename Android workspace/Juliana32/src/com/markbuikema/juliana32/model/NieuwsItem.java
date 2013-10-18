@@ -3,8 +3,9 @@ package com.markbuikema.juliana32.model;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Observable;
 
-public abstract class NieuwsItem implements Comparable<NieuwsItem> {
+public abstract class NieuwsItem extends Observable implements Comparable<NieuwsItem> {
 
 	private static int nextId = 0;
 
@@ -27,6 +28,8 @@ public abstract class NieuwsItem implements Comparable<NieuwsItem> {
 
 	public void addPhoto(String url) {
 		photos.add(url);
+		setChanged();
+		notifyObservers();
 	}
 
 	public int getPhotoCount() {

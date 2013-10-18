@@ -31,8 +31,10 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
+import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Like;
 import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
@@ -42,6 +44,7 @@ public class Util {
 	private static final String PREF_SHOULD_SHOW_HINT = "shouldShowHint";
 	public static final String PHOTO_URL_PREFIX = "http://graph.facebook.com/";
 	public static final String PHOTO_URL_SUFFIX = "/picture";
+	public static final long WEEK = 1000 * 60 * 60 * 24 * 7;
 	private static Bitmap[] teletekst;
 	private static Bitmap facebookLogo;
 	private static Bitmap julianaLogo;
@@ -319,5 +322,62 @@ public class Util {
 
 		s += " vinden dit leuk.";
 		return s;
+	}
+
+	public static String loadJSONFromAsset(Context context, String fileName) {
+		String json = null;
+		try {
+
+			InputStream is = context.getAssets().open(fileName);
+
+			int size = is.available();
+
+			byte[] buffer = new byte[size];
+
+			is.read(buffer);
+
+			is.close();
+
+			json = new String(buffer, "UTF-8");
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+		return json;
+	}
+
+	public static NormalNieuwsItem findWedstrijdVerslag(Game game) {
+		String club = "";
+		String string = game.getOtherTeam();
+		try {
+			string = string.split("'")[0];
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+		for (String word : string.split(" "))
+			try {
+				Integer.valueOf(word);
+				break;
+			} catch (NumberFormatException e) {
+				if (word.startsWith("'"))
+					break;
+				club += word + " ";
+			}
+		club = club.trim();
+
+		for (NieuwsItem item : DataManager.getInstance().getNieuwsItems())
+			try {
+				NormalNieuwsItem i = (NormalNieuwsItem) item;
+				if (i.getCreatedAt().getTimeInMillis() < game.getDate()
+						|| i.getCreatedAt().getTimeInMillis() > game.getDate() + WEEK)
+					continue;
+
+				if (i.getSubTitle().contains(club) || i.getTitle().contains(club))
+					return i;
+
+			} catch (ClassCastException e) {
+				continue;
+			}
+		return null;
 	}
 }

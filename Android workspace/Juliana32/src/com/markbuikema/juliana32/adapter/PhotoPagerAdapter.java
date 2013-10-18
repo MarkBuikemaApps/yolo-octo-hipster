@@ -1,5 +1,8 @@
 package com.markbuikema.juliana32.adapter;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
@@ -19,21 +22,20 @@ import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.util.DateTimeUtils;
 import com.markbuikema.juliana32.util.Util;
 
-public class PhotoPagerAdapter extends PagerAdapter {
+public class PhotoPagerAdapter extends PagerAdapter implements Observer {
 
 	private FacebookNieuwsItem item;
-	private Context context;
 
 	public PhotoPagerAdapter(Context context, FacebookNieuwsItem item) {
 		super();
+		item.addObserver(this);
 		this.item = item;
-		this.context = context;
 	}
 
 	@Override
-	public Object instantiateItem(ViewGroup container, final int position) {
+	public Object instantiateItem(final ViewGroup container, final int position) {
 		if (position == 0) {
-			View view = LayoutInflater.from(context).inflate(R.layout.listitem_facebookitem_viewpager, null);
+			final View view = LayoutInflater.from(container.getContext()).inflate(R.layout.listitem_facebookitem_viewpager, null);
 			TextView content = (TextView) view.findViewById(R.id.facebook_content);
 			TextView likeCount = (TextView) view.findViewById(R.id.facebook_likecount);
 			TextView commentCount = (TextView) view.findViewById(R.id.facebook_commentcount);
@@ -44,14 +46,15 @@ public class PhotoPagerAdapter extends PagerAdapter {
 			subTitle.setText(item.getContent());
 			likeCount.setText(Integer.toString(item.getLikeCount()));
 			commentCount.setText(Integer.toString(item.getCommentCount()));
-			createdAt.setText(DateTimeUtils.getInstance(context).getTimeDiffString(item.getCreatedAt().getTimeInMillis()));
+			createdAt.setText(DateTimeUtils.getInstance(container.getContext()).getTimeDiffString(
+					item.getCreatedAt().getTimeInMillis()));
 
 			view.setClickable(true);
 			view.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-					((MainActivity) context).requestNieuwsDetailPage(item);
+					((MainActivity) view.getContext()).requestNieuwsDetailPage(item);
 				}
 			});
 
@@ -60,7 +63,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
 			return view;
 		} else {
 
-			View view = LayoutInflater.from(context).inflate(R.layout.fb_photo_item, null);
+			View view = LayoutInflater.from(container.getContext()).inflate(R.layout.fb_photo_item, null);
 			final ImageView image = (ImageView) view.findViewById(R.id.facebookPhoto);
 
 			new PictureChanger() {
@@ -77,7 +80,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
 
 				@Override
 				public void onClick(View v) {
-					MainActivity act = (MainActivity) context;
+					MainActivity act = (MainActivity) container.getContext();
 					act.showPhotoDialog(item.getPhotos(), null, position - 1);
 				}
 			});
@@ -101,6 +104,11 @@ public class PhotoPagerAdapter extends PagerAdapter {
 	@Override
 	public boolean isViewFromObject(View arg0, Object arg1) {
 		return arg0 == arg1;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		notifyDataSetChanged();
 	}
 
 }

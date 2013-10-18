@@ -15,7 +15,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class NormalNieuwsItem extends NieuwsItem {
 
@@ -72,7 +71,6 @@ public class NormalNieuwsItem extends NieuwsItem {
 					publishProgress(img.attr("src"));
 
 				String content = Jsoup.clean(ele.html(), new Whitelist().addTags("br", "a").addAttributes("a", "href"));
-				Log.d("contentloader", content);
 
 				return content;
 

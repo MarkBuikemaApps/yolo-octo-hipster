@@ -81,7 +81,7 @@ public class FacebookHelper {
 		} catch (JSONException e) {
 		}
 
-		Log.d(TAG, "data:" + o.toString());
+		// Log.d(TAG, "data:" + o.toString());
 
 		String id;
 		String title;

@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,12 +18,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
@@ -29,6 +34,8 @@ import com.markbuikema.juliana32.adapter.FixtureAdapter;
 import com.markbuikema.juliana32.adapter.TableAdapter;
 import com.markbuikema.juliana32.asynctask.PhotoSharer;
 import com.markbuikema.juliana32.asynctask.PictureChanger;
+import com.markbuikema.juliana32.model.Game;
+import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.util.Util;
@@ -67,7 +74,7 @@ public class TeamDetail {
 
 	private TextView noTables;
 
-	public TeamDetail(MainActivity act, Team team) {
+	public TeamDetail(final MainActivity act, Team team) {
 		this.team = team;
 		this.act = act;
 
@@ -107,17 +114,32 @@ public class TeamDetail {
 		noTables = (TextView) mainView.findViewById(R.id.noTablesFound);
 
 		fm = ((FragmentActivity) act).getSupportFragmentManager();
-		ppa = new PhotoPagerAdapter(act);
+
 		tpa = new TablePagerAdapter(fm);
 
-		photoPager.setAdapter(ppa);
 		tablePager.setAdapter(tpa);
 
-		noPhotos.setVisibility(ppa.getCount() < 1 ? View.VISIBLE : View.GONE);
 		noTables.setVisibility(tpa.getCount() < 1 ? View.VISIBLE : View.GONE);
 
 		uitslagen.setAdapter(new FixtureAdapter(act, team.getUitslagen()));
 		programma.setAdapter(new FixtureAdapter(act, team.getProgramma()));
+
+		uitslagen.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				try {
+					NormalNieuwsItem item = Util.findWedstrijdVerslag((Game) uitslagen.getAdapter().getItem(arg2));
+					if (item == null)
+						Toast.makeText(act, "Er is voor deze wedstrijd geen wedstrijdverslag gevonden", Toast.LENGTH_SHORT).show();
+					else
+						TeamDetail.this.act.requestNieuwsDetailPage(item);
+
+				} catch (ClassCastException e) {
+
+				}
+			}
+		});
 
 		closeClouds();
 
@@ -127,14 +149,20 @@ public class TeamDetail {
 		tableTitle = (TitlePageIndicator) mainView.findViewById(R.id.tablePagerTitle);
 		tableTitle.setViewPager(tablePager);
 
-		photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.photoIndicator);
-		photoIndicator.setViewPager(photoPager);
-
 		if (tpa.getCount() < 2)
 			tableTitle.setVisibility(View.GONE);
 
-		photoIndicator.invalidate();
 		tableTitle.invalidate();
+
+		if (act.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+			ppa = new PhotoPagerAdapter(act);
+			photoPager.setAdapter(ppa);
+			noPhotos.setVisibility(ppa.getCount() < 1 ? View.VISIBLE : View.GONE);
+			photoIndicator = (UnderlinePageIndicator) mainView.findViewById(R.id.photoIndicator);
+			photoIndicator.setViewPager(photoPager);
+			photoIndicator.invalidate();
+
+		}
 
 	}
 
@@ -147,32 +175,36 @@ public class TeamDetail {
 		outState.putBoolean("uitslagenExpanded", uitslagenContainer.getVisibility() == View.VISIBLE);
 		outState.putBoolean("programmaExpanded", programmaContainer.getVisibility() == View.VISIBLE);
 		outState.putInt("tablePagerIndex", tablePager.getCurrentItem());
-		outState.putInt("photoPagerIndex", photoPager.getCurrentItem());
+		if (act.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && photoPager != null)
+			outState.putInt("photoPagerIndex", photoPager.getCurrentItem());
 	}
 
-	public void onRestoreInstanceState(Bundle state) {
-		uitslagenContainer.setVisibility(state.getBoolean("uitslagenExpanded", false) ? View.VISIBLE : View.GONE);
-		programmaContainer.setVisibility(state.getBoolean("programmaExpanded", false) ? View.VISIBLE : View.GONE);
-		tablePager.setCurrentItem(state.getInt("tablePagerIndex"));
-		photoPager.setCurrentItem(state.getInt("photoPagerIndex"));
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		uitslagenContainer.setVisibility(savedInstanceState.getBoolean("uitslagenExpanded", false) ? View.VISIBLE
+				: View.INVISIBLE);
+		programmaContainer.setVisibility(savedInstanceState.getBoolean("programmaExpanded", false) ? View.VISIBLE
+				: View.INVISIBLE);
+		tablePager.setCurrentItem(savedInstanceState.getInt("tablePagerIndex"));
+		if (act.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
+			photoPager.setCurrentItem(savedInstanceState.getInt("photoPagerIndex"));
 	}
 
 	public void closeClouds() {
-		uitslagenContainer.setVisibility(View.GONE);
-		programmaContainer.setVisibility(View.GONE);
+		uitslagenContainer.setVisibility(View.INVISIBLE);
+		programmaContainer.setVisibility(View.INVISIBLE);
 
 	}
 
 	public void toggleUitslagen() {
 		if (uitslagenContainer.getVisibility() == View.VISIBLE)
-			uitslagenContainer.setVisibility(View.GONE);
+			uitslagenContainer.setVisibility(View.INVISIBLE);
 		else
 			uitslagenContainer.setVisibility(View.VISIBLE);
 	}
 
 	public void toggleProgramma() {
 		if (programmaContainer.getVisibility() == View.VISIBLE)
-			programmaContainer.setVisibility(View.GONE);
+			programmaContainer.setVisibility(View.INVISIBLE);
 		else
 			programmaContainer.setVisibility(View.VISIBLE);
 	}
@@ -219,7 +251,7 @@ public class TeamDetail {
 				protected void onPostExecute(Bitmap result) {
 					if (result == null)
 						return;
-					view.setImageBitmap(result);
+					view.setBackgroundDrawable(new BitmapDrawable(act.getResources(), result));
 					shareButton.setVisibility(View.VISIBLE);
 				};
 			}.execute(url);

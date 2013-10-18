@@ -26,10 +26,12 @@ import static com.markbuikema.juliana32.R.string.team;
 import static com.markbuikema.juliana32.R.string.won;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,16 +53,14 @@ public class TableAdapter extends ArrayAdapter<TableRow> {
 		insert(dummyRow, 0);
 		d(TAG, "Adapter instantiated with " + getCount() + " views");
 
-
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// instantiate convertview to make sure it's not null, inflate layout if
 		// necessary
-		if (convertView == null) {
+		if (convertView == null)
 			convertView = LayoutInflater.from(getContext()).inflate(listitem_tablerow, null);
-		}
 
 		// get the row to get the data from
 		TableRow row = getItem(position);
@@ -73,14 +73,16 @@ public class TableAdapter extends ArrayAdapter<TableRow> {
 		View divider = convertView.findViewById(rowDivider);
 
 		// set divider color, and row identification color
-		if (position % 2 == 0) {
+		if (position % 2 == 0)
 			// even numbers
 			background.setBackgroundColor(r.getColor(color.white));
-		} else {
+		else
 			// odd numbers
 			background.setBackgroundColor(r.getColor(color.ltgrey));
-		}
-		
+
+		if (position > 0 && row.getTeamName().toLowerCase(Locale.US).contains("juliana"))
+			background.setBackgroundColor(Color.rgb(240, 240, 245));
+
 		divider.setBackgroundResource(R.drawable.divider);
 
 		// identify the views

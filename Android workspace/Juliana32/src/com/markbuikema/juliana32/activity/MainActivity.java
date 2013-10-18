@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -27,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -38,10 +40,14 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,10 +56,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -98,9 +109,15 @@ public class MainActivity extends FragmentActivity {
 	private ImageButton commentsButton;
 	private ImageButton shareButton;
 	private ImageButton picturesButton;
+	private ImageButton searchButton;
 	private Spinner seasonButton;
 	private ProgressBar loader;
 	private TextView title;
+
+	private LinearLayout actionBarContent;
+	private FrameLayout searchContainer;
+	private EditText searchInput;
+	private ImageButton cancelSearchButton;
 
 	private View activePageView;
 	private View teamDetailView;
@@ -132,6 +149,8 @@ public class MainActivity extends FragmentActivity {
 	protected String userName;
 	protected String userPicUrl;
 	protected String userId;
+
+	private String searchWord;
 
 	public enum Page {
 		NIEUWS, TEAMS, TELETEKST
@@ -194,6 +213,9 @@ public class MainActivity extends FragmentActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				onPageChanged(Page.values()[arg2]);
 				menuDrawer.toggleMenu();
+
+				if (arg2 == 1)
+					showBetaDialogIfNecessary();
 			}
 		});
 
@@ -211,6 +233,11 @@ public class MainActivity extends FragmentActivity {
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
 		seasonButton = (Spinner) findViewById(R.id.menuSeason);
 		loader = (ProgressBar) findViewById(R.id.loading);
+		actionBarContent = (LinearLayout) findViewById(R.id.actionBarContent);
+		searchButton = (ImageButton) findViewById(R.id.menuSearch);
+		searchContainer = (FrameLayout) findViewById(R.id.searchContainer);
+		cancelSearchButton = (ImageButton) findViewById(R.id.stopSearchButton);
+		searchInput = (EditText) findViewById(R.id.searchInput);
 
 		menuToggler.setOnClickListener(new OnClickListener() {
 
@@ -248,6 +275,42 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				photoDrawer.toggleMenu();
+			}
+		});
+
+		searchButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				requestSearchBar();
+				searchInput.setText("");
+			}
+		});
+
+		searchInput.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				nieuws.search(s.toString());
+				searchWord = s.toString();
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+
+		cancelSearchButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				hideSearchBar();
+				nieuws.clearSearch();
+				searchWord = null;
 			}
 		});
 
@@ -364,6 +427,12 @@ public class MainActivity extends FragmentActivity {
 
 			if (savedInstanceState.getBoolean("photoDrawerOpened"))
 				photoDrawer.toggleMenu();
+
+			if (savedInstanceState.getString("searchWord") != null && !savedInstanceState.getString("searchWord").equals("")
+					&& page == Page.NIEUWS) {
+				requestSearchBar();
+				searchInput.setText(savedInstanceState.getString("searchWord"));
+			}
 		}
 	}
 
@@ -421,6 +490,8 @@ public class MainActivity extends FragmentActivity {
 		if (activePageView != null)
 			activePageView.setVisibility(View.GONE);
 
+		searchWord = null;
+
 		String title = getResources().getString(R.string.app_name);
 		switch (page) {
 
@@ -430,6 +501,7 @@ public class MainActivity extends FragmentActivity {
 			if (nieuws == null)
 				nieuws = new Nieuws(this);
 			nieuws.showRefreshButton();
+			nieuws.clearSearch();
 			break;
 		case TEAMS:
 			title = getResources().getString(R.string.menu_teams);
@@ -438,6 +510,7 @@ public class MainActivity extends FragmentActivity {
 				teams = new Teams(this);
 			if (!teams.isLoaded())
 				loader.setVisibility(View.VISIBLE);
+
 			break;
 		case TELETEKST:
 			title = getResources().getString(R.string.menu_teletekst);
@@ -468,6 +541,42 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private void showBetaDialogIfNecessary() {
+
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+		if (!prefs.getBoolean("showTeamsMessage", true))
+			return;
+
+		final Editor edit = prefs.edit();
+
+		View view = LayoutInflater.from(this).inflate(R.layout.tempdialog, null);
+		final CheckBox doNotShowAgain = (CheckBox) view.findViewById(R.id.do_not_show_again);
+		final Button close = (Button) view.findViewById(R.id.posbutton);
+
+		Builder b;
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			b = new Builder(this);
+		else
+			b = new Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+
+		final AlertDialog dialog = b.setView(view).create();
+		close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (doNotShowAgain.isChecked()) {
+					edit.putBoolean("showTeamsMessage", false);
+					edit.commit();
+				}
+				dialog.dismiss();
+			}
+		});
+		dialog.show();
+
+	}
+
 	public void fixActionBar() {
 		switch (page) {
 
@@ -477,6 +586,7 @@ public class MainActivity extends FragmentActivity {
 			seasonButton.setVisibility(View.GONE);
 			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
 			picturesButton.setVisibility(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? View.VISIBLE : View.GONE);
+			searchButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
 
 			break;
 		case TEAMS:
@@ -485,6 +595,7 @@ public class MainActivity extends FragmentActivity {
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(isTeamDetailShown() ? View.GONE : View.VISIBLE);
 			picturesButton.setVisibility(View.GONE);
+			searchButton.setVisibility(View.GONE);
 
 			break;
 		case TELETEKST:
@@ -493,6 +604,7 @@ public class MainActivity extends FragmentActivity {
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(View.GONE);
 			picturesButton.setVisibility(View.GONE);
+			searchButton.setVisibility(View.GONE);
 
 			break;
 		}
@@ -509,6 +621,14 @@ public class MainActivity extends FragmentActivity {
 				menuToggler.setBackgroundResource(R.drawable.menu_slid_borderless);
 			else
 				menuToggler.setBackgroundResource(R.drawable.menu_slide_borderless);
+
+		if (page != Page.NIEUWS || isNieuwsDetailShown())
+			hideSearchBar();
+
+		if (searchWord != null && page == Page.NIEUWS && !isNieuwsDetailShown()) {
+			requestSearchBar();
+			searchInput.setText(searchWord);
+		}
 	}
 
 	private boolean currentNewsItemHasComments() {
@@ -538,7 +658,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void requestNieuwsDetailPage(final NieuwsItem item) {
-		if ((page != Page.NIEUWS) || isNieuwsDetailShown())
+		if ((page != Page.NIEUWS && page != Page.TEAMS) || isNieuwsDetailShown())
 			return;
 
 		if (item instanceof NormalNieuwsItem) {
@@ -566,6 +686,8 @@ public class MainActivity extends FragmentActivity {
 
 		fixActionBar();
 
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
 	}
 
 	@Override
@@ -592,18 +714,17 @@ public class MainActivity extends FragmentActivity {
 			nieuwsDetail.hideComments();
 			return;
 		}
-
-		if (isTeamDetailShown()) {
-			if (teamDetail.isACloudOpened())
-				teamDetail.closeClouds();
-			else {
-				hideTeamDetail();
-				setTitle(R.string.menu_teams);
-			}
-		} else
-			if (isNieuwsDetailShown())
-				hideNieuwsDetail();
-			else
+		if (isNieuwsDetailShown())
+			hideNieuwsDetail();
+		else
+			if (isTeamDetailShown()) {
+				if (teamDetail.isACloudOpened())
+					teamDetail.closeClouds();
+				else {
+					hideTeamDetail();
+					setTitle(R.string.menu_teams);
+				}
+			} else
 				if (waitingForSecondBackPress) {
 					DataManager.getInstance().clearData();
 					finish();
@@ -731,6 +852,29 @@ public class MainActivity extends FragmentActivity {
 		this.title.setText(title);
 	}
 
+	public void requestSearchBar() {
+		if (actionBarContent.getVisibility() != View.VISIBLE)
+			return;
+
+		actionBarContent.setVisibility(View.GONE);
+		searchContainer.setVisibility(View.VISIBLE);
+		searchInput.requestFocus();
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.toggleSoftInputFromWindow(searchInput.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+
+	}
+
+	public void hideSearchBar() {
+		if (actionBarContent.getVisibility() != View.GONE)
+			return;
+
+		actionBarContent.setVisibility(View.VISIBLE);
+		searchContainer.setVisibility(View.GONE);
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
+	}
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 
@@ -754,6 +898,8 @@ public class MainActivity extends FragmentActivity {
 
 		Session session = Session.getActiveSession();
 		Session.saveSession(session, outState);
+
+		outState.putString("searchWord", searchWord);
 
 		super.onSaveInstanceState(outState);
 	}

@@ -18,13 +18,11 @@ import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
-import com.markbuikema.juliana32.asynctask.TeamsRetriever;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
 import com.markbuikema.juliana32.util.DataManager;
-import com.markbuikema.juliana32.util.Util;
 
 public class Teams {
 
@@ -121,14 +119,14 @@ public class Teams {
 		teamAdapter.setSeason(seasons.get(seasonIndex));
 	}
 
-	public void reload() {
-		new TeamsRetriever() {
-			@Override
-			protected void onPostExecute(java.util.List<Season> result) {
-
-			}
-		}.execute();
-	}
+	// public void reload() {
+	// new TeamsRetriever(activity) {
+	// @Override
+	// protected void onPostExecute(List<Season> result) {
+	//
+	// }
+	// }.execute();
+	// }
 
 	private class SeasonAdapter extends ArrayAdapter<Season> {
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
@@ -37,16 +38,17 @@ public class Nieuws {
 
 	private NieuwsRetriever nieuwsRetriever;
 
+	private TextView noItems;
+
 	public Nieuws(final Activity act) {
 		activity = (MainActivity) act;
 		View mainView = act.findViewById(R.id.nieuwsView);
 		nieuwsList = (StaggeredGridView) mainView.findViewById(R.id.nieuwsList);
 		refreshButton = (ImageButton) act.findViewById(R.id.menuRefresh);
 		loading = (ProgressBar) act.findViewById(R.id.loading);
+		noItems = (TextView) mainView.findViewById(R.id.noItems);
 
 		nieuwsAdapter = new NieuwsAdapter(act);
-		for (NieuwsItem item : DataManager.getInstance().getNieuwsItems())
-			nieuwsAdapter.add(item);
 
 		nieuwsList.setAdapter(nieuwsAdapter);
 		nieuwsList.setSelector(null);
@@ -67,6 +69,7 @@ public class Nieuws {
 			}
 		});
 
+		noItems.setVisibility(nieuwsAdapter.getCount() < 1 ? View.VISIBLE : View.GONE);
 	}
 
 	public void onItemClick(int position) {
@@ -97,12 +100,13 @@ public class Nieuws {
 			protected void onPostExecute(List<NieuwsItem> result) {
 
 				DataManager.getInstance().setNieuwsItems(result);
+				nieuwsAdapter.update();
 
 				loading.setVisibility(View.GONE);
 				if (activity.getPage() == Page.NIEUWS && !activity.isNieuwsDetailShown())
 					refreshButton.setVisibility(View.VISIBLE);
 
-				for (NieuwsItem item : result) {
+				for (NieuwsItem item : result)
 					if (item.isFromFacebook()) {
 						final FacebookNieuwsItem fbni = ((FacebookNieuwsItem) item);
 						if (fbni.isPhoto())
@@ -117,9 +121,6 @@ public class Nieuws {
 
 							}.execute(fbni);
 					}
-					nieuwsAdapter.add(item);
-
-				}
 
 				if (itemRequestId != -1) {
 
@@ -128,6 +129,9 @@ public class Nieuws {
 
 					itemRequestId = -1;
 				}
+
+				noItems.setVisibility(nieuwsAdapter.getCount() < 1 ? View.VISIBLE : View.GONE);
+
 			}
 
 		};
@@ -148,5 +152,13 @@ public class Nieuws {
 
 	public void invalidate() {
 		nieuwsAdapter.notifyDataSetChanged();
+	}
+
+	public void search(String s) {
+		nieuwsAdapter.setSearchword(s);
+	}
+
+	public void clearSearch() {
+		nieuwsAdapter.clearSearchword();
 	}
 }

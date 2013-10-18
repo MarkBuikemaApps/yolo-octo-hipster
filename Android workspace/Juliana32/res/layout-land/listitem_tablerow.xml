@@ -28,52 +28,61 @@
             android:id="@+id/rowPlayed"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowWon"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowDrawn"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowLost"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowPoints"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
+            android:textStyle="bold" 
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowScored"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowConceded"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/rowMinusPoints"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:textColor="@android:color/black" />
     </LinearLayout>
 
-       <View
+    <View
         android:id="@+id/rowDivider"
         android:layout_width="match_parent"
         android:layout_height="2dp"

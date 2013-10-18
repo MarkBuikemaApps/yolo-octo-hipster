@@ -77,6 +77,10 @@ public class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem
 					} catch (ArrayIndexOutOfBoundsException e) {
 						createdAt = new GregorianCalendar();
 					}
+
+					title = title.replace("&eacute;", "'");
+					subTitle = subTitle.replace("&eacute;", "é");
+
 					items.add(new NormalNieuwsItem(title, subTitle, createdAt, detailUrl));
 				}
 

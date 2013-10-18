@@ -1,5 +1,8 @@
 package com.markbuikema.juliana32.section;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,9 +13,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,7 +139,8 @@ public class NieuwsDetail {
 		likeButton.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
 
 		likeText.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
-		facebookLoginButton.setVisibility(Session.getActiveSession().isOpened() ? View.GONE : View.VISIBLE);
+		facebookLoginButton.setVisibility(!item.isFromFacebook() || Session.getActiveSession().isOpened() ? View.GONE
+				: View.VISIBLE);
 		bottomMargin.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
 
 		likeButton.setOnClickListener(new OnClickListener() {
@@ -239,12 +247,11 @@ public class NieuwsDetail {
 			contentString = "error";
 		contentString = contentString.replaceAll(Character.toString((char) 65532), "");
 
-		content.setText(android.text.Html.fromHtml(contentString));
+		content.setText(LinkifyExtra.addLinksHtmlAware(contentString));
 		content.setMovementMethod(LinkMovementMethod.getInstance());
-		content.setAutoLinkMask(Linkify.ALL);
+		content.setLinksClickable(true);
 
-		if (item instanceof NormalNieuwsItem)
-			date.setText(Util.getDateString(act, ((NormalNieuwsItem) item).getCreatedAt()));
+		date.setText(Util.getDateString(act, item.getCreatedAt()));
 
 		if (item.isFromFacebook())
 			logo.setImageBitmap(Util.getFacebookLogo(act));
@@ -347,9 +354,17 @@ public class NieuwsDetail {
 			});
 			new PictureChanger() {
 				@Override
+				protected void onPreExecute() {
+					image.setImageBitmap(null);
+				}
+
+				@SuppressWarnings("deprecation")
+				@Override
 				protected void onPostExecute(Bitmap result) {
 
-					image.setImageBitmap(Bitmap.createScaledBitmap(result, 365, 250, true));
+					image.setImageResource(R.drawable.roundedcorner_dkgrey);
+					image.setBackgroundDrawable(new BitmapDrawable(act.getResources(), Bitmap.createScaledBitmap(result, 365, 250,
+							true)));
 
 					result.recycle();
 					shareButton.setVisibility(View.VISIBLE);
@@ -368,8 +383,6 @@ public class NieuwsDetail {
 					act.showPhotoDialog(item.getPhotos(), null, position);
 				}
 			});
-
-			view.setPadding(15, 15, 15, 15);
 
 			photoContainer.addView(view);
 		}
@@ -482,5 +495,24 @@ public class NieuwsDetail {
 		likeButton.setEnabled(false);
 		likeLoader.setVisibility(View.VISIBLE);
 		likeButton.setImageBitmap(null);
+	}
+
+	public static class LinkifyExtra extends Linkify {
+		public static Spanned addLinksHtmlAware(String htmlString) {
+			// gather links from html
+			Spanned spann = Html.fromHtml(htmlString);
+			URLSpan[] old = spann.getSpans(0, spann.length(), URLSpan.class);
+			List<Pair<Integer, Integer>> htmlLinks = new ArrayList<Pair<Integer, Integer>>();
+			for (URLSpan span : old)
+				htmlLinks.add(new Pair<Integer, Integer>(spann.getSpanStart(span), spann.getSpanEnd(span)));
+			// linkify spanned, html link will be lost
+			Linkify.addLinks((Spannable) spann, Linkify.ALL);
+			// add html links back
+			for (int i = 0; i < old.length; i++)
+				((Spannable) spann).setSpan(old[i], htmlLinks.get(i).first, htmlLinks.get(i).second,
+						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			return spann;
+		}
 	}
 }

@@ -81,8 +81,9 @@ public class SettingsActivity extends Activity {
 					onClickLogout();
 			}
 		});
-		adapter.add(new SettingCaption("Nieuwsberichten"));
-		adapter.add(new CheckBoxSetting("Notificaties", "bij nieuwe nieuwsberichten", NOTIFICATIONS, false));
+		// adapter.add(new SettingCaption("Nieuwsberichten"));
+		// adapter.add(new CheckBoxSetting("Notificaties",
+		// "bij nieuwe nieuwsberichten", NOTIFICATIONS, false));
 		adapter.add(new SettingCaption("Bronnen"));
 		adapter.add(new CheckBoxSetting("Facebook", "", FACEBOOK, true));
 		adapter.add(new CheckBoxSetting("Juliana website", "", WEBSITE, true));

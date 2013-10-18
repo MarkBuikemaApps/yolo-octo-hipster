@@ -46,6 +46,7 @@
     <string name="second_back_press">Druk nogmaals op terug om te sluiten</string>
     <string name="facebook">Open de Facebook pagina</string>
     <string name="twitter">Open de Twitter pagina</string>
+    <string name="search">Zoeken…</string>
     
     <string-array name="menu_items">
         <item>Nieuws</item>
@@ -53,7 +54,7 @@
         <item>Teletekst</item>
     </string-array>
     <string name="comments">Reacties</string>
-    <string name="no_connection">Kan geen verbinding maken. Controleer internetverbinding!</string>
+    <string name="no_connection">Kan geen gegevens ophalen. Controleer internetverbinding en probeer het opnieuw!</string>
     <string name="app_id">281741915275542</string>
     <string name="timestamp_today">Vandaag</string>
     <string name="timestamp_yesterday">Gisteren</string>
@@ -65,5 +66,6 @@
     <string name="like">Like</string>
     <string name="help">Over deze app</string>
     <string name="prefs">Instellingen</string>
+    <string name="no_item">Er zijn geen nieuwsberichten gevonden. Selecteer in de instellingen ten minste één nieuwsbron of controleer je internetverbinding.</string>
 
 </resources>

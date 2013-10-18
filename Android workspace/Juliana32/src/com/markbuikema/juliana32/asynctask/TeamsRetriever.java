@@ -7,22 +7,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.markbuikema.juliana32.BuildConfig;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.TableRow;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
+import com.markbuikema.juliana32.util.Util;
 
 //FIXME
 public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 
 	private static final String TAG = "SplashActivity";
-	private static final String SAMPLE_JSON = "{\"seasons\":[{\"year\":\"2013\",\"teams\":[{\"id\":\"0\",\"category\":\"SENIOREN\",\"name\":\"Juliana 1\"},{\"id\":\"1\",\"category\":\"SENIOREN\",\"name\":\"Juliana 2\"},{\"id\":\"2\",\"category\":\"SENIOREN\",\"name\":\"Juliana 3\"},{\"id\":\"3\",\"category\":\"SENIOREN\",\"name\":\"Juliana 4\"},{\"id\":\"4\",\"category\":\"SENIOREN\",\"name\":\"Juliana 5\"},{\"id\":\"5\",\"category\":\"SENIOREN\",\"name\":\"Juliana 6\"},{\"id\":\"6\",\"category\":\"SENIOREN\",\"name\":\"Juliana 7\"},{\"id\":\"7\",\"category\":\"JUNIOREN\",\"name\":\"Juliana B1\"},{\"id\":\"8\",\"category\":\"JUNIOREN\",\"name\":\"Juliana B2\"},{\"id\":\"9\",\"category\":\"JUNIOREN\",\"name\":\"Juliana C1\"},{\"id\":\"10\",\"category\":\"JUNIOREN\",\"name\":\"Juliana D1\"},{\"id\":\"11\",\"category\":\"JUNIOREN\",\"name\":\"Juliana E1\"},{\"id\":\"12\",\"category\":\"JUNIOREN\",\"name\":\"Juliana F1\"},{\"id\":\"13\",\"category\":\"DAMES\",\"name\":\"Juliana DA1\"}],\"name\":\"13/14\"}]}";
+	private Context context;
+
+	public TeamsRetriever(Context context) {
+		this.context = context;
+	}
 
 	@Override
 	protected List<Season> doInBackground(Void... params) {
@@ -31,13 +36,9 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 
 		Log.d(TAG, "Started retrieving teams");
 
-		String json = null;
-		if (BuildConfig.DEBUG)
-			json = SAMPLE_JSON;
-		else
-			// json = getHttpContent(INFORMATION_URL);
+		String json = Util.loadJSONFromAsset(context, "sample_teams.json");
 
-			Log.d(TAG, "Teams json: " + json);
+		Log.d(TAG, "Teams json: " + json);
 
 		if (json == null) {
 			Log.e(TAG, "null json!");
@@ -231,4 +232,5 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 		}
 		return game;
 	}
+
 }
