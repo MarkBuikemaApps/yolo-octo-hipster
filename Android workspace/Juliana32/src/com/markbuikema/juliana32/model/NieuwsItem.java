@@ -5,6 +5,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 public abstract class NieuwsItem extends Observable implements Comparable<NieuwsItem> {
 
 	private static int nextId = 0;
@@ -18,8 +21,8 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 
 	public NieuwsItem(String title, String subTitle, String content, GregorianCalendar createdAt) {
 		id = nextId++;
-		this.title = title;
-		this.subTitle = subTitle;
+		this.title = title == null ? null : Jsoup.clean(title, Whitelist.none()).replace("&eacute;", "é");
+		this.subTitle = subTitle == null ? null : Jsoup.clean(subTitle, Whitelist.none()).replace("&eacute;", "é");
 		this.content = content;
 		this.createdAt = createdAt;
 
@@ -52,10 +55,6 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 		return this instanceof FacebookNieuwsItem;
 	}
 
-	public boolean isTeaser() {
-		return this instanceof TeaserNieuwsItem && createdAt == null;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -75,8 +74,6 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 
 	@Override
 	public int compareTo(NieuwsItem another) {
-		if (another instanceof TeaserNieuwsItem)
-			return 0;
 		long thisDate;
 		long otherDate;
 

@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,8 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,12 +23,12 @@ import android.widget.Toast;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Session;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
-import com.markbuikema.juliana32.asynctask.PictureChanger;
 
 public class SettingsActivity extends Activity {
 
-	private ImageButton backButton;
+	private LinearLayout backButton;
 	private ListView settingsList;
 	private SettingsAdapter adapter;
 	private SharedPreferences preferences;
@@ -57,9 +54,10 @@ public class SettingsActivity extends Activity {
 
 		preferences = getSharedPreferences(PREFERENCES, 0);
 
-		backButton = (ImageButton) findViewById(R.id.backButton);
+		backButton = (LinearLayout) findViewById(R.id.backButton);
 		settingsList = (ListView) findViewById(R.id.settingsList);
 
+		backButton.setClickable(true);
 		backButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -183,19 +181,7 @@ public class SettingsActivity extends Activity {
 			picture = (ImageView) view.findViewById(R.id.settingFacebookPic);
 			name = (TextView) view.findViewById(R.id.settingSubTitle);
 
-			new PictureChanger() {
-				@Override
-				protected void onPostExecute(Bitmap result) {
-					if (result == null)
-						picture.setBackgroundDrawable(new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(),
-								R.drawable.silhouette)));
-					else
-						picture.setBackgroundDrawable(new BitmapDrawable(getResources(), result));
-				}
-			}.execute(userPicUrl);
-
-			// Toast.makeText(SettingsActivity.this, userName,
-			// Toast.LENGTH_LONG).show();
+			UrlImageViewHelper.setUrlDrawable(picture, userPicUrl, R.drawable.silhouette);
 
 		}
 	}

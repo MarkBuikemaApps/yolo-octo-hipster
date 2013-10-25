@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="refres" key="selection"/>
+		<item value="PhotoPagerAd" key="selection"/>
 		<list key="findhistory">
-			<item value="refres"/>
-			<item value="TAG"/>
-			<item value="editte"/>
-			<item value="gone"/>
-			<item value="style"/>
-			<item value="hidese"/>
-			<item value="requestnie"/>
-			<item value="hideni"/>
+			<item value="PhotoPagerad"/>
+			<item value="recycle"/>
+			<item value="onback"/>
+			<item value="SoftIn"/>
+			<item value="softin"/>
+			<item value="color"/>
+			<item value="should"/>
+			<item value="reque"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

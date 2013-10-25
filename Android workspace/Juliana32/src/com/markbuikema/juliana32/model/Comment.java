@@ -3,21 +3,20 @@ package com.markbuikema.juliana32.model;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 public class Comment extends Like {
 
 	private String text;
-	private Bitmap image;
+	private String imgUrl;
 	private GregorianCalendar createdAt;
 	private String userId;
 
-	public Comment(String id, String name, Bitmap image, String userId, String text, String dateString) {
+	public Comment(String id, String name, String imgUrl, String userId, String text, String dateString) {
 		super(id, name);
 
 		this.text = text;
-		this.image = image;
+		this.imgUrl = imgUrl;
 		this.userId = userId;
 
 		String yearString = dateString.substring(0, 4);
@@ -37,8 +36,8 @@ public class Comment extends Like {
 		return text;
 	}
 
-	public Bitmap getImage() {
-		return image;
+	public String getImgUrl() {
+		return imgUrl;
 	}
 
 	public GregorianCalendar getCreatedAt() {

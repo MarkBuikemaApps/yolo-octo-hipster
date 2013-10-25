@@ -4,10 +4,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
-import com.markbuikema.juliana32.asynctask.PictureChanger;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.util.DateTimeUtils;
 import com.markbuikema.juliana32.util.Util;
@@ -66,14 +64,7 @@ public class PhotoPagerAdapter extends PagerAdapter implements Observer {
 			View view = LayoutInflater.from(container.getContext()).inflate(R.layout.fb_photo_item, null);
 			final ImageView image = (ImageView) view.findViewById(R.id.facebookPhoto);
 
-			new PictureChanger() {
-				@Override
-				protected void onPostExecute(Bitmap result) {
-
-					Log.d("resized", "picture loaded: " + result);
-					image.setImageBitmap(result);
-				};
-			}.execute(Util.PHOTO_URL_PREFIX + item.getPhoto(position - 1) + Util.PHOTO_URL_SUFFIX);
+			UrlImageViewHelper.setUrlDrawable(image, Util.PHOTO_URL_PREFIX + item.getPhoto(position - 1) + Util.PHOTO_URL_SUFFIX);
 
 			view.setClickable(true);
 			view.setOnClickListener(new OnClickListener() {
@@ -81,7 +72,7 @@ public class PhotoPagerAdapter extends PagerAdapter implements Observer {
 				@Override
 				public void onClick(View v) {
 					MainActivity act = (MainActivity) container.getContext();
-					act.showPhotoDialog(item.getPhotos(), null, position - 1);
+					act.showPhotoDialog(item.getPhotos(), position - 1, null);
 				}
 			});
 

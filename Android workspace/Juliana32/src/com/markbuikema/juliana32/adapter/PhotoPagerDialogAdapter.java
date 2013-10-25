@@ -1,7 +1,6 @@
 package com.markbuikema.juliana32.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -9,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
-import com.markbuikema.juliana32.asynctask.PictureChanger;
 import com.markbuikema.juliana32.util.Util;
 
 public class PhotoPagerDialogAdapter extends PagerAdapter {
@@ -35,12 +34,7 @@ public class PhotoPagerDialogAdapter extends PagerAdapter {
 		else
 			url = urls[position];
 
-		new PictureChanger() {
-			@Override
-			protected void onPostExecute(Bitmap result) {
-				image.setImageBitmap(result);
-			};
-		}.execute(url);
+		UrlImageViewHelper.setUrlDrawable(image, url);
 
 		((ViewPager) container).addView(view);
 

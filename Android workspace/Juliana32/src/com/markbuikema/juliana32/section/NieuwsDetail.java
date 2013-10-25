@@ -7,9 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -21,7 +18,6 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -48,18 +44,17 @@ import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.model.GraphObject;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.adapter.CommentAdapter;
-import com.markbuikema.juliana32.asynctask.PhotoSharer;
-import com.markbuikema.juliana32.asynctask.PictureChanger;
 import com.markbuikema.juliana32.model.Comment;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.Like;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
-import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 import com.markbuikema.juliana32.ui.Button;
+import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.FacebookHelper.CommentLoader;
 import com.markbuikema.juliana32.util.Util;
 
@@ -79,7 +74,6 @@ public class NieuwsDetail {
 	private ListView comments;
 	private LinearLayout commentContainer;
 	private CommentAdapter commentAdapter;
-	private LinearLayout photoContainer;
 	private TextView content;
 	private TextView likeText;
 	private ImageView commentProfilePic;
@@ -90,9 +84,14 @@ public class NieuwsDetail {
 	private ProgressBar likeLoader;
 	private FrameLayout likeButtonContainer;
 
+	private int photoIndex;
+
+	protected CommentLoader commentLoader;
+
 	public NieuwsDetail(final MainActivity act, final NieuwsItem item) {
 		this.act = act;
 		this.item = item;
+		photoIndex = 0;
 
 		View mainView = act.findViewById(R.id.nieuwsDetailView);
 
@@ -217,7 +216,7 @@ public class NieuwsDetail {
 				}
 
 				String id = ((FacebookNieuwsItem) item).getFbId();
-				new CommentLoader() {
+				commentLoader = new CommentLoader() {
 
 					@Override
 					protected void onPreExecute() {
@@ -238,7 +237,8 @@ public class NieuwsDetail {
 						loader.setVisibility(View.GONE);
 						act.fixActionBar();
 					}
-				}.execute(id);
+				};
+				commentLoader.execute(id);
 			}
 		});
 
@@ -254,26 +254,15 @@ public class NieuwsDetail {
 		date.setText(Util.getDateString(act, item.getCreatedAt()));
 
 		if (item.isFromFacebook())
-			logo.setImageBitmap(Util.getFacebookLogo(act));
+			logo.setImageResource(R.drawable.ic_fb);
 		else
-			logo.setImageBitmap(Util.getJulianaLogo(act));
+			logo.setImageResource(R.drawable.ic_juliana);
 
-		photoContainer = (LinearLayout) act.getPhotoDrawerView().findViewById(R.id.newsPhotoContainer);
-		populatePhotos();
 	}
 
 	public void setProfilePic(String url) {
 		Log.d("USER_INFO", url + ".");
-		new PictureChanger() {
-			@Override
-			protected void onPostExecute(Bitmap result) {
-				if (result == null)
-					commentProfilePic.setBackgroundDrawable(new BitmapDrawable(act.getResources(), BitmapFactory.decodeResource(
-							act.getResources(), R.drawable.silhouette)));
-				else
-					commentProfilePic.setBackgroundDrawable(new BitmapDrawable(act.getResources(), result));
-			}
-		}.execute(url);
+		UrlImageViewHelper.setUrlDrawable(commentProfilePic, url, R.drawable.silhouette);
 	}
 
 	protected void postComment(final String message) {
@@ -331,63 +320,6 @@ public class NieuwsDetail {
 		request.executeAsync();
 	}
 
-	private void populatePhotos() {
-		photoContainer.removeAllViews();
-
-		for (int i = 0; i < item.getPhotoCount(); i++) {
-			String url = null;
-			if (item instanceof FacebookNieuwsItem)
-				url = Util.PHOTO_URL_PREFIX + item.getPhoto(i) + Util.PHOTO_URL_SUFFIX;
-			else
-				url = item.getPhoto(i);
-			final String finalUrl = url;
-			View view = LayoutInflater.from(act).inflate(R.layout.photo_item, null);
-			final ImageView image = (ImageView) view.findViewById(R.id.photoView);
-			final ImageButton shareButton = (ImageButton) view.findViewById(R.id.photoShareButton);
-
-			shareButton.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					new PhotoSharer(act).execute(finalUrl, item.getTitle());
-				}
-			});
-			new PictureChanger() {
-				@Override
-				protected void onPreExecute() {
-					image.setImageBitmap(null);
-				}
-
-				@SuppressWarnings("deprecation")
-				@Override
-				protected void onPostExecute(Bitmap result) {
-
-					image.setImageResource(R.drawable.roundedcorner_dkgrey);
-					image.setBackgroundDrawable(new BitmapDrawable(act.getResources(), Bitmap.createScaledBitmap(result, 365, 250,
-							true)));
-
-					result.recycle();
-					shareButton.setVisibility(View.VISIBLE);
-				};
-
-			}.execute(finalUrl);
-
-			final int position = i;
-
-			image.setClickable(true);
-			image.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					act.hidePhotoDrawer();
-					act.showPhotoDialog(item.getPhotos(), null, position);
-				}
-			});
-
-			photoContainer.addView(view);
-		}
-	}
-
 	public String getTitle() {
 		return item.getTitle();
 	}
@@ -408,10 +340,7 @@ public class NieuwsDetail {
 		if (item instanceof NormalNieuwsItem)
 			return ((NormalNieuwsItem) item).getDetailUrl();
 		else
-			if (item instanceof TeaserNieuwsItem)
-				return ((TeaserNieuwsItem) item).getDetailUrl();
-			else
-				return null;
+			return null;
 	}
 
 	public boolean hasPhotos() {
@@ -514,5 +443,21 @@ public class NieuwsDetail {
 
 			return spann;
 		}
+	}
+
+	public void showPhotos() {
+		act.showPhotoDialog(item.getPhotos(), photoIndex, new OnPhotoPagerDialogPageChangedListener() {
+
+			@Override
+			public void onPhotoPagerDialogPageChanged(int pageIndex) {
+				photoIndex = pageIndex;
+			}
+
+		});
+	}
+
+	public void cancelTasks() {
+		if (commentLoader != null && !commentLoader.isCancelled())
+			commentLoader.cancel(true);
 	}
 }

@@ -78,14 +78,6 @@ public class SplashActivity extends Activity {
 
 			final DataManager manager = DataManager.getInstance();
 
-			// TeasersRetriever teasersRetriever = new TeasersRetriever() {
-			// @Override
-			// protected void onPostExecute(List<TeaserNieuwsItem> result) {
-			// manager.setTeaserItems(result);
-			// }
-			// };
-			// teasersRetriever.execute();
-
 			TeamsRetriever teamsRetriever = new TeamsRetriever(SplashActivity.this) {
 				@Override
 				protected void onPostExecute(List<Season> result) {

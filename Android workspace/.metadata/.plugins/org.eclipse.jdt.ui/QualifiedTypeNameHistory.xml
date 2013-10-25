@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.origamilabs.library.views.StaggeredGridView"/>
-<fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
-<fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.RecyclingBitmapDrawable"/>
-<fullyQualifiedTypeName name="net.simonvt.menudrawer.MenuDrawer.Type"/>
-<fullyQualifiedTypeName name="java.io.Serializable"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.adapter.NieuwsAdapter.PhotoSectionFragment"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.adapter.NieuwsAdapter.OnImageLoadedListener"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.BuildConfig"/>
-<fullyQualifiedTypeName name="android.content.res.Resources"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.activity.SplashActivity.CountCallback"/>
 <fullyQualifiedTypeName name="android.support.v4.view.ViewPager.OnPageChangeListener"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="java.util.TimeZone"/>
@@ -24,7 +13,6 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="org.json.JSONException"/>
 <fullyQualifiedTypeName name="org.json.JSONArray"/>
 <fullyQualifiedTypeName name="com.facebook.HttpMethod"/>
 <fullyQualifiedTypeName name="com.facebook.Request.Callback"/>
@@ -44,20 +32,32 @@
 <fullyQualifiedTypeName name="android.text.TextWatcher"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NieuwsItem"/>
 <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
-<fullyQualifiedTypeName name="android.preference.PreferenceManager"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog.Builder"/>
 <fullyQualifiedTypeName name="android.view.LayoutInflater"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.layout"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface.OnClickListener"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.graphics.Bitmap.Config"/>
 <fullyQualifiedTypeName name="android.content.res.Configuration"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.drawable"/>
 <fullyQualifiedTypeName name="android.support.v4.view.ViewPager"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
 <fullyQualifiedTypeName name="android.text.util.Linkify"/>
 <fullyQualifiedTypeName name="java.util.Observable"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
 <fullyQualifiedTypeName name="java.lang.Runnable"/>
+<fullyQualifiedTypeName name="android.view.ViewPropertyAnimator"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.GregorianCalendar"/>
+<fullyQualifiedTypeName name="org.jsoup.Jsoup"/>
+<fullyQualifiedTypeName name="org.jsoup.safety.Whitelist"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.section.Teletekst.TeletekstSectionFragment"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.layout"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.view.ViewPropertyAnimator"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.animation.Animator.AnimatorListener"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceManager"/>
+<fullyQualifiedTypeName name="org.json.JSONException"/>
+<fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
+<fullyQualifiedTypeName name="android.view.Choreographer"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.drawable"/>
+<fullyQualifiedTypeName name="android.view.ViewTreeObserver.OnGlobalLayoutListener"/>
 </qualifiedTypeNameHistroy>

@@ -81,7 +81,7 @@ public class TableAdapter extends ArrayAdapter<TableRow> {
 			background.setBackgroundColor(r.getColor(color.ltgrey));
 
 		if (position > 0 && row.getTeamName().toLowerCase(Locale.US).contains("juliana"))
-			background.setBackgroundColor(Color.rgb(240, 240, 245));
+			background.setBackgroundColor(Color.rgb(240, 240, 240));
 
 		divider.setBackgroundResource(R.drawable.divider);
 

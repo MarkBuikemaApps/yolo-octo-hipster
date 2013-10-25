@@ -9,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="@dimen/small_margin" >
+        android:paddingBottom="1dp"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="1dp" >
 
         <TextView
             android:id="@+id/rowPosition"
@@ -56,9 +59,9 @@
             android:id="@+id/rowPoints"
             android:layout_width="@dimen/table_column_width"
             android:layout_height="wrap_content"
-            android:textStyle="bold" 
             android:gravity="center_horizontal"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/rowScored"

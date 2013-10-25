@@ -19,10 +19,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -40,12 +39,10 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -62,8 +59,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -87,14 +84,14 @@ import com.markbuikema.juliana32.section.NieuwsDetail;
 import com.markbuikema.juliana32.section.TeamDetail;
 import com.markbuikema.juliana32.section.Teams;
 import com.markbuikema.juliana32.section.Teletekst;
-import com.markbuikema.juliana32.service.NotificationService;
 import com.markbuikema.juliana32.ui.Button;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog;
+import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
 	public static final boolean OFFLINE_MODE = true;
 
@@ -104,7 +101,8 @@ public class MainActivity extends FragmentActivity {
 
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 
-	private ImageButton menuToggler;
+	private ImageView menuButton;
+	private LinearLayout menuToggler;
 	private ImageButton refreshButton;
 	private ImageButton commentsButton;
 	private ImageButton shareButton;
@@ -115,9 +113,7 @@ public class MainActivity extends FragmentActivity {
 	private TextView title;
 
 	private LinearLayout actionBarContent;
-	private FrameLayout searchContainer;
 	private EditText searchInput;
-	private ImageButton cancelSearchButton;
 
 	private View activePageView;
 	private View teamDetailView;
@@ -138,7 +134,6 @@ public class MainActivity extends FragmentActivity {
 	private PhotoPagerDialog photoDialog;
 
 	private MenuDrawer menuDrawer;
-	private MenuDrawer photoDrawer;
 	private ListView menu;
 	private MenuAdapter menuAdapter;
 
@@ -150,7 +145,7 @@ public class MainActivity extends FragmentActivity {
 	protected String userPicUrl;
 	protected String userId;
 
-	private String searchWord;
+	private boolean searching;
 
 	public enum Page {
 		NIEUWS, TEAMS, TELETEKST
@@ -174,26 +169,15 @@ public class MainActivity extends FragmentActivity {
 		menuDrawer.setContentView(R.layout.activity_main);
 		menuDrawer.setMenuView(R.layout.menu_main);
 
-		photoDrawer = MenuDrawer.attach(this, Type.BEHIND, Position.RIGHT, MenuDrawer.MENU_DRAG_WINDOW);
-		photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
-		photoDrawer.setContentView(R.layout.activity_main);
-		photoDrawer.setMenuView(R.layout.menu_photo);
-
 		menuDrawer.setOnDrawerStateChangeListener(new OnDrawerStateChangeListener() {
 
 			@Override
 			public void onDrawerStateChange(int oldState, int newState) {
-				if (newState == MenuDrawer.STATE_OPEN)
-					photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
-				else
-					photoDrawer.setTouchMode(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? MenuDrawer.TOUCH_MODE_BEZEL
-							: MenuDrawer.TOUCH_MODE_NONE);
 				fixActionBar();
 			}
 
 			@Override
 			public void onDrawerSlide(float openRatio, int offsetPixels) {
-
 			}
 		});
 
@@ -221,7 +205,8 @@ public class MainActivity extends FragmentActivity {
 
 		teamDetailView = findViewById(R.id.teamDetailView);
 		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
-		menuToggler = (ImageButton) findViewById(R.id.menuToggler);
+		menuButton = (ImageView) findViewById(R.id.menuButton);
+		menuToggler = (LinearLayout) findViewById(R.id.menuToggler);
 		commentsButton = (ImageButton) findViewById(R.id.menuComments);
 		shareButton = (ImageButton) findViewById(R.id.menuShare);
 		picturesButton = (ImageButton) findViewById(R.id.menuPictures);
@@ -235,24 +220,19 @@ public class MainActivity extends FragmentActivity {
 		loader = (ProgressBar) findViewById(R.id.loading);
 		actionBarContent = (LinearLayout) findViewById(R.id.actionBarContent);
 		searchButton = (ImageButton) findViewById(R.id.menuSearch);
-		searchContainer = (FrameLayout) findViewById(R.id.searchContainer);
-		cancelSearchButton = (ImageButton) findViewById(R.id.stopSearchButton);
 		searchInput = (EditText) findViewById(R.id.searchInput);
 
+		menuToggler.setClickable(true);
 		menuToggler.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				if (isNieuwsDetailShown())
-					if (nieuwsDetail.isCommentsPanelOpened())
-						nieuwsDetail.hideComments();
-					else
-						hideNieuwsDetail();
+
+				if (isTeamDetailShown() || isNieuwsDetailShown() || isSearchBarShown())
+					onBackPressed();
 				else
-					if (isTeamDetailShown())
-						hideTeamDetail();
-					else
-						menuDrawer.toggleMenu();
+					menuDrawer.toggleMenu();
+
 			}
 		});
 
@@ -274,7 +254,7 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				photoDrawer.toggleMenu();
+				nieuwsDetail.showPhotos();
 			}
 		});
 
@@ -292,7 +272,6 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				nieuws.search(s.toString());
-				searchWord = s.toString();
 			}
 
 			@Override
@@ -301,16 +280,6 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-			}
-		});
-
-		cancelSearchButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				hideSearchBar();
-				nieuws.clearSearch();
-				searchWord = null;
 			}
 		});
 
@@ -369,12 +338,6 @@ public class MainActivity extends FragmentActivity {
 
 		onPageChanged(Page.NIEUWS);
 
-		if (getIntent().getBooleanExtra(NotificationService.FROM_NOTIFICATION, false))
-			onPageChanged(Page.NIEUWS);
-		int newsId = getIntent().getIntExtra(NotificationService.NEWS_ID, -1);
-		if (newsId != -1)
-			nieuws.setItemRequest(newsId);
-
 		// FACEBOOK STUFF////////////////
 		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
@@ -419,21 +382,25 @@ public class MainActivity extends FragmentActivity {
 			int photoDialogPage = savedInstanceState.getInt("photoDialogPage", -1);
 			if (photoDialogPage > -1) {
 				String[] urls = savedInstanceState.getStringArray("photoDialogUrls");
-				showPhotoDialog(urls, null, photoDialogPage);
+				showPhotoDialog(urls, photoDialogPage, null);
 			}
 
 			if (savedInstanceState.getBoolean("menuOpened"))
 				menuDrawer.toggleMenu();
 
-			if (savedInstanceState.getBoolean("photoDrawerOpened"))
-				photoDrawer.toggleMenu();
+			searching = savedInstanceState.getBoolean("searching", false);
 
-			if (savedInstanceState.getString("searchWord") != null && !savedInstanceState.getString("searchWord").equals("")
-					&& page == Page.NIEUWS) {
+			if (page == Page.NIEUWS && searching && !isNieuwsDetailShown())
 				requestSearchBar();
+
+			if (searching)
 				searchInput.setText(savedInstanceState.getString("searchWord"));
-			}
+
 		}
+	}
+
+	protected boolean isSearchBarShown() {
+		return searchInput.getVisibility() == View.VISIBLE;
 	}
 
 	private void updateView() {
@@ -454,12 +421,6 @@ public class MainActivity extends FragmentActivity {
 
 	public MenuDrawer getMenu() {
 		return menuDrawer;
-	}
-
-	public View getPhotoDrawerView() {
-		if (photoDrawer == null)
-			return null;
-		return photoDrawer.getMenuView();
 	}
 
 	public boolean isOnline() {
@@ -485,12 +446,16 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void onPageChanged(Page page) {
+		if (this.page == Page.NIEUWS && searching) {
+			searching = false;
+			hideSearchBar();
+			fixActionBar();
+		}
+
 		this.page = page;
 
 		if (activePageView != null)
 			activePageView.setVisibility(View.GONE);
-
-		searchWord = null;
 
 		String title = getResources().getString(R.string.app_name);
 		switch (page) {
@@ -510,7 +475,6 @@ public class MainActivity extends FragmentActivity {
 				teams = new Teams(this);
 			if (!teams.isLoaded())
 				loader.setVisibility(View.VISIBLE);
-
 			break;
 		case TELETEKST:
 			title = getResources().getString(R.string.menu_teletekst);
@@ -609,26 +573,25 @@ public class MainActivity extends FragmentActivity {
 			break;
 		}
 
-		if (isNieuwsDetailShown())
+		if (isNieuwsDetailShown()) {
 			commentsButton.setVisibility(currentNewsItemHasComments() ? View.VISIBLE : View.GONE);
-		else
+			hideSearchBar();
+		} else
 			commentsButton.setVisibility(View.GONE);
 
-		if (isTeamDetailShown() || isNieuwsDetailShown())
-			menuToggler.setBackgroundResource(R.drawable.menu_borderless);
+		if (isTeamDetailShown() || isNieuwsDetailShown() || searching)
+			menuButton.setImageResource(R.drawable.menu_borderless);
 		else
 			if (menuDrawer.isMenuVisible())
-				menuToggler.setBackgroundResource(R.drawable.menu_slid_borderless);
+				menuButton.setImageResource(R.drawable.menu_slid_borderless);
 			else
-				menuToggler.setBackgroundResource(R.drawable.menu_slide_borderless);
+				menuButton.setImageResource(R.drawable.menu_slide_borderless);
 
-		if (page != Page.NIEUWS || isNieuwsDetailShown())
-			hideSearchBar();
-
-		if (searchWord != null && page == Page.NIEUWS && !isNieuwsDetailShown()) {
-			requestSearchBar();
-			searchInput.setText(searchWord);
-		}
+		if (page == Page.NIEUWS && searching)
+			if (!isNieuwsDetailShown()) {
+				requestSearchBar();
+				menuButton.setImageResource(R.drawable.menu_borderless);
+			}
 	}
 
 	private boolean currentNewsItemHasComments() {
@@ -681,9 +644,7 @@ public class MainActivity extends FragmentActivity {
 		activePageView.setVisibility(View.GONE);
 		nieuwsDetailView.setVisibility(View.VISIBLE);
 
-		if (item.getPhotoCount() > 0)
-			photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
-
+		hideSearchBar();
 		fixActionBar();
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -706,12 +667,15 @@ public class MainActivity extends FragmentActivity {
 			menuDrawer.toggleMenu();
 			return;
 		}
-		if (photoDrawer.isMenuVisible()) {
-			photoDrawer.toggleMenu();
-			return;
-		}
 		if (isNieuwsDetailShown() && nieuwsDetail.isCommentsPanelOpened()) {
 			nieuwsDetail.hideComments();
+			return;
+		}
+		if (isSearchBarShown()) {
+			hideSearchBar();
+			nieuws.clearSearch();
+			searching = false;
+			fixActionBar();
 			return;
 		}
 		if (isNieuwsDetailShown())
@@ -746,11 +710,11 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void hideNieuwsDetail() {
+		if (nieuwsDetail != null)
+			nieuwsDetail.cancelTasks();
 		nieuwsDetailView.setVisibility(View.GONE);
 		activePageView.setVisibility(View.VISIBLE);
 		nieuwsDetail = null;
-
-		photoDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_NONE);
 
 		fixActionBar();
 	}
@@ -822,19 +786,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 
-		SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFERENCES, 0);
-		boolean notify = prefs.getBoolean(SettingsActivity.NOTIFICATIONS, false);
-		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-		Intent i = new Intent(this, NotificationService.class);
-		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-		am.cancel(pi);
-
-		if (notify) {
-			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + NOTIFICATION_INTERVAL * 6
-					* 1000, NOTIFICATION_INTERVAL * 60 * 1000, pi);
-			Log.d("JulianaService", "Service started");
-		}
-
 		saveGraphUser();
 
 		if (isNieuwsDetailShown())
@@ -857,10 +808,15 @@ public class MainActivity extends FragmentActivity {
 			return;
 
 		actionBarContent.setVisibility(View.GONE);
-		searchContainer.setVisibility(View.VISIBLE);
+		searchInput.setVisibility(View.VISIBLE);
 		searchInput.requestFocus();
 		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.toggleSoftInputFromWindow(searchInput.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+
+		searching = true;
+
+		title.setVisibility(View.GONE);
+		menuButton.setImageResource(R.drawable.menu_borderless);
 
 	}
 
@@ -869,7 +825,8 @@ public class MainActivity extends FragmentActivity {
 			return;
 
 		actionBarContent.setVisibility(View.VISIBLE);
-		searchContainer.setVisibility(View.GONE);
+		searchInput.setVisibility(View.GONE);
+		title.setVisibility(View.VISIBLE);
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
@@ -894,12 +851,12 @@ public class MainActivity extends FragmentActivity {
 			nieuwsDetail.onSaveInstanceState(outState);
 
 		outState.putBoolean("menuOpened", menuDrawer.isMenuVisible());
-		outState.putBoolean("photoDrawerOpened", photoDrawer.isMenuVisible());
 
 		Session session = Session.getActiveSession();
 		Session.saveSession(session, outState);
 
-		outState.putString("searchWord", searchWord);
+		outState.putString("searchWord", searchInput.getText().toString());
+		outState.putBoolean("searching", searching);
 
 		super.onSaveInstanceState(outState);
 	}
@@ -911,10 +868,6 @@ public class MainActivity extends FragmentActivity {
 					return t;
 		return null;
 	}
-
-	// public static String filter(String input) {
-	// return android.text.Html.fromHtml(input).toString();
-	// }
 
 	public Page getPage() {
 		return page;
@@ -966,8 +919,6 @@ public class MainActivity extends FragmentActivity {
 		Log.d(TAG, "Done printing hashkey");
 	}
 
-	// FACEBOOK STUFF////////////////////////////////////////////////////
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -1016,9 +967,10 @@ public class MainActivity extends FragmentActivity {
 				nieuwsDetail.setProfilePic(null);
 			return;
 		}
-		new Thread() {
+		new AsyncTask<Void, Void, String>() {
+
 			@Override
-			public void run() {
+			protected String doInBackground(Void... arg0) {
 				Bundle params = new Bundle();
 				params.putString("access_token", Session.getActiveSession().getAccessToken());
 				params.putString("fields", "picture,name");
@@ -1032,26 +984,33 @@ public class MainActivity extends FragmentActivity {
 					userId = object.getString("id");
 
 					if (isNieuwsDetailShown())
-						nieuwsDetail.setProfilePic(userPicUrl);
+						return userPicUrl;
 
 				} catch (MalformedURLException e) {
-					return;
+					return null;
 				} catch (IOException e) {
-					return;
+					return null;
 				} catch (JSONException e) {
-					e.printStackTrace();
+					return null;
 				}
+				return null;
 			}
-		}.start();
+
+			@Override
+			protected void onPostExecute(String result) {
+				if (result != null)
+					nieuwsDetail.setProfilePic(result);
+			}
+		}.execute();
 	}
 
-	public void showPhotoDialog(String[] urls, ViewPager background, int position) {
+	public void showPhotoDialog(String[] urls, int position, OnPhotoPagerDialogPageChangedListener callback) {
 		if (urls == null || urls.length < 1)
 			return;
 		if (photoDialog != null)
 			hidePhotoDialog();
 
-		photoDialog = new PhotoPagerDialog(this, background, urls);
+		photoDialog = new PhotoPagerDialog(this, urls, callback);
 		photoDialog.show(position);
 
 		hideTitle();
@@ -1071,14 +1030,8 @@ public class MainActivity extends FragmentActivity {
 		showTitle();
 	}
 
-	public void hidePhotoDrawer() {
-		if (photoDrawer.isMenuVisible())
-			photoDrawer.toggleMenu();
-	}
-
 	public void setDrawersEnabled(boolean enabled) {
-		menuDrawer.setOffsetMenuEnabled(enabled);
-		photoDrawer.setOffsetMenuEnabled(enabled);
+		menuDrawer.setTouchMode(enabled ? MenuDrawer.TOUCH_MODE_BEZEL : MenuDrawer.TOUCH_MODE_NONE);
 	}
 
 	public void hideTitle() {

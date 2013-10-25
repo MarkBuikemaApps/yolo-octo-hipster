@@ -14,22 +14,20 @@ public class PhotoPagerDialog {
 
 	private Context context;
 	private ViewPager photoPager;
-	private ViewPager backgroundPager;
 	private String[] urls;
 
-	public PhotoPagerDialog(Context context, ViewPager pager, String[] urls) {
+	public PhotoPagerDialog(Context context, String[] urls, final OnPhotoPagerDialogPageChangedListener callback) {
 		this.context = context;
 		this.urls = urls;
-		backgroundPager = pager;
 
 		photoPager = (ViewPager) ((MainActivity) context).findViewById(R.id.photoDialogPager);
 
-		if (backgroundPager != null)
+		if (callback != null)
 			photoPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 				@Override
 				public void onPageSelected(int arg0) {
-					backgroundPager.setCurrentItem(arg0);
+					callback.onPhotoPagerDialogPageChanged(arg0);
 				}
 
 				@Override
@@ -61,6 +59,10 @@ public class PhotoPagerDialog {
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putStringArray("photoDialogUrls", urls);
 		outState.putInt("photoDialogPage", photoPager.getCurrentItem());
+	}
+
+	public interface OnPhotoPagerDialogPageChangedListener {
+		public void onPhotoPagerDialogPageChanged(int pageIndex);
 	}
 
 }

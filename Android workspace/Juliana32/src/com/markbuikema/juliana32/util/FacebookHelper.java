@@ -5,12 +5,12 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,7 +81,7 @@ public class FacebookHelper {
 		} catch (JSONException e) {
 		}
 
-		// Log.d(TAG, "data:" + o.toString());
+		Log.d(TAG, "data:" + o.toString());
 
 		String id;
 		String title;
@@ -107,6 +107,12 @@ public class FacebookHelper {
 				e.printStackTrace();
 			}
 
+		try {
+			if (!o.getJSONObject("from").getString("name").toLowerCase(Locale.US).contains("juliana"))
+				return null;
+		} catch (JSONException e) {
+			return null;
+		}
 		try {
 			id = o.getString("id");
 		} catch (JSONException e) {
@@ -225,8 +231,8 @@ public class FacebookHelper {
 				name = "Fout bij het laden van de naam";
 			}
 
-			Bitmap image = null;
 			String userId = null;
+			String imgUrl = null;
 			try {
 
 				userId = data.getJSONObject("from").getString("id");
@@ -235,8 +241,7 @@ public class FacebookHelper {
 				params.putString("fields", "picture");
 
 				JSONObject person = new JSONObject(FacebookHelper.getFacebook().request("/" + userId, params));
-				String imgUrl = person.getJSONObject("picture").getJSONObject("data").getString("url");
-				image = Util.getPictureFromUrl(imgUrl);
+				imgUrl = person.getJSONObject("picture").getJSONObject("data").getString("url");
 
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -260,7 +265,7 @@ public class FacebookHelper {
 				dateString = "2019-12-31T23:59:59+0000";
 			}
 
-			Comment comment = new Comment(id, name, image, userId, text, dateString);
+			Comment comment = new Comment(id, name, imgUrl, userId, text, dateString);
 			return comment;
 		}
 	}

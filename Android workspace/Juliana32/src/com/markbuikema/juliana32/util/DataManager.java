@@ -7,13 +7,11 @@ import android.util.Log;
 
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.Season;
-import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 
 public class DataManager {
 
 	private static DataManager instance;
 	private List<NieuwsItem> nieuwsItems;
-	private List<TeaserNieuwsItem> teaserItems;
 	private List<Season> teams;
 
 	private DataManager() {
@@ -28,7 +26,6 @@ public class DataManager {
 	public void clearData() {
 		teams = null;
 		nieuwsItems = null;
-		teaserItems = null;
 	}
 
 	public List<NieuwsItem> getNieuwsItems() {
@@ -36,13 +33,6 @@ public class DataManager {
 			return new ArrayList<NieuwsItem>();
 		else
 			return nieuwsItems;
-	}
-
-	public List<TeaserNieuwsItem> getTeaserItems() {
-		if (teaserItems == null)
-			return new ArrayList<TeaserNieuwsItem>();
-		else
-			return teaserItems;
 	}
 
 	public List<Season> getTeams() {
@@ -56,10 +46,6 @@ public class DataManager {
 		this.nieuwsItems = nieuwsItems;
 	}
 
-	public void setTeaserItems(List<TeaserNieuwsItem> teaserItems) {
-		this.teaserItems = teaserItems;
-	}
-
 	public void setTeams(List<Season> teams) {
 		this.teams = teams;
 	}
@@ -70,7 +56,6 @@ public class DataManager {
 
 	public void printLoadingStatus() {
 		Log.d("DataManager", "Teams loaded: " + (teams != null));
-		Log.d("DataManager", "Teasers loaded: " + (teaserItems != null));
 		Log.d("DataManager", "Nieuws loaded: " + (nieuwsItems != null));
 	}
 

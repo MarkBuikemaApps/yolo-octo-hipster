@@ -17,12 +17,8 @@ import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
-import com.markbuikema.juliana32.model.TeaserNieuwsItem;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.Util;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.Animator.AnimatorListener;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 
@@ -61,6 +57,8 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	}
 
 	/**
+	 * DO NOT USE
+	 * 
 	 * @deprecated use update() after adding all items to
 	 *             DataManager.getInstance().getNieuwsItems();
 	 */
@@ -81,10 +79,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 		if (item instanceof NormalNieuwsItem)
 			return VIEW_TYPE_NORMAL;
 		else
-			if (item instanceof TeaserNieuwsItem)
-				return VIEW_TYPE_NORMAL;
-			else
-				return ((FacebookNieuwsItem) item).isPhoto() ? VIEW_TYPE_FACEBOOK_PHOTO : VIEW_TYPE_FACEBOOK;
+			return ((FacebookNieuwsItem) item).isPhoto() ? VIEW_TYPE_FACEBOOK_PHOTO : VIEW_TYPE_FACEBOOK;
 	}
 
 	@Override
@@ -144,31 +139,28 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 			break;
 		}
 
-		final ViewPropertyAnimator animator = ViewPropertyAnimator.animate(convertView);
-		animator.setDuration(0);
-		animator.translationY(64);
-		animator.setListener(new AnimatorListener() {
-
-			@Override
-			public void onAnimationStart(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				animator.setDuration(250);
-				animator.translationY(0);
-				animator.start();
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-			}
-		});
-		animator.start();
+		// final ViewPropertyAnimator animator =
+		// ViewPropertyAnimator.animate(convertView);
+		// animator.setDuration(0).translationY(64).setListener(new
+		// AnimatorListener() {
+		//
+		// @Override
+		// public void onAnimationStart(Animator animation) {
+		// }
+		//
+		// @Override
+		// public void onAnimationRepeat(Animator animation) {
+		// }
+		//
+		// @Override
+		// public void onAnimationEnd(Animator animation) {
+		// animator.setDuration(250).translationY(0).setListener(null).start();
+		// }
+		//
+		// @Override
+		// public void onAnimationCancel(Animator animation) {
+		// }
+		// }).start();
 		return convertView;
 
 	}

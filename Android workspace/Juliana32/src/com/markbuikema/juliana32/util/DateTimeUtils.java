@@ -1,6 +1,7 @@
 package com.markbuikema.juliana32.util;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -104,6 +105,48 @@ public class DateTimeUtils extends DateUtils {
 						if (startDateTime.getTimeInMillis() - timedate < millisInADay * 6)
 							return weekdays[endDateTime.get(Calendar.DAY_OF_WEEK)];
 						else
-							return formatDateTime(context, timedate, DateUtils.FORMAT_NUMERIC_DATE);
+							return getDateString(timedate);
+	}
+
+	private static String getDateString(long timedate) {
+		GregorianCalendar date = new GregorianCalendar();
+		date.setTimeInMillis(timedate);
+		String output = date.get(GregorianCalendar.DAY_OF_MONTH) + " " + getMonthInDutch(date.get(GregorianCalendar.MONTH));
+		if (new GregorianCalendar().get(GregorianCalendar.YEAR) != date.get(GregorianCalendar.YEAR))
+			output += " " + date.get(GregorianCalendar.YEAR);
+
+		return output;
+
+	}
+
+	private static String getMonthInDutch(int month) {
+		switch (month) {
+		case 1:
+			return "februari";
+		case 2:
+			return "maart";
+		case 3:
+			return "april";
+		case 4:
+			return "mei";
+		case 5:
+			return "juni";
+		case 6:
+			return "juli";
+		case 7:
+			return "augustus";
+		case 8:
+			return "september";
+		case 9:
+			return "oktober";
+		case 10:
+			return "november";
+		case 11:
+			return "december";
+		default:
+			return "januari";
+
+		}
+
 	}
 }

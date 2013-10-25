@@ -1,10 +1,6 @@
 package com.markbuikema.juliana32.section;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,15 +9,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.preference.PreferenceManager;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -32,9 +24,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
-import com.markbuikema.juliana32.util.Util;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 public class Teletekst {
@@ -43,10 +35,11 @@ public class Teletekst {
 
 	private MainActivity activity;
 	private ProgressBar progressBar;
-	private FragmentManager fm;
+
+	private SharedPreferences prefs;
 
 	private ViewPager ttPager;
-	private SectionsPagerAdapter pagerAdapter;
+	private PagerAdapter pagerAdapter;
 	private UnderlinePageIndicator pagerIndicator;
 	private String[] imageUrls;
 
@@ -62,12 +55,18 @@ public class Teletekst {
 		swipeHint = (TextView) mainView.findViewById(R.id.swipehint);
 
 		ttPager = (ViewPager) mainView.findViewById(R.id.teletekstviewpager);
+		ttPager.setOffscreenPageLimit(0);
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(act);
+
 		pagerIndicator.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
-				if (position == ViewPager.SCROLL_STATE_SETTLING)
+				if (position > 0) {
 					hideHint();
+					prefs.edit().putBoolean("showHint", false).commit();
+				}
 			}
 
 			@Override
@@ -79,13 +78,10 @@ public class Teletekst {
 			}
 		});
 
-		fm = ((FragmentActivity) activity).getSupportFragmentManager();
+		if (!prefs.getBoolean("showHint", true))
+			hideHint();
 
-		if (act.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-			if (!Util.shouldShowTeletekstHint(act))
-				hideHint();
-
-		new RetrieveTeletekst().execute();
+		new TeletekstRetriever().execute();
 
 	}
 
@@ -93,7 +89,7 @@ public class Teletekst {
 		swipeHint.setVisibility(View.GONE);
 	}
 
-	private class RetrieveTeletekst extends AsyncTask<Integer, Void, Bitmap[]> {
+	private class TeletekstRetriever extends AsyncTask<Integer, Void, String[]> {
 
 		private final static String URL_BASE = "http://www.rtvoost.nl/teletekst/teletekst.asp?page=465&rotor=";
 
@@ -105,7 +101,7 @@ public class Teletekst {
 		}
 
 		@Override
-		protected Bitmap[] doInBackground(Integer... v) {
+		protected String[] doInBackground(Integer... v) {
 			if (v.length == 1)
 				page = v[0];
 
@@ -123,7 +119,6 @@ public class Teletekst {
 				e.printStackTrace();
 			}
 
-			Bitmap[] images = new Bitmap[maxIndex];
 			imageUrls = new String[maxIndex];
 
 			for (int i = 1; i <= maxIndex; i++) {
@@ -148,28 +143,16 @@ public class Teletekst {
 
 				String imgUrl = "http://www.rtvoost.nl/teletekst/" + html.replace(" ", "%20");
 				imageUrls[i - 1] = imgUrl;
-				URL image;
-				try {
-					image = new URL(imgUrl);
 
-					URLConnection conn = image.openConnection();
-					conn.connect();
-					images[i - 1] = BitmapFactory.decodeStream(new BufferedInputStream(conn.getInputStream()));
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 
-			return images;
+			return imageUrls;
 		}
 
 		@Override
-		public void onPostExecute(Bitmap[] bmps) {
+		public void onPostExecute(String[] bmps) {
 			progressBar.setVisibility(View.GONE);
-			Util.putTeletekst(bmps);
-			pagerAdapter = new SectionsPagerAdapter(fm);
+			pagerAdapter = new TeletekstAdapter(bmps);
 			try {
 				ttPager.setAdapter(pagerAdapter);
 				pagerIndicator.setViewPager(ttPager);
@@ -188,20 +171,21 @@ public class Teletekst {
 		}
 	}
 
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+	public class TeletekstAdapter extends PagerAdapter {
 
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
+		private String[] imgUrls;
+
+		public TeletekstAdapter(String[] imgUrls) {
+			this.imgUrls = imgUrls;
 		}
 
 		@Override
-		public Fragment getItem(int i) {
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt("index", i);
-			fragment.setArguments(args);
-
-			return fragment;
+		public Object instantiateItem(ViewGroup container, int position) {
+			ViewPager vp = (ViewPager) container;
+			ImageView view = (ImageView) LayoutInflater.from(activity).inflate(R.layout.teletekst_item, null);
+			UrlImageViewHelper.setUrlDrawable(view, imgUrls[position]);
+			vp.addView(view);
+			return view;
 		}
 
 		@Override
@@ -213,26 +197,15 @@ public class Teletekst {
 		public CharSequence getPageTitle(int position) {
 			return Integer.toString(position);
 		}
-	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-
-		Bitmap bmp = null;
-
-		public DummySectionFragment() {
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			Bundle args = getArguments();
-			bmp = Util.getTeletekst(args.getInt("index"));
-			ImageView view = (ImageView) inflater.inflate(R.layout.teletekst_item, null);
-			view.setImageBitmap(bmp);
-			return view;
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
 		}
 	}
 
@@ -243,6 +216,6 @@ public class Teletekst {
 
 	public void onRestoreInstanceState(final Bundle savedInstanceState) {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			new RetrieveTeletekst().execute(savedInstanceState.getInt("teletekstPage"));
+			new TeletekstRetriever().execute(savedInstanceState.getInt("teletekstPage"));
 	}
 }

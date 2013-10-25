@@ -1,17 +1,11 @@
 package com.markbuikema.juliana32.section;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -28,16 +22,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.adapter.FixtureAdapter;
 import com.markbuikema.juliana32.adapter.TableAdapter;
 import com.markbuikema.juliana32.asynctask.PhotoSharer;
-import com.markbuikema.juliana32.asynctask.PictureChanger;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.Util;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.UnderlinePageIndicator;
@@ -55,7 +51,6 @@ public class TeamDetail {
 	private ViewPager photoPager;
 	private ViewPager tablePager;
 
-	private FragmentManager fm;
 	private PhotoPagerAdapter ppa;
 	private TablePagerAdapter tpa;
 
@@ -113,9 +108,7 @@ public class TeamDetail {
 		noPhotos = (TextView) mainView.findViewById(R.id.noPhotosFound);
 		noTables = (TextView) mainView.findViewById(R.id.noTablesFound);
 
-		fm = ((FragmentActivity) act).getSupportFragmentManager();
-
-		tpa = new TablePagerAdapter(fm);
+		tpa = new TablePagerAdapter();
 
 		tablePager.setAdapter(tpa);
 
@@ -229,7 +222,14 @@ public class TeamDetail {
 
 				@Override
 				public void onClick(View arg0) {
-					((MainActivity) context).showPhotoDialog(team.getPhotoUrls(), photoPager, position);
+					((MainActivity) context).showPhotoDialog(team.getPhotoUrls(), position,
+							new OnPhotoPagerDialogPageChangedListener() {
+
+								@Override
+								public void onPhotoPagerDialogPageChanged(int pageIndex) {
+									photoPager.setCurrentItem(pageIndex, true);
+								}
+							});
 				}
 			});
 
@@ -246,15 +246,14 @@ public class TeamDetail {
 					new PhotoSharer(context).execute(url, team.getName());
 				}
 			});
-			new PictureChanger() {
+
+			UrlImageViewHelper.setUrlDrawable(view, url, new UrlImageViewCallback() {
+
 				@Override
-				protected void onPostExecute(Bitmap result) {
-					if (result == null)
-						return;
-					view.setBackgroundDrawable(new BitmapDrawable(act.getResources(), result));
+				public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
 					shareButton.setVisibility(View.VISIBLE);
-				};
-			}.execute(url);
+				}
+			});
 
 			((ViewPager) container).addView(mainView);
 
@@ -282,44 +281,21 @@ public class TeamDetail {
 		}
 	}
 
-	public static class TableSectionFragment extends Fragment {
-
-		public TableSectionFragment() {
-		}
+	public class TablePagerAdapter extends PagerAdapter {
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			Bundle args = getArguments();
-
-			final View mainView = inflater.inflate(R.layout.table_item, null);
+		public Object instantiateItem(ViewGroup container, int position) {
+			ViewPager vp = (ViewPager) container;
+			final View mainView = LayoutInflater.from(act).inflate(R.layout.table_item, null);
 			final ListView listView = (ListView) mainView.findViewById(R.id.tableList);
 
-			Serializable t = args.getSerializable("table");
-			if (t instanceof Table) {
-				Table table = (Table) t;
-				TableAdapter tableAdapter = new TableAdapter(getActivity(), table.getRows());
-				listView.setAdapter(tableAdapter);
-			}
+			Table table = tableList.get(position);
+			TableAdapter tableAdapter = new TableAdapter(act, table.getRows());
+			listView.setAdapter(tableAdapter);
+
+			vp.addView(mainView);
 
 			return mainView;
-		}
-
-	}
-
-	public class TablePagerAdapter extends FragmentStatePagerAdapter {
-
-		public TablePagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int i) {
-			Fragment fragment = new TableSectionFragment();
-			Bundle args = new Bundle();
-			args.putSerializable("table", tableList.get(i));
-
-			fragment.setArguments(args);
-			return fragment;
 		}
 
 		@Override
@@ -330,6 +306,16 @@ public class TeamDetail {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return team.getTableName(position);
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
 		}
 	}
 }
