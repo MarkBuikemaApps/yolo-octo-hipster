@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.support.v4.view.ViewPager.OnPageChangeListener"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
-<fullyQualifiedTypeName name="java.util.TimeZone"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.Button"/>
-<fullyQualifiedTypeName name="com.facebook.Session.NewPermissionsRequest"/>
-<fullyQualifiedTypeName name="com.facebook.Session"/>
 <fullyQualifiedTypeName name="com.facebook.Session.StatusCallback"/>
 <fullyQualifiedTypeName name="com.facebook.Request"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.asynctask.NieuwsRetriever"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
@@ -23,7 +16,6 @@
 <fullyQualifiedTypeName name="android.graphics.drawable.BitmapDrawable"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.util.Util"/>
 <fullyQualifiedTypeName name="java.lang.NumberFormatException"/>
-<fullyQualifiedTypeName name="android.widget.AdapterView.OnItemClickListener"/>
 <fullyQualifiedTypeName name="java.lang.ClassCastException"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
@@ -36,14 +28,12 @@
 <fullyQualifiedTypeName name="android.app.AlertDialog.Builder"/>
 <fullyQualifiedTypeName name="android.view.LayoutInflater"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface.OnClickListener"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.graphics.Bitmap.Config"/>
 <fullyQualifiedTypeName name="android.content.res.Configuration"/>
 <fullyQualifiedTypeName name="android.support.v4.view.ViewPager"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
 <fullyQualifiedTypeName name="android.text.util.Linkify"/>
 <fullyQualifiedTypeName name="java.util.Observable"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
 <fullyQualifiedTypeName name="java.lang.Runnable"/>
 <fullyQualifiedTypeName name="android.view.ViewPropertyAnimator"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
@@ -52,12 +42,22 @@
 <fullyQualifiedTypeName name="org.jsoup.safety.Whitelist"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.section.Teletekst.TeletekstSectionFragment"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R.layout"/>
-<fullyQualifiedTypeName name="com.nineoldandroids.view.ViewPropertyAnimator"/>
 <fullyQualifiedTypeName name="com.nineoldandroids.animation.Animator.AnimatorListener"/>
 <fullyQualifiedTypeName name="android.preference.PreferenceManager"/>
 <fullyQualifiedTypeName name="org.json.JSONException"/>
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
 <fullyQualifiedTypeName name="android.view.Choreographer"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.drawable"/>
 <fullyQualifiedTypeName name="android.view.ViewTreeObserver.OnGlobalLayoutListener"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.PhotoPagerDialog"/>
+<fullyQualifiedTypeName name="com.koushikdutta.urlimageviewhelper.UrlImageViewCallback"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.drawable"/>
+<fullyQualifiedTypeName name="com.koushikdutta.urlimageviewhelper.UrlImageViewHelper"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.view.ViewPropertyAnimator"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
+<fullyQualifiedTypeName name="android.widget.AdapterView.OnItemClickListener"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.asynctask.NieuwsRetriever"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.asynctask.TeamsRetriever"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
 </qualifiedTypeNameHistroy>

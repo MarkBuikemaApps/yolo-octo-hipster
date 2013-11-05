@@ -3,8 +3,6 @@ package com.markbuikema.juliana32.model;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import android.util.Log;
-
 public class Comment extends Like {
 
 	private String text;
@@ -29,7 +27,7 @@ public class Comment extends Like {
 		createdAt.setTimeZone(TimeZone.getTimeZone("GMT+02:00"));
 		createdAt.set(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1, Integer.parseInt(dayString),
 				Integer.parseInt(hourString) + 2, Integer.parseInt(minuteString), Integer.parseInt(secondString));
-		Log.d("comment_date", createdAt.toString());
+		// Log.d("comment_date", createdAt.toString());
 	}
 
 	public String getText() {

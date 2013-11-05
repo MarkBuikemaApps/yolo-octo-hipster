@@ -17,6 +17,7 @@ import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
+import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.Util;
 
@@ -57,7 +58,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	}
 
 	/**
-	 * DO NOT USE
+	 * DO NOT USE. DOES NOT WORK.
 	 * 
 	 * @deprecated use update() after adding all items to
 	 *             DataManager.getInstance().getNieuwsItems();
@@ -65,7 +66,6 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	@Deprecated
 	@Override
 	public void add(NieuwsItem object) {
-		super.add(object);
 	}
 
 	public void update() {
@@ -111,8 +111,16 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 
 			if (convertView == null)
 				convertView = LayoutInflater.from(context).inflate(R.layout.listitem_facebookitem_photo, null);
-			ViewPager pager = (ViewPager) convertView.findViewById(R.id.facebookPhotoPager);
-			PhotoPagerAdapter adapter = new PhotoPagerAdapter(getContext(), fbPhotoItem);
+			final ViewPager pager = (ViewPager) convertView.findViewById(R.id.facebookPhotoPager);
+			PhotoPagerAdapter adapter = new PhotoPagerAdapter(getContext(), fbPhotoItem,
+					new OnPhotoPagerDialogPageChangedListener() {
+
+						@Override
+						public void onPhotoPagerDialogPageChanged(int pageIndex) {
+							pager.setCurrentItem(pageIndex + 1);
+						}
+
+					});
 			pager.setPageMargin((int) Util.pxToDp(-20));
 			pager.setCurrentItem(0, true);
 

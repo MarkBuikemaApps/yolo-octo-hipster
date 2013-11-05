@@ -17,16 +17,19 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
+import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.DateTimeUtils;
 import com.markbuikema.juliana32.util.Util;
 
 public class PhotoPagerAdapter extends PagerAdapter implements Observer {
 
 	private FacebookNieuwsItem item;
+	private OnPhotoPagerDialogPageChangedListener pagerCallback;
 
-	public PhotoPagerAdapter(Context context, FacebookNieuwsItem item) {
+	public PhotoPagerAdapter(Context context, FacebookNieuwsItem item, OnPhotoPagerDialogPageChangedListener callback) {
 		super();
 		item.addObserver(this);
+		pagerCallback = callback;
 		this.item = item;
 	}
 
@@ -72,7 +75,7 @@ public class PhotoPagerAdapter extends PagerAdapter implements Observer {
 				@Override
 				public void onClick(View v) {
 					MainActivity act = (MainActivity) container.getContext();
-					act.showPhotoDialog(item.getPhotos(), position - 1, null);
+					act.showPhotoDialog(item.getPhotos(), position - 1, pagerCallback);
 				}
 			});
 

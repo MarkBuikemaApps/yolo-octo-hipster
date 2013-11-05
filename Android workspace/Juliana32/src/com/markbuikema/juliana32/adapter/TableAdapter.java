@@ -1,6 +1,5 @@
 package com.markbuikema.juliana32.adapter;
 
-import static android.util.Log.d;
 import static com.markbuikema.juliana32.R.id.rowBackground;
 import static com.markbuikema.juliana32.R.id.rowConceded;
 import static com.markbuikema.juliana32.R.id.rowDivider;
@@ -51,7 +50,7 @@ public class TableAdapter extends ArrayAdapter<TableRow> {
 		super(context, 0, (ArrayList<TableRow>) objects.clone());
 		TableRow dummyRow = new TableRow();
 		insert(dummyRow, 0);
-		d(TAG, "Adapter instantiated with " + getCount() + " views");
+		// d(TAG, "Adapter instantiated with " + getCount() + " views");
 
 	}
 
@@ -83,7 +82,7 @@ public class TableAdapter extends ArrayAdapter<TableRow> {
 		if (position > 0 && row.getTeamName().toLowerCase(Locale.US).contains("juliana"))
 			background.setBackgroundColor(Color.rgb(240, 240, 240));
 
-		divider.setBackgroundResource(R.drawable.divider);
+		divider.setBackgroundResource(R.drawable.menudivider);
 
 		// identify the views
 		TextView teamPosition = (TextView) convertView.findViewById(rowPosition);

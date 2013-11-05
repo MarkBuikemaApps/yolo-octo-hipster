@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="PhotoPagerAd" key="selection"/>
+		<item value="Log.d" key="selection"/>
 		<list key="findhistory">
-			<item value="PhotoPagerad"/>
-			<item value="recycle"/>
-			<item value="onback"/>
-			<item value="SoftIn"/>
-			<item value="softin"/>
-			<item value="color"/>
-			<item value="should"/>
-			<item value="reque"/>
+			<item value="log.d"/>
+			<item value="share"/>
+			<item value="onbac"/>
+			<item value="fixac"/>
+			<item value="geen"/>
+			<item value="noitems.set"/>
+			<item value="onres"/>
+			<item value="onpos"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

@@ -1,7 +1,6 @@
 package com.markbuikema.juliana32.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 		name.setText(comment.getName());
 
 		String dateString = Util.getDateString(getContext(), comment.getCreatedAt());
-		Log.d("comment_date_adapter", dateString);
+		// Log.d("comment_date_adapter", dateString);
 		date.setText(dateString);
 		text.setText(comment.getText());
 		UrlImageViewHelper.setUrlDrawable(pic, comment.getImgUrl());

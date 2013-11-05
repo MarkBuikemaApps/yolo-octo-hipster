@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.android.Facebook;
 import com.markbuikema.juliana32.model.Comment;
@@ -74,14 +73,13 @@ public class FacebookHelper {
 	private static FacebookNieuwsItem processJSONObject(JSONObject o) {
 		boolean photo = false;
 		try {
-			if (o.getString("type").equals("photo")) {
-				Log.d("PHOTOJSON", o.toString());
+			if (o.getString("type").equals("photo"))
+				// Log.d("PHOTOJSON", o.toString());
 				photo = true;
-			}
 		} catch (JSONException e) {
 		}
 
-		Log.d(TAG, "data:" + o.toString());
+		// Log.d(TAG, "data:" + o.toString());
 
 		String id;
 		String title;
@@ -95,11 +93,11 @@ public class FacebookHelper {
 		if (photo)
 			try {
 				String parsableAlbum = o.getString("link");
-				Log.d("ALBUM", "1: " + parsableAlbum);
+				// Log.d("ALBUM", "1: " + parsableAlbum);
 				parsableAlbum = parsableAlbum.split("set=a.")[1];
-				Log.d("ALBUM", "2: " + parsableAlbum);
+				// Log.d("ALBUM", "2: " + parsableAlbum);
 				albumId = parsableAlbum.split("\\.")[0];
-				Log.d("ALBUM", "3: " + albumId);
+				// Log.d("ALBUM", "3: " + albumId);
 
 			} catch (JSONException e1) {
 				e1.printStackTrace();
@@ -190,7 +188,7 @@ public class FacebookHelper {
 		@Override
 		protected Void doInBackground(String... id) {
 
-			Log.d("COMMENT", "Started commentloader");
+			// Log.d("COMMENT", "Started commentloader");
 			Bundle params = new Bundle();
 			params.putString("access_token", FacebookHelper.ACCESS_TOKEN);
 			params.putInt("limit", 150);
@@ -198,7 +196,7 @@ public class FacebookHelper {
 				JSONObject comments = new JSONObject(FacebookHelper.getFacebook().request("/" + id[0] + "/comments", params));
 				JSONArray data = comments.getJSONArray("data");
 				for (int i = 0; i < data.length(); i++) {
-					Log.d("COMMENT", data.getJSONObject(i).toString() + "...");
+					// Log.d("COMMENT", data.getJSONObject(i).toString() + "...");
 					Comment comment = processCommentJSON(data.getJSONObject(i));
 					if (comment != null)
 						publishProgress(comment);

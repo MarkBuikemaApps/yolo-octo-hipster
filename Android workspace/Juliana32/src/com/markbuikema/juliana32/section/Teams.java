@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,6 +35,8 @@ public class Teams {
 	private List<Season> seasons;
 	private Spinner seasonSpinner;
 	private boolean finishedLoading = false;
+	private ProgressBar loader;
+	protected boolean loading;
 
 	public Teams(MainActivity act) {
 		activity = act;
@@ -42,6 +44,7 @@ public class Teams {
 		seasons = DataManager.getInstance().getTeams();
 
 		seasonSpinner = (Spinner) act.findViewById(R.id.menuSeason);
+		loader = (ProgressBar) act.findViewById(R.id.loading);
 		View mainView = activity.findViewById(R.id.teamsView);
 		teamsList = (ListView) mainView.findViewById(R.id.teams_list);
 		teamAdapter = new TeamAdapter(activity);
@@ -93,8 +96,8 @@ public class Teams {
 				if (game.getDate() >= minTime)
 					games.add(game);
 
-		for (Game game : games)
-			Log.d(TAG, game.toString());
+		// for (Game game : games)
+		// Log.d(TAG, game.toString());
 		return games;
 	}
 
@@ -118,15 +121,6 @@ public class Teams {
 	private void onSeasonSelected(int seasonIndex) {
 		teamAdapter.setSeason(seasons.get(seasonIndex));
 	}
-
-	// public void reload() {
-	// new TeamsRetriever(activity) {
-	// @Override
-	// protected void onPostExecute(List<Season> result) {
-	//
-	// }
-	// }.execute();
-	// }
 
 	private class SeasonAdapter extends ArrayAdapter<Season> {
 
@@ -223,6 +217,14 @@ public class Teams {
 		public boolean isCaption() {
 			return caption;
 		}
+	}
+
+	public boolean isLoading() {
+		return loading;
+	}
+
+	public int getAdapterCount() {
+		return seasonAdapter.getCount();
 	}
 
 }

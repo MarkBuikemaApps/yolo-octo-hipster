@@ -86,7 +86,7 @@
                 android:orientation="horizontal" >
 
                 <FrameLayout
-                    android:layout_width="42dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="42dp" >
 
                     <ImageView
@@ -100,6 +100,7 @@
                         android:scaleType="fitXY" />
 
                     <ImageView
+                        android:id="@+id/commentProfilePicOverlay"
                         android:contentDescription="@string/none"
                         android:layout_width="42dp"
                         android:layout_height="42dp"

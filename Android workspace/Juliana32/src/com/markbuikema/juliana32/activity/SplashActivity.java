@@ -108,7 +108,7 @@ public class SplashActivity extends Activity {
 
 						@Override
 						public void onCall() {
-							Log.d("CountCallback", "onCall()");
+							// Log.d("CountCallback", "onCall()");
 							Util.linkPhotosToTeam();
 						}
 
@@ -143,7 +143,7 @@ public class SplashActivity extends Activity {
 				}
 
 				manager.printLoadingStatus();
-				Log.d(TAG, "---");
+				// Log.d(TAG, "---");
 
 				try {
 					Thread.sleep(200);
@@ -162,7 +162,7 @@ public class SplashActivity extends Activity {
 		private static final String TAG = "CountCallback";
 
 		public CountCallback(int count) {
-			Log.d(TAG, "CountCallback created with count " + count);
+			// Log.d(TAG, "CountCallback created with count " + count);
 			countLeft = count;
 		}
 
@@ -172,7 +172,7 @@ public class SplashActivity extends Activity {
 			else
 				onCall();
 
-			Log.d(TAG, "onCallback() called, new count = " + countLeft);
+			// Log.d(TAG, "onCallback() called, new count = " + countLeft);
 		}
 
 		public abstract void onCall();

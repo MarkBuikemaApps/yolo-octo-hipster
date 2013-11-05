@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;com.markbuikema.juliana32.section.Nieuws.clearMessage()&apos; to &apos;updateMessage&apos;&#x0D;&#x0A;- Original project: &apos;Juliana32&apos;&#x0D;&#x0A;- Original element: &apos;com.markbuikema.juliana32.section.Nieuws.clearMessage()&apos;&#x0D;&#x0A;- Renamed element: &apos;com.markbuikema.juliana32.section.Nieuws.updateMessage()&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;clearMessage&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;com.markbuikema.juliana32.section{Nieuws.java[Nieuws~clearMessage" name="updateMessage" references="true" stamp="1383590683990" version="1.0"/>
+</session>

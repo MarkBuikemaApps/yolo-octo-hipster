@@ -23,8 +23,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -33,9 +31,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -73,6 +68,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.asynctask.TeamsRetriever;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
@@ -119,10 +115,10 @@ public class MainActivity extends Activity {
 	private View teamDetailView;
 	private View nieuwsDetailView;
 
+	private ImageButton webButton;
 	private ImageButton facebookButton;
 	private ImageButton twitterButton;
 	private ImageButton prefsButton;
-	private ImageButton helpButton;
 
 	private TeamDetail teamDetail;
 	private NieuwsDetail nieuwsDetail;
@@ -138,8 +134,8 @@ public class MainActivity extends Activity {
 	private MenuAdapter menuAdapter;
 
 	public Page page;
-	private boolean showAbout = false;
 	private boolean waitingForSecondBackPress = false;
+	private boolean refreshingNieuws = false;
 
 	protected String userName;
 	protected String userPicUrl;
@@ -184,13 +180,8 @@ public class MainActivity extends Activity {
 		menu = (ListView) findViewById(R.id.menuDrawer);
 		menuAdapter = new MenuAdapter(this);
 
-		Drawable gradient = new GradientDrawable(Orientation.LEFT_RIGHT, new int[] {
-				getResources().getColor(R.color.grey), getResources().getColor(R.color.red)
-		});
-
-		menu.setDivider(gradient);
-		menu.setDividerHeight(1);
-		menu.setSelector(R.drawable.listselector);
+		menu.setDivider(null);
+		menu.setDividerHeight(0);
 		menu.setAdapter(menuAdapter);
 		menu.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -213,7 +204,7 @@ public class MainActivity extends Activity {
 		facebookButton = (ImageButton) findViewById(R.id.menuFacebook);
 		twitterButton = (ImageButton) findViewById(R.id.menuTwitter);
 		prefsButton = (ImageButton) findViewById(R.id.menuPrefs);
-		helpButton = (ImageButton) findViewById(R.id.menuHelp);
+		webButton = (ImageButton) findViewById(R.id.menuWeb);
 		title = (TextView) findViewById(R.id.titleText);
 		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
 		seasonButton = (Spinner) findViewById(R.id.menuSeason);
@@ -244,7 +235,8 @@ public class MainActivity extends Activity {
 
 				intent.setType("text/plain");
 				intent.putExtra(Intent.EXTRA_SUBJECT, nieuwsDetail.getTitle());
-				intent.putExtra(Intent.EXTRA_TEXT, nieuwsDetail.getDetailUrl());
+				intent.putExtra(Intent.EXTRA_TEXT, (nieuwsDetail.getTitle().equals("Facebook") ? nieuwsDetail.getContent() : "")
+						+ " (link: " + nieuwsDetail.getDetailUrl() + " )");
 
 				startActivity(Intent.createChooser(intent, getString(R.string.share)));
 			}
@@ -325,12 +317,16 @@ public class MainActivity extends Activity {
 				startActivity(i);
 			}
 		});
-		helpButton.setOnClickListener(new OnClickListener() {
+
+		webButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				menuDrawer.toggleMenu();
-				showAboutDialog();
+				String url = "http://www.svjuliana32.nl";
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				startActivity(i);
 			}
 		});
 
@@ -360,9 +356,6 @@ public class MainActivity extends Activity {
 			if (teletekst != null)
 				teletekst.onRestoreInstanceState(savedInstanceState);
 			onPageChanged(Page.valueOf(savedInstanceState.getString("page")));
-			showAbout = savedInstanceState.getBoolean("showAbout");
-			if (showAbout)
-				showAboutDialog();
 
 			int teamId = savedInstanceState.getInt("teamId", -1);
 			if (teamId > -1) {
@@ -415,7 +408,7 @@ public class MainActivity extends Activity {
 		//
 		// Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 
-		Log.d("ACCESS TOKEN", "Token: " + session.getAccessToken());
+		// Log.d("ACCESS TOKEN", "Token: " + session.getAccessToken());
 
 	}
 
@@ -457,9 +450,11 @@ public class MainActivity extends Activity {
 		if (activePageView != null)
 			activePageView.setVisibility(View.GONE);
 
+		boolean reloadNieuws = false;
+		boolean reloadTeams = false;
+
 		String title = getResources().getString(R.string.app_name);
 		switch (page) {
-
 		case NIEUWS:
 			title = getResources().getString(R.string.menu_nieuws);
 			activePageView = findViewById(R.id.nieuwsView);
@@ -467,6 +462,9 @@ public class MainActivity extends Activity {
 				nieuws = new Nieuws(this);
 			nieuws.showRefreshButton();
 			nieuws.clearSearch();
+
+			if (nieuws.getAdapterCount() < 1)
+				reloadNieuws = true;
 			break;
 		case TEAMS:
 			title = getResources().getString(R.string.menu_teams);
@@ -475,6 +473,10 @@ public class MainActivity extends Activity {
 				teams = new Teams(this);
 			if (!teams.isLoaded())
 				loader.setVisibility(View.VISIBLE);
+
+			if (teams.getAdapterCount() < 1)
+				reloadTeams = true;
+
 			break;
 		case TELETEKST:
 			title = getResources().getString(R.string.menu_teletekst);
@@ -502,6 +504,21 @@ public class MainActivity extends Activity {
 			menuAdapter.notifyDataSetChanged();
 
 		fixActionBar();
+
+		if (reloadTeams)
+			new TeamsRetriever(this) {
+				@Override
+				protected void onPostExecute(List<Season> result) {
+					DataManager.getInstance().setTeams(result);
+					teams = new Teams(MainActivity.this);
+				}
+			}.execute();
+
+		if (reloadNieuws) {
+			if (nieuws == null)
+				nieuws = new Nieuws(this);
+			nieuws.refresh();
+		}
 
 	}
 
@@ -545,22 +562,21 @@ public class MainActivity extends Activity {
 		switch (page) {
 
 		case NIEUWS:
-			loader.setVisibility(View.GONE);
-			refreshButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
+			refreshButton.setVisibility(refreshingNieuws || isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
+			loader.setVisibility(refreshingNieuws ? View.VISIBLE : View.GONE);
 			seasonButton.setVisibility(View.GONE);
 			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
 			picturesButton.setVisibility(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? View.VISIBLE : View.GONE);
 			searchButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
-
 			break;
 		case TEAMS:
-			loader.setVisibility(View.GONE);
 			refreshButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
 			seasonButton.setVisibility(isTeamDetailShown() ? View.GONE : View.VISIBLE);
 			picturesButton.setVisibility(View.GONE);
 			searchButton.setVisibility(View.GONE);
-
+			if (teams != null && !isTeamDetailShown())
+				loader.setVisibility(teams.isLoading() ? View.VISIBLE : View.GONE);
 			break;
 		case TELETEKST:
 			loader.setVisibility(View.GONE);
@@ -592,6 +608,7 @@ public class MainActivity extends Activity {
 				requestSearchBar();
 				menuButton.setImageResource(R.drawable.menu_borderless);
 			}
+
 	}
 
 	private boolean currentNewsItemHasComments() {
@@ -675,6 +692,7 @@ public class MainActivity extends Activity {
 			hideSearchBar();
 			nieuws.clearSearch();
 			searching = false;
+			nieuws.updateMessage();
 			fixActionBar();
 			return;
 		}
@@ -742,46 +760,6 @@ public class MainActivity extends Activity {
 		commentsButton.performClick();
 	}
 
-	@SuppressLint("NewApi")
-	private void showAboutDialog() {
-
-		showAbout = true;
-
-		Builder b;
-		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			b = new Builder(this);
-		else
-			b = new Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-		View view = LayoutInflater.from(this).inflate(R.layout.about, null);
-		Button emailButton = (Button) view.findViewById(R.id.aboutEmail);
-
-		final AlertDialog ad = b.setView(view).create();
-		emailButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-				String uriString = "mailto:" + getString(R.string.about_email) + "?subject="
-						+ getString(R.string.about_email_subject);
-				uriString = uriString.replaceAll(" ", "%20");
-				emailIntent.setData(Uri.parse(uriString));
-				startActivity(Intent.createChooser(emailIntent, "Email versturen"));
-
-				ad.dismiss();
-
-			}
-		});
-		ad.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				showAbout = false;
-			}
-		});
-		ad.show();
-
-	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -791,6 +769,7 @@ public class MainActivity extends Activity {
 		if (isNieuwsDetailShown())
 			nieuwsDetail.onResume();
 
+		onPageChanged(page);
 	}
 
 	@Override
@@ -836,7 +815,6 @@ public class MainActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 
 		outState.putString("page", page.toString());
-		outState.putBoolean("showAbout", showAbout);
 
 		if (isTeamDetailShown())
 			teamDetail.onSaveInstanceState(outState);
@@ -896,7 +874,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void logHashKey() {
-		Log.d(TAG, "Now checking haskey");
+		// Log.d(TAG, "Now checking haskey");
 		PackageInfo info;
 
 		try {
@@ -907,7 +885,7 @@ public class MainActivity extends Activity {
 				md.update(signature.toByteArray());
 				String something = new String(Base64.encode(md.digest(), 0));
 				// String something = new String(Base64.encodeBytes(md.digest()));
-				Log.e(TAG, "HASH KEY:" + something);
+				// Log.e(TAG, "HASH KEY:" + something);
 			}
 		} catch (NameNotFoundException e1) {
 			Log.e(TAG, e1.toString());
@@ -916,7 +894,7 @@ public class MainActivity extends Activity {
 		} catch (Exception e) {
 			Log.e(TAG, e.toString());
 		}
-		Log.d(TAG, "Done printing hashkey");
+		// Log.d(TAG, "Done printing hashkey");
 	}
 
 	@Override
@@ -941,10 +919,9 @@ public class MainActivity extends Activity {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			updateView();
-			if (session.isOpened()) {
+			if (session.isOpened())
 				saveGraphUser();
-				Log.d("ACCESS_TOKEN", session.getAccessToken());
-			}
+			// Log.d("ACCESS_TOKEN", session.getAccessToken());
 		}
 	}
 
@@ -975,9 +952,9 @@ public class MainActivity extends Activity {
 				params.putString("access_token", Session.getActiveSession().getAccessToken());
 				params.putString("fields", "picture,name");
 				try {
-					Log.d("USER_INFO", "1");
+					// Log.d("USER_INFO", "1");
 					JSONObject object = new JSONObject(FacebookHelper.getFacebook().request("me", params));
-					Log.d("USER_INFO", object.toString());
+					// Log.d("USER_INFO", object.toString());
 
 					userPicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
 					userName = object.getString("name");
@@ -1058,4 +1035,17 @@ public class MainActivity extends Activity {
 		return userName;
 	}
 
+	public void reloadTeams() {
+		if (teams != null)
+			teams = new Teams(this);
+	}
+
+	public void reloadNieuws() {
+		if (nieuws != null)
+			nieuws = new Nieuws(this);
+	}
+
+	public void setRefreshingNieuws(boolean refreshing) {
+		refreshingNieuws = refreshing;
+	}
 }

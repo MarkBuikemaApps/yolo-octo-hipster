@@ -16,7 +16,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +123,7 @@ public class Teletekst {
 			for (int i = 1; i <= maxIndex; i++) {
 				String html = "";
 				url = URL_BASE + i;
-				Log.d(TAG, url);
+				// Log.d(TAG, url);
 				get = new HttpGet(url);
 				try {
 					HttpResponse response = client.execute(get);

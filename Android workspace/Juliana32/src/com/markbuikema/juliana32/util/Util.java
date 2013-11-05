@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Looper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -84,6 +83,7 @@ public class Util {
 		screenWidth = -1;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static float getScreenWidth(Context ctx) {
 		if (screenWidth == -1) {
 			Display d = ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -174,11 +174,12 @@ public class Util {
 				};
 				for (String team : teams)
 					if (checkString.contains(team)) {
-						Log.d("photoadder", checkString + " contains " + team);
+						// Log.d("photoadder", checkString + " contains " + team);
 						for (Season s : DataManager.getInstance().getTeams())
 							for (Team t : s.getTeams())
 								if (isTeam(team, t)) {
-									Log.d("photoadder", "FBNI " + fbni.getTitle() + " first has " + fbni.getPhotoCount() + " photos");
+									// Log.d("photoadder", "FBNI " + fbni.getTitle() +
+									// " first has " + fbni.getPhotoCount() + " photos");
 									for (String photo : fbni.getPhotos())
 										t.addPhoto(photo);
 									break;
@@ -202,10 +203,10 @@ public class Util {
 	private static boolean isTeam(String team, Team t) {
 		boolean b = (" " + t.getCode()).contains(team);
 
-		if (b)
-			Log.d("isteam", "team " + team + " is team " + t.getName());
-		else
-			Log.d("isteam", "team " + team + " is not team " + t.getName());
+		// if (b)
+		// Log.d("isteam", "team " + team + " is team " + t.getName());
+		// else
+		// Log.d("isteam", "team " + team + " is not team " + t.getName());
 
 		return b;
 	}

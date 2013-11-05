@@ -19,7 +19,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
@@ -41,7 +40,7 @@ public class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem
 
 	@Override
 	protected List<NieuwsItem> doInBackground(Void... params) {
-		Log.d("nieuwsloader", "1");
+		// Log.d("nieuwsloader", "1");
 		final ArrayList<NieuwsItem> items = new ArrayList<NieuwsItem>();
 
 		if (retrieveFromWebsite) {
@@ -49,10 +48,10 @@ public class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem
 			client.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
 			HttpGet get = new HttpGet(GET_URL);
-			Log.d("nieuwsloader", "2");
+			// Log.d("nieuwsloader", "2");
 			try {
 				HttpResponse response = client.execute(get);
-				Log.d("nieuwsloader", "3");
+				// Log.d("nieuwsloader", "3");
 				statusCode = Integer.toString(response.getStatusLine().getStatusCode());
 				if (!statusCode.startsWith("2"))
 					return null;

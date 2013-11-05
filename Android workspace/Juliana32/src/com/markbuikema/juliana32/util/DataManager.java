@@ -3,8 +3,6 @@ package com.markbuikema.juliana32.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.Season;
 
@@ -55,8 +53,8 @@ public class DataManager {
 	}
 
 	public void printLoadingStatus() {
-		Log.d("DataManager", "Teams loaded: " + (teams != null));
-		Log.d("DataManager", "Nieuws loaded: " + (nieuwsItems != null));
+		// Log.d("DataManager", "Teams loaded: " + (teams != null));
+		// Log.d("DataManager", "Nieuws loaded: " + (nieuwsItems != null));
 	}
 
 }

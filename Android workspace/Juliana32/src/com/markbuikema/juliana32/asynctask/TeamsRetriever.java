@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Season;
@@ -34,19 +33,18 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 
 		List<Season> list = new ArrayList<Season>();
 
-		Log.d(TAG, "Started retrieving teams");
+		// Log.d(TAG, "Started retrieving teams");
 
 		String json = Util.loadJSONFromAsset(context, "sample_teams.json");
 
-		Log.d(TAG, "Teams json: " + json);
+		// Log.d(TAG, "Teams json: " + json);
 
-		if (json == null) {
-			Log.e(TAG, "null json!");
+		if (json == null)
+			// Log.e(TAG, "null json!");
 			return list;
-		}
 		try {
 			JSONObject base = new JSONObject(json);
-			Log.d(TAG, "1");
+			// Log.d(TAG, "1");
 			try {
 				JSONArray seasons = base.getJSONArray("seasons");
 				for (int i = 0; i < seasons.length(); i++) {
@@ -65,7 +63,7 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 			return list;
 		}
 
-		Log.d("TAG", "Done loading teams");
+		// Log.d("TAG", "Done loading teams");
 		return list;
 	}
 

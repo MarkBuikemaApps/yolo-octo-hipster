@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -69,7 +68,7 @@ public class Nieuws {
 			}
 		});
 
-		noItems.setVisibility(nieuwsAdapter.getCount() < 1 ? View.VISIBLE : View.GONE);
+		noItems.setText(nieuwsAdapter.getCount() < 1 ? activity.getResources().getString(R.string.no_item) : "");
 	}
 
 	public void onItemClick(int position) {
@@ -83,6 +82,9 @@ public class Nieuws {
 	}
 
 	public void refresh() {
+		activity.setRefreshingNieuws(true);
+		activity.fixActionBar();
+
 		SharedPreferences prefs = activity.getSharedPreferences(SettingsActivity.PREFERENCES, 0);
 		boolean facebook = prefs.getBoolean(SettingsActivity.FACEBOOK, true);
 		boolean website = prefs.getBoolean(SettingsActivity.WEBSITE, true);
@@ -94,6 +96,7 @@ public class Nieuws {
 				nieuwsAdapter.clear();
 				loading.setVisibility(View.VISIBLE);
 				refreshButton.setVisibility(View.GONE);
+				noItems.setText("");
 			}
 
 			@Override
@@ -115,7 +118,8 @@ public class Nieuws {
 								protected void onPostExecute(List<String> result) {
 									for (String photo : result)
 										fbni.addPhoto(photo);
-									Log.d("ADDED_PHOTOS", "title: " + fbni.getTitle() + "count: " + fbni.getPhotoCount());
+									// Log.d("ADDED_PHOTOS", "title: " + fbni.getTitle() +
+									// "count: " + fbni.getPhotoCount());
 
 								}
 
@@ -130,8 +134,10 @@ public class Nieuws {
 					itemRequestId = -1;
 				}
 
-				noItems.setVisibility(nieuwsAdapter.getCount() < 1 ? View.VISIBLE : View.GONE);
+				noItems.setText(nieuwsAdapter.getCount() < 1 ? activity.getResources().getString(R.string.no_item) : "");
 
+				activity.setRefreshingNieuws(false);
+				activity.fixActionBar();
 			}
 
 		};
@@ -156,9 +162,25 @@ public class Nieuws {
 
 	public void search(String s) {
 		nieuwsAdapter.setSearchword(s);
+		if (nieuwsAdapter.getCount() == 0)
+			noItems.setText("Uw zoekopdracht heeft geen resultaten opgeleverd.");
+		else
+			noItems.setText(nieuwsAdapter.getCount() < 1 ? activity.getResources().getString(R.string.no_item) : "");
+
 	}
 
 	public void clearSearch() {
 		nieuwsAdapter.clearSearchword();
+	}
+
+	public int getAdapterCount() {
+		return nieuwsAdapter.getCount();
+	}
+
+	public void updateMessage() {
+		if (nieuwsAdapter.getCount() == 0)
+			noItems.setText(activity.getResources().getString(R.string.no_item));
+		else
+			noItems.setText("");
 	}
 }

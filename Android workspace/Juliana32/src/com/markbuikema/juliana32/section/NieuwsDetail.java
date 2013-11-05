@@ -15,7 +15,6 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
@@ -77,6 +76,7 @@ public class NieuwsDetail {
 	private TextView content;
 	private TextView likeText;
 	private ImageView commentProfilePic;
+	private ImageView commentProfilePicOverlay;
 	private ImageButton likeButton;
 	private EditText commentInput;
 	private Button facebookLoginButton;
@@ -104,6 +104,7 @@ public class NieuwsDetail {
 		comments = (ListView) mainView.findViewById(R.id.commentList);
 		commentInput = (EditText) mainView.findViewById(R.id.commentInput);
 		commentProfilePic = (ImageView) mainView.findViewById(R.id.commentProfilePic);
+		commentProfilePicOverlay = (ImageView) mainView.findViewById(R.id.commentProfilePicOverlay);
 		showCommentsButton = (ImageButton) act.findViewById(R.id.menuComments);
 		facebookLoginButton = (Button) act.findViewById(R.id.commentLoginButton);
 		loader = (ProgressBar) act.findViewById(R.id.loading);
@@ -132,6 +133,8 @@ public class NieuwsDetail {
 
 		commentInput.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
 		commentProfilePic.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
+				: View.GONE);
+		commentProfilePicOverlay.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
 				: View.GONE);
 		likeButtonContainer.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
 				: View.GONE);
@@ -261,7 +264,7 @@ public class NieuwsDetail {
 	}
 
 	public void setProfilePic(String url) {
-		Log.d("USER_INFO", url + ".");
+		// Log.d("USER_INFO", url + ".");
 		UrlImageViewHelper.setUrlDrawable(commentProfilePic, url, R.drawable.silhouette);
 	}
 
@@ -328,6 +331,8 @@ public class NieuwsDetail {
 		commentInput.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
 		commentProfilePic.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
 				: View.GONE);
+		commentProfilePicOverlay.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
+				: View.GONE);
 		likeButtonContainer.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE
 				: View.GONE);
 		likeButton.setVisibility(item.isFromFacebook() && Session.getActiveSession().isOpened() ? View.VISIBLE : View.GONE);
@@ -340,7 +345,7 @@ public class NieuwsDetail {
 		if (item instanceof NormalNieuwsItem)
 			return ((NormalNieuwsItem) item).getDetailUrl();
 		else
-			return null;
+			return "http://www.facebook.com/" + ((FacebookNieuwsItem) item).getFbId().replace("_", "/posts/");
 	}
 
 	public boolean hasPhotos() {
@@ -403,12 +408,9 @@ public class NieuwsDetail {
 					likeButton.setImageResource(liked ? R.drawable.fb_liked : R.drawable.fb_like);
 					likeText.setText(Util.getLikeString(fbni, act.getUserName()));
 
-					Log.d("like", "success");
-				} else {
+					// Log.d("like", "success");
+				} else
 					likeButton.setImageResource(!liked ? R.drawable.fb_liked : R.drawable.fb_like);
-
-					Log.d("like", "fail");
-				}
 				likeButton.setEnabled(true);
 				likeLoader.setVisibility(View.GONE);
 
@@ -420,7 +422,7 @@ public class NieuwsDetail {
 			request.setHttpMethod(HttpMethod.DELETE);
 
 		request.executeAsync();
-		Log.d("like", "executed async");
+		// Log.d("like", "executed async");
 		likeButton.setEnabled(false);
 		likeLoader.setVisibility(View.VISIBLE);
 		likeButton.setImageBitmap(null);
@@ -459,5 +461,9 @@ public class NieuwsDetail {
 	public void cancelTasks() {
 		if (commentLoader != null && !commentLoader.isCancelled())
 			commentLoader.cancel(true);
+	}
+
+	public String getContent() {
+		return item.getContent();
 	}
 }

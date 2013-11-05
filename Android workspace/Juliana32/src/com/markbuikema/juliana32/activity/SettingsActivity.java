@@ -1,10 +1,18 @@
 package com.markbuikema.juliana32.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -25,6 +33,7 @@ import com.facebook.Request;
 import com.facebook.Session;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.ui.Button;
 
 public class SettingsActivity extends Activity {
 
@@ -35,6 +44,7 @@ public class SettingsActivity extends Activity {
 
 	private Setting facebookCaption;
 	private Setting facebookSetting;
+	private boolean showAbout = false;
 
 	public final static String PREFERENCES = "Juliana32_instellingen";
 	public final static String NOTIFICATIONS = "Juliana32_notificaties";
@@ -77,6 +87,10 @@ public class SettingsActivity extends Activity {
 					((CheckBoxSetting) clickedSetting).toggle();
 				if (clickedSetting instanceof FacebookSetting)
 					onClickLogout();
+
+				if (clickedSetting.getCallback() != null)
+					clickedSetting.getCallback().onItemClick(arg0, arg1, pos, arg3);
+
 			}
 		});
 		// adapter.add(new SettingCaption("Nieuwsberichten"));
@@ -96,6 +110,20 @@ public class SettingsActivity extends Activity {
 			adapter.add(facebookSetting);
 		}
 
+		adapter.add(new SettingCaption("Info"));
+		adapter.add(new Setting("Over deze app", "", new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				showAboutDialog();
+			}
+		}));
+
+		if (savedInstanceState != null) {
+			showAbout = savedInstanceState.getBoolean("showAbout");
+			if (showAbout)
+				showAboutDialog();
+		}
 	}
 
 	public class SettingsAdapter extends ArrayAdapter<Setting> {
@@ -114,8 +142,9 @@ public class SettingsActivity extends Activity {
 		protected String title;
 		protected String subTitle;
 		protected View view;
+		protected OnItemClickListener callback;
 
-		public Setting(String title, String subTitle, View view) {
+		private Setting(String title, String subTitle, View view) {
 			this.title = title;
 			this.subTitle = subTitle;
 			this.view = view;
@@ -134,8 +163,34 @@ public class SettingsActivity extends Activity {
 				subTitleView.setVisibility(View.GONE);
 		}
 
+		public Setting(String title, String subTitle, OnItemClickListener callback) {
+			this.title = title;
+			this.subTitle = subTitle;
+			this.callback = callback;
+			view = LayoutInflater.from(SettingsActivity.this).inflate(R.layout.setting_checkbox, null);
+
+			view.findViewById(R.id.settingCheckBox).setVisibility(View.GONE);
+
+			TextView titleView = (TextView) view.findViewById(R.id.settingTitle);
+			if (titleView != null)
+				titleView.setText(title);
+
+			TextView subTitleView = (TextView) view.findViewById(R.id.settingSubTitle);
+			if (subTitleView != null)
+				subTitleView.setText(subTitle);
+
+			if (titleView != null && (title == null || title.equals("")))
+				titleView.setVisibility(View.GONE);
+			if (subTitleView != null && (subTitle == null || subTitle.equals("")))
+				subTitleView.setVisibility(View.GONE);
+		}
+
 		public View getView() {
 			return view;
+		}
+
+		public OnItemClickListener getCallback() {
+			return callback;
 		}
 	}
 
@@ -157,6 +212,7 @@ public class SettingsActivity extends Activity {
 			});
 			checkBox.setChecked(preferences.getBoolean(preferenceName, defaultValue));
 
+			view.requestLayout();
 		}
 
 		public boolean isChecked() {
@@ -172,16 +228,15 @@ public class SettingsActivity extends Activity {
 	public class FacebookSetting extends Setting {
 
 		private ImageView picture;
-		private TextView name;
 
 		public FacebookSetting() {
 
 			super("Uitloggen", userName, getLayoutInflater().inflate(R.layout.setting_facebook, null));
 
 			picture = (ImageView) view.findViewById(R.id.settingFacebookPic);
-			name = (TextView) view.findViewById(R.id.settingSubTitle);
 
 			UrlImageViewHelper.setUrlDrawable(picture, userPicUrl, R.drawable.silhouette);
+			view.requestLayout();
 
 		}
 	}
@@ -215,4 +270,49 @@ public class SettingsActivity extends Activity {
 
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean("showAbout", showAbout);
+		super.onSaveInstanceState(outState);
+	}
+
+	@SuppressLint("NewApi")
+	private void showAboutDialog() {
+
+		showAbout = true;
+
+		Builder b;
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			b = new Builder(this);
+		else
+			b = new Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+		View view = LayoutInflater.from(this).inflate(R.layout.about, null);
+		Button emailButton = (Button) view.findViewById(R.id.aboutEmail);
+
+		final AlertDialog ad = b.setView(view).create();
+		emailButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+				String uriString = "mailto:" + getString(R.string.about_email) + "?subject="
+						+ getString(R.string.about_email_subject);
+				uriString = uriString.replaceAll(" ", "%20");
+				emailIntent.setData(Uri.parse(uriString));
+				startActivity(Intent.createChooser(emailIntent, "Email versturen"));
+
+				ad.dismiss();
+
+			}
+		});
+		ad.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				showAbout = false;
+			}
+		});
+		ad.show();
+
+	}
 }

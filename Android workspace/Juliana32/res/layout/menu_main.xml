@@ -27,10 +27,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:paddingRight="5dp"
-        android:paddingLeft="5dp"
         android:background="@drawable/listitem_background"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+        <ImageButton
+            android:id="@+id/menuWeb"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/button"
+            android:contentDescription="@string/help"
+            android:padding="@dimen/small_margin"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_web_site" />
 
         <ImageButton
             android:id="@+id/menuFacebook"
@@ -67,18 +79,6 @@
             android:padding="@dimen/small_margin"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_menu_settings_holo_light" />
-
-        <ImageButton
-            android:id="@+id/menuHelp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/button"
-            android:contentDescription="@string/help"
-            android:padding="@dimen/small_margin"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_action_about" />
     </LinearLayout>
 
 </LinearLayout>
