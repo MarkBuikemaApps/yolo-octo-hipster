@@ -12,8 +12,10 @@
         android:cacheColorHint="@android:color/white"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
+        android:drawSelectorOnTop="true"
         android:listSelector="@android:color/transparent"
-        android:drawSelectorOnTop="true" >
+        android:padding="@dimen/default_margin"
+        android:scrollbarThumbVertical="@drawable/listitem_background" >
     </ListView>
 
 </LinearLayout>

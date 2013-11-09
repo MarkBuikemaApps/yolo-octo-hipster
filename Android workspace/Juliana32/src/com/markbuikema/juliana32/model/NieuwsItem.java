@@ -10,9 +10,6 @@ import org.jsoup.safety.Whitelist;
 
 public abstract class NieuwsItem extends Observable implements Comparable<NieuwsItem> {
 
-	private static int nextId = 0;
-
-	protected int id;
 	protected String title;
 	protected String subTitle;
 	protected List<String> photos;
@@ -20,7 +17,6 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 	protected GregorianCalendar createdAt;
 
 	public NieuwsItem(String title, String subTitle, String content, GregorianCalendar createdAt) {
-		id = nextId++;
 		this.title = title == null ? null : Jsoup.clean(title, Whitelist.none()).replace("&eacute;", "é");
 		this.subTitle = subTitle == null ? null : Jsoup.clean(subTitle, Whitelist.none()).replace("&eacute;", "é");
 		this.content = content;
@@ -55,21 +51,12 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 		return this instanceof FacebookNieuwsItem;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	public String getSubTitle() {
 		return subTitle;
-	}
-
-	@Override
-	public String toString() {
-		return id + ": " + title + "," + subTitle + ".";
 	}
 
 	@Override
@@ -88,5 +75,7 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 
 		return photos.toArray(new String[photos.size()]);
 	}
+
+	public abstract String getId();
 
 }

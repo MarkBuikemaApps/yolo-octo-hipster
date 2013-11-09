@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -303,6 +304,21 @@ public class FacebookHelper {
 		}
 
 		return photos;
+	}
+
+	public static GregorianCalendar toDate(String dateString) {
+		String yearString = dateString.substring(0, 4);
+		String monthString = dateString.substring(5, 7);
+		String dayString = dateString.substring(8, 10);
+		String hourString = dateString.substring(11, 13);
+		String minuteString = dateString.substring(14, 16);
+		String secondString = dateString.substring(17, 19);
+		String timezoneString = dateString.substring(19, 22);
+		GregorianCalendar createdAt = new GregorianCalendar();
+		createdAt.setTimeZone(TimeZone.getTimeZone("GMT" + timezoneString + ":00"));
+		createdAt.set(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1, Integer.parseInt(dayString),
+				Integer.parseInt(hourString) + 2, Integer.parseInt(minuteString), Integer.parseInt(secondString));
+		return createdAt;
 	}
 
 }

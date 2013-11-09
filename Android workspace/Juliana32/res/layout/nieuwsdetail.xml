@@ -101,9 +101,9 @@
 
                     <ImageView
                         android:id="@+id/commentProfilePicOverlay"
-                        android:contentDescription="@string/none"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
+                        android:contentDescription="@string/none"
                         android:scaleType="fitXY"
                         android:src="@drawable/roundedcorner" />
                 </FrameLayout>
@@ -190,9 +190,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
+                android:cacheColorHint="@android:color/transparent"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp"
-                android:listSelector="@drawable/listselector" >
+                android:listSelector="@drawable/listselector"
+                android:scrollbarThumbVertical="@drawable/listitem_background" >
             </ListView>
         </LinearLayout>
 

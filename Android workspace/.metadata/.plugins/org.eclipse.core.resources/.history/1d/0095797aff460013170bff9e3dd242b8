@@ -1,0 +1,12 @@
+package com.markbuikema.juliana32.section;
+
+import com.markbuikema.juliana32.activity.MainActivity;
+
+public class Agenda {
+
+	private MainActivity act;
+
+	public Agenda(MainActivity act) {
+		this.act = act;
+	}
+}

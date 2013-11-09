@@ -33,7 +33,7 @@ public class Nieuws {
 	private ProgressBar loading;
 	private MainActivity activity;
 
-	private int itemRequestId = -1;
+	private String itemRequestId;
 
 	private NieuwsRetriever nieuwsRetriever;
 
@@ -126,12 +126,12 @@ public class Nieuws {
 							}.execute(fbni);
 					}
 
-				if (itemRequestId != -1) {
+				if (itemRequestId != null) {
 
 					NieuwsItem item = getNewsItem(itemRequestId);
 					activity.requestNieuwsDetailPage(item);
 
-					itemRequestId = -1;
+					itemRequestId = null;
 				}
 
 				noItems.setText(nieuwsAdapter.getCount() < 1 ? activity.getResources().getString(R.string.no_item) : "");
@@ -145,15 +145,15 @@ public class Nieuws {
 		nieuwsRetriever.execute();
 	}
 
-	public NieuwsItem getNewsItem(int newsId) {
+	public NieuwsItem getNewsItem(String itemRequestId) {
 		for (int i = 0; i < nieuwsAdapter.getCount(); i++)
-			if (nieuwsAdapter.getItem(i).getId() == newsId)
+			if (nieuwsAdapter.getItem(i).getId().equals(itemRequestId))
 				return nieuwsAdapter.getItem(i);
 		return null;
 	}
 
-	public void setItemRequest(int newsId) {
-		itemRequestId = newsId;
+	public void setItemRequest(String nieuwsId) {
+		itemRequestId = nieuwsId;
 	}
 
 	public void invalidate() {

@@ -1,28 +1,22 @@
 package com.markbuikema.juliana32.model;
 
-import java.text.DecimalFormat;
-import java.util.GregorianCalendar;
 
-public class Game {
-
-	private int id;
+public class Game extends Event {
 
 	private String teamName;
 	private String otherTeam;
 
 	private boolean home;
 	private boolean played;
-	private long date;
 
 	private int teamGoals;
 	private int otherGoals;
 
 	public Game(int id, String teamName, String otherTeam, boolean home, long date, int teamGoals, int otherGoals) {
-		this.id = id;
+		super(id, date);
 		this.teamName = teamName;
 		this.otherTeam = otherTeam;
 		this.home = home;
-		this.date = date;
 
 		if (teamGoals < 0) {
 			otherGoals = -1;
@@ -36,10 +30,6 @@ public class Game {
 
 		this.teamGoals = teamGoals;
 		this.otherGoals = otherGoals;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public String getTeamName() {
@@ -56,10 +46,6 @@ public class Game {
 
 	public boolean isPlayed() {
 		return played;
-	}
-
-	public long getDate() {
-		return date;
 	}
 
 	public int getTeamGoals() {
@@ -82,15 +68,6 @@ public class Game {
 				return getDateString() + " " + teamName + " - " + otherTeam;
 			else
 				return getDateString() + " " + otherTeam + " - " + teamName;
-	}
-
-	public String getDateString() {
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(date);
-		DecimalFormat df = new DecimalFormat("00");
-		return cal.get(GregorianCalendar.DAY_OF_MONTH) + "/" + (cal.get(GregorianCalendar.MONTH) + 1) + "/"
-				+ cal.get(GregorianCalendar.YEAR) + " " + df.format(cal.get(GregorianCalendar.HOUR_OF_DAY)) + ":"
-				+ df.format(cal.get(GregorianCalendar.MINUTE));
 	}
 
 }

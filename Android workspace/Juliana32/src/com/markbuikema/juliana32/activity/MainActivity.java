@@ -68,6 +68,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.asynctask.EventRetriever;
 import com.markbuikema.juliana32.asynctask.TeamsRetriever;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NieuwsItem;
@@ -75,6 +76,8 @@ import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.section.Agenda;
+import com.markbuikema.juliana32.section.Contact;
 import com.markbuikema.juliana32.section.Nieuws;
 import com.markbuikema.juliana32.section.NieuwsDetail;
 import com.markbuikema.juliana32.section.TeamDetail;
@@ -126,6 +129,9 @@ public class MainActivity extends Activity {
 	private Teletekst teletekst;
 	private Nieuws nieuws;
 	private Teams teams;
+	private Agenda agenda;
+	@Deprecated
+	private Contact contact;
 
 	private PhotoPagerDialog photoDialog;
 
@@ -144,7 +150,8 @@ public class MainActivity extends Activity {
 	private boolean searching;
 
 	public enum Page {
-		NIEUWS, TEAMS, TELETEKST
+		NIEUWS, AGENDA, TEAMS, TELETEKST, @Deprecated
+		CONTACT
 	}
 
 	public enum FailureReason {
@@ -156,11 +163,14 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// DEBUG
+		new EventRetriever().execute();
+
 		logHashKey();
 
 		Util.onOrientationChanged(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
 
-		menuDrawer = MenuDrawer.attach(this, Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW);
+		menuDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW);
 		menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
 		menuDrawer.setContentView(R.layout.activity_main);
 		menuDrawer.setMenuView(R.layout.menu_main);
@@ -189,7 +199,7 @@ public class MainActivity extends Activity {
 				onPageChanged(Page.values()[arg2]);
 				menuDrawer.toggleMenu();
 
-				if (arg2 == 1)
+				if (arg2 == 2)
 					showBetaDialogIfNecessary();
 			}
 		});
@@ -334,6 +344,17 @@ public class MainActivity extends Activity {
 
 		onPageChanged(Page.NIEUWS);
 
+		if (getIntent() != null && getIntent().getData() != null) {
+			String url = getIntent().getData().toString();
+			String urlNieuwsId = null;
+			if (url != null && url.startsWith("http://www.svjuliana32.nl/nieuws/nieuws")) {
+				String[] split = url.split("/");
+				urlNieuwsId = split[split.length - 1];
+			}
+			nieuws.setItemRequest(urlNieuwsId);
+			setIntent(null);
+		}
+
 		// FACEBOOK STUFF////////////////
 		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
@@ -364,8 +385,8 @@ public class MainActivity extends Activity {
 				teamDetail.onRestoreInstanceState(savedInstanceState);
 			}
 
-			int nieuwsId = savedInstanceState.getInt("nieuwsId", -1);
-			if (nieuwsId > -1)
+			String nieuwsId = savedInstanceState.getString("nieuwsId", "");
+			if (nieuwsId != null)
 				for (NieuwsItem item : DataManager.getInstance().getNieuwsItems())
 					if (item.getId() == nieuwsId) {
 						requestNieuwsDetailPage(item);
@@ -398,8 +419,8 @@ public class MainActivity extends Activity {
 
 	private void updateView() {
 
-		Session session = Session.getActiveSession();
-
+		// Session session = Session.getActiveSession();
+		//
 		// String text = "Session opened: " + session.isOpened() +
 		// "\nAccess token: " + session.getAccessToken() + "\nPERMISSIONS:";
 		//
@@ -483,6 +504,20 @@ public class MainActivity extends Activity {
 			activePageView = findViewById(R.id.teletekstView);
 			if (teletekst == null)
 				teletekst = new Teletekst(this);
+			break;
+		case AGENDA:
+			title = getResources().getString(R.string.menu_agenda);
+			activePageView = findViewById(R.id.agendaView);
+			if (agenda == null)
+				agenda = new Agenda(this);
+			break;
+		case CONTACT:
+			title = getResources().getString(R.string.menu_contact);
+			activePageView = findViewById(R.id.contactView);
+			if (contact == null)
+				contact = new Contact(this);
+			break;
+		default:
 			break;
 		}
 
@@ -585,7 +620,16 @@ public class MainActivity extends Activity {
 			seasonButton.setVisibility(View.GONE);
 			picturesButton.setVisibility(View.GONE);
 			searchButton.setVisibility(View.GONE);
-
+			break;
+		case CONTACT:
+			loader.setVisibility(View.GONE);
+			refreshButton.setVisibility(View.GONE);
+			shareButton.setVisibility(View.GONE);
+			seasonButton.setVisibility(View.GONE);
+			picturesButton.setVisibility(View.GONE);
+			searchButton.setVisibility(View.GONE);
+			break;
+		default:
 			break;
 		}
 
@@ -770,6 +814,19 @@ public class MainActivity extends Activity {
 			nieuwsDetail.onResume();
 
 		onPageChanged(page);
+
+		if (getIntent() != null && getIntent().getData() != null) {
+			String url = getIntent().getData().toString();
+			String urlNieuwsId = null;
+			if (url != null && url.startsWith("http://www.svjuliana32.nl/nieuws/nieuws")) {
+				String[] split = url.split("/");
+				urlNieuwsId = split[split.length - 1];
+			}
+			if (nieuws.getAdapterCount() > 0)
+				requestNieuwsDetailPage(nieuws.getNewsItem(urlNieuwsId));
+			else
+				nieuws.setItemRequest(urlNieuwsId);
+		}
 	}
 
 	@Override

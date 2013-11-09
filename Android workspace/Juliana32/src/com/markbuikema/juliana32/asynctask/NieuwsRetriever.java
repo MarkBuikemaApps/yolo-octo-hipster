@@ -80,7 +80,14 @@ public class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem
 					title = title.replace("&eacute;", "'");
 					subTitle = subTitle.replace("&eacute;", "é");
 
-					items.add(new NormalNieuwsItem(title, subTitle, createdAt, detailUrl));
+					String nieuwsId;
+					try {
+						nieuwsId = detailUrl.split("/")[5];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						nieuwsId = null;
+					}
+
+					items.add(new NormalNieuwsItem(nieuwsId, title, subTitle, createdAt, detailUrl));
 				}
 
 			} catch (IOException e) {

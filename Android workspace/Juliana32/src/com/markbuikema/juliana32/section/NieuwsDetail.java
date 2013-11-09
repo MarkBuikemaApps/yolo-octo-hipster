@@ -370,7 +370,7 @@ public class NieuwsDetail {
 
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putBoolean("commentsOpened", isCommentsPanelOpened());
-		outState.putInt("nieuwsId", item.getId());
+		outState.putString("nieuwsId", item.getId());
 	}
 
 	public void onLikedChanged(final boolean liked) {

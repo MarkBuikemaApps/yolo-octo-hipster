@@ -1,6 +1,6 @@
 package com.markbuikema.juliana32.section;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -63,7 +63,7 @@ public class TeamDetail {
 	private FrameLayout uitslagenContainer;
 	private FrameLayout programmaContainer;
 
-	private ArrayList<Table> tableList;
+	private List<Table> tableList;
 
 	private TextView noPhotos;
 

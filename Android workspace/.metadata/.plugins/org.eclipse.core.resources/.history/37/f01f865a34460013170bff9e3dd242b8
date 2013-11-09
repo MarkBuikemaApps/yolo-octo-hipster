@@ -1,0 +1,7 @@
+package com.markbuikema.juliana32.adapter;
+
+import android.widget.ArrayAdapter;
+
+public class ContactAdapter extends ArrayAdapter<Contact> {
+
+}

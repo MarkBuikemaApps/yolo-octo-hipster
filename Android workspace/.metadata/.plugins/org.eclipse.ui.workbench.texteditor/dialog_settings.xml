@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Log.d" key="selection"/>
+		<item value="getIntent" key="selection"/>
 		<list key="findhistory">
-			<item value="log.d"/>
-			<item value="share"/>
-			<item value="onbac"/>
-			<item value="fixac"/>
-			<item value="geen"/>
-			<item value="noitems.set"/>
-			<item value="onres"/>
-			<item value="onpos"/>
+			<item value="getintent"/>
+			<item value="Page."/>
+			<item value="Page"/>
+			<item value="ordinal"/>
+			<item value="date"/>
+			<item value="debug"/>
+			<item value="edbug"/>
+			<item value="nieuwsid"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

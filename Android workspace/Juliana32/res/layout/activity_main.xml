@@ -178,6 +178,20 @@
             android:layout_height="match_parent"
             layout="@layout/teletekst"
             android:visibility="gone" />
+
+        <include
+            android:id="@+id/contactView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/contact"
+            android:visibility="gone" />
+        
+        <include
+            android:id="@+id/agendaView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/agenda"
+            android:visibility="gone" />
     </LinearLayout>
 
     <android.support.v4.view.ViewPager

@@ -72,4 +72,9 @@ public class FacebookNieuwsItem extends NieuwsItem {
 		commentCount++;
 	}
 
+	@Override
+	public String getId() {
+		return fbId;
+	}
+
 }

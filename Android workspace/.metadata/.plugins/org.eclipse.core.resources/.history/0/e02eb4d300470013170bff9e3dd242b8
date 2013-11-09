@@ -1,0 +1,7 @@
+package com.markbuikema.juliana32.asynctask;
+
+import android.os.AsyncTask;
+
+public class WeekRetriever extends AsyncTask<Params, Progress, Result> {
+
+}

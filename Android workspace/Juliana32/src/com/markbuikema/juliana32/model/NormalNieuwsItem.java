@@ -19,15 +19,22 @@ import android.os.AsyncTask;
 public class NormalNieuwsItem extends NieuwsItem {
 
 	private String detailUrl;
+	private String id;
 
-	public NormalNieuwsItem(String title, String subTitle, GregorianCalendar createdAt, String detailUrl) {
+	public NormalNieuwsItem(String id, String title, String subTitle, GregorianCalendar createdAt, String detailUrl) {
 
 		super(title, subTitle, null, createdAt);
 		this.detailUrl = detailUrl;
+		this.id = id;
 	}
 
 	public String getDetailUrl() {
 		return detailUrl;
+	}
+
+	@Override
+	public String getId() {
+		return id;
 	}
 
 	public boolean isContentLoaded() {

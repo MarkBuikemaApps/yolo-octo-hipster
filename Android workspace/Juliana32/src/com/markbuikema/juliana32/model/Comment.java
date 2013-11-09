@@ -1,7 +1,8 @@
 package com.markbuikema.juliana32.model;
 
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
+
+import com.markbuikema.juliana32.util.FacebookHelper;
 
 public class Comment extends Like {
 
@@ -17,16 +18,7 @@ public class Comment extends Like {
 		this.imgUrl = imgUrl;
 		this.userId = userId;
 
-		String yearString = dateString.substring(0, 4);
-		String monthString = dateString.substring(5, 7);
-		String dayString = dateString.substring(8, 10);
-		String hourString = dateString.substring(11, 13);
-		String minuteString = dateString.substring(14, 16);
-		String secondString = dateString.substring(17, 19);
-		createdAt = new GregorianCalendar();
-		createdAt.setTimeZone(TimeZone.getTimeZone("GMT+02:00"));
-		createdAt.set(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1, Integer.parseInt(dayString),
-				Integer.parseInt(hourString) + 2, Integer.parseInt(minuteString), Integer.parseInt(secondString));
+		createdAt = FacebookHelper.toDate(dateString);
 		// Log.d("comment_date", createdAt.toString());
 	}
 

@@ -1,0 +1,40 @@
+package com.markbuikema.juliana32.asynctask;
+
+import org.json.JSONObject;
+
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.facebook.Request;
+import com.facebook.Request.Callback;
+import com.facebook.Response;
+import com.markbuikema.juliana32.model.Event;
+import com.markbuikema.juliana32.util.FacebookHelper;
+
+public class WeekRetriever extends AsyncTask<Void, Event, Void> {
+
+	@Override
+	protected Void doInBackground(Void... arg0) {
+		Request request = Request.newGraphPathRequest(null, FacebookHelper.JULIANA_ID + "/events", new Callback() {
+
+			@Override
+			public void onCompleted(Response response) {
+				try {
+					JSONObject obj = response.getGraphObject().getInnerJSONObject();
+					Log.d("Events", obj.toString());
+				} catch (Exception e) {
+					Log.e("Events", "exception thrown!");
+				}
+			}
+		});
+		Bundle params = new Bundle();
+		params.putString("access_token", FacebookHelper.ACCESS_TOKEN);
+		request.setParameters(params);
+
+		request.executeAndWait();
+
+		return null;
+	}
+
+}

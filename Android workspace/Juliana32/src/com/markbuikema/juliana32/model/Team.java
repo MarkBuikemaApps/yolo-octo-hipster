@@ -105,14 +105,12 @@ public class Team {
 		return code;
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<Game> getGames() {
-		return (ArrayList<Game>) games.clone();
+	public List<Game> getGames() {
+		return Collections.unmodifiableList(games);
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<Table> getTables() {
-		return (ArrayList<Table>) tables.clone();
+	public List<Table> getTables() {
+		return Collections.unmodifiableList(tables);
 	}
 
 	public void addTable(Table table) {

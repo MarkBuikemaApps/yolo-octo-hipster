@@ -1,0 +1,221 @@
+{
+    "categories": [
+        {
+            "name": "Hoofdbestuur",
+            "members": [
+                {
+                    "name": "W. Lans",
+                    "function": "Voorzitter",
+                    "phoneNumber": "+31644778521",
+                    "email": "lans@home.nl"
+                },
+                {
+                    "name": "Vacature",
+                    "function": "Secretaris"
+                },
+                {
+                    "name": "J.W. Groeneveld",
+                    "function": "Penningmeester",
+                    "phoneNumber": "+31646345957",
+                    "email": "j.wgroeneveld@home.nl"
+                },
+                {
+                    "name": "H. Grobbe",
+                    "function": "Jeugdcommissie",
+                    "phoneNumber": "+31628238221",
+                    "email": "hansgrobbe@ziggo.nl"
+                },
+                {
+                    "name": "E.J. van Erven",
+                    "function": "Seniorencommissie",
+                    "phoneNumber": "+31629270202",
+                    "email": "ejve@home.nl"
+                },
+                {
+                    "name": "E. Huiskes",
+                    "function": "Sponsorcommissie",
+                    "phoneNumber": "+31641759733",
+                    "email": "eric.huiskes@gmail.com"
+                },
+                {
+                    "name": "A. Bos",
+                    "function": "Kantinecommissie",
+                    "phoneNumber": "+31615885557",
+                    "email": "albertengezien@home.nl"
+                }
+            ]
+        },
+        {
+            "name": "Ledenadministratie",
+            "members": [
+                {
+                    "name": "G. Medendorp",
+                    "email": "lca.svjuliana32@gmail.com"
+                }
+            ]
+        },
+        {
+            "name": "Jeugdbestuur",
+            "members": [
+                {
+                    "name": "H. Grobbe",
+                    "function": "Voorzitter",
+                    "phoneNumber": "31628238221",
+                    "email": "hansgrobbe@ziggo.nl"
+                },
+                {
+                    "name": "B. Huiskes",
+                    "function": "Algemeen coördinator",
+                    "phoneNumber": "+31651092874",
+                    "email": "b.huiskes@home.nl"
+                },
+                {
+                    "name": "A. Dikschei",
+                    "function": "Wedstrijdsecretaris",
+                    "phoneNumber": "+31628155008",
+                    "email": "a.dikschei@home.nl"
+                },
+                {
+                    "name": "J. Vet",
+                    "function": "Lid",
+                    "email": "v.vet@home.nl"
+                },
+                {
+                    "name": "E. Borst",
+                    "function": "Lid"
+                },
+                {
+                    "name": "O. van Dalen",
+                    "function": "Lid",
+                    "email": "van_dalen_oscar@hotmail.com"
+                }
+            ]
+        },
+        {
+            "name": "Sponsorcommissie",
+            "members": [
+                {
+                    "name": "E. Huiskes",
+                    "function": "Voorzitter",
+                    "phoneNumber": "+31641759733",
+                    "email": "eric.huiskes@gmail.com"
+                },
+                {
+                    "name": "H. Mensink",
+                    "function": "Lid",
+                    "phoneNumber": "+31612145276",
+                    "email": "h.mensink11@kpnplanet.nl"
+                }
+            ]
+        },
+        {
+            "name": "Kantinecommissie",
+            "members": [
+                {
+                    "name": "A. Bos",
+                    "function": "Voorzitter",
+                    "phoneNumber": "+31615885557",
+                    "email": "albertengezien@home.nl"
+                },
+                {
+                    "name": "W. Beld",
+                    "function": "Inkoper",
+                    "phoneNumber": "+31622752609",
+                    "email": "w.beld51@kpnplanet.nl"
+                },
+                {
+                    "name": "J. Meijer",
+                    "function": "Lid",
+                    "phoneNumber": "+31742914041",
+                    "email": "jan.anny.meijer@home.nl"
+                }
+            ]
+        },
+        {
+            "name": "Bingocommissie",
+            "members": [
+                {
+                    "name": "L. Kuper",
+                    "function": "Lid",
+                    "phoneNumber": "+31742429307",
+                    "email": "lucaskuper@home.nl"
+                },
+                {
+                    "name": "J. Meijer",
+                    "function": "Lid",
+                    "phoneNumber": "+31742914041",
+                    "email": "jan.anny.meijer@home.nl"
+                }
+            ]
+        },
+        {
+            "name": "Activiteitencommissie",
+            "members": [
+                {
+                    "name": "N. Grobbe",
+                    "function": "Lid",
+                    "email": "nienke_fct@hotmail.com"
+                },
+                {
+                    "name": "R. Wolthof",
+                    "function": "Lid",
+                    "email": "info@burotrap.nl"
+                },
+                {
+                    "name": "S. Forsyth",
+                    "function": "Lid",
+                    "email": "sja.forsyth@hotmail.com"
+                },
+                {
+                    "name": "N. Halfwerk",
+                    "function": "Lid",
+                    "email": "n.halfwerk@hotmail.com"
+                }
+            ]
+        },
+        {
+            "name": "Seniorencommissie",
+            "members": [
+                {
+                    "name": "E.J. van Erven",
+                    "function": "Voorzitter",
+                    "phoneNumber": "+31629270202",
+                    "email": "ejve@home.nl"
+                }
+            ]
+        },
+        {
+            "name": "Redactie clubblad",
+            "members": [
+                {
+                    "name": "R. van der Meer",
+                    "function": "Redactie",
+                    "phoneNumber": "+31615593950",
+                    "email": "xrvandermeer@kpnmail.com"
+                },
+                {
+                    "name": "B. Schapelhouman",
+                    "function": "Redactie",
+                    "phoneNumber": "+31742505109",
+                    "email": "sheepman1968@hotmail.com"
+                }
+            ]
+        },
+        {
+            "name": "Website",
+            "members": [
+                {
+                    "name": "Redactie website",
+                    "function": "Webmaster",
+                    "email": "websitejuliana32@gmail.com"
+                },
+                {
+                    "name": "Mark Buikema",
+                    "function": "Ontwikkelaar app",
+                    "phoneNumber": "+31627836933",
+                    "email": "buikemamark@gmail.com"
+                }
+            ]
+        }
+    ]
+}
