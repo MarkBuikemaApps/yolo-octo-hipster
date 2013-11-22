@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/small_margin" >
+
+    <org.holoeverywhere.widget.FrameLayout
+        android:layout_width="42dp"
+        android:layout_height="42dp" >
+
+        <ImageView
+            android:id="@+id/commentPicture"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:contentDescription="@string/none"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/roundedcorner_grey" />
+    </org.holoeverywhere.widget.FrameLayout>
+
+    <org.holoeverywhere.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <org.holoeverywhere.widget.LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/commentName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/small_margin"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/commentDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </org.holoeverywhere.widget.LinearLayout>
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/commentMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/small_margin"
+            android:textColor="@android:color/black" />
+    </org.holoeverywhere.widget.LinearLayout>
+
+</org.holoeverywhere.widget.LinearLayout>

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.ArrayAdapter;
+import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.ViewPager;
+
 import android.content.Context;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
@@ -97,6 +99,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 			subTitleView.setText(item.getSubTitle());
 			TextView createdAtView = (TextView) convertView.findViewById(R.id.nieuwsitem_date);
 			createdAtView.setText(Util.getDateString(getContext(), ((NormalNieuwsItem) item).getCreatedAt()));
+			titleView.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "Roboto-Light.ttf"));
 
 			((NormalNieuwsItem) item).startLoading(new OnContentLoadedListener() {
 

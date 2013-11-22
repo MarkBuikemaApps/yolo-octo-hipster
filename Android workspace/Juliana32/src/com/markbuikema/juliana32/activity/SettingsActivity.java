@@ -1,32 +1,34 @@
 package com.markbuikema.juliana32.activity;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.AlertDialog.Builder;
+import org.holoeverywhere.preference.SharedPreferences;
+import org.holoeverywhere.preference.SharedPreferences.Editor;
+import org.holoeverywhere.widget.ArrayAdapter;
+import org.holoeverywhere.widget.CheckBox;
+import org.holoeverywhere.widget.LinearLayout;
+import org.holoeverywhere.widget.ListView;
+import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -66,6 +68,7 @@ public class SettingsActivity extends Activity {
 
 		backButton = (LinearLayout) findViewById(R.id.backButton);
 		settingsList = (ListView) findViewById(R.id.settingsList);
+		((TextView) findViewById(R.id.titleText)).setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf"));
 
 		backButton.setClickable(true);
 		backButton.setOnClickListener(new OnClickListener() {
@@ -281,11 +284,8 @@ public class SettingsActivity extends Activity {
 
 		showAbout = true;
 
-		Builder b;
-		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			b = new Builder(this);
-		else
-			b = new Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+		Builder b = new Builder(this);
+
 		View view = LayoutInflater.from(this).inflate(R.layout.about, null);
 		Button emailButton = (Button) view.findViewById(R.id.aboutEmail);
 
@@ -306,9 +306,8 @@ public class SettingsActivity extends Activity {
 			}
 		});
 		ad.setOnDismissListener(new OnDismissListener() {
-
 			@Override
-			public void onDismiss(DialogInterface dialog) {
+			public void onDismiss(DialogInterface arg0) {
 				showAbout = false;
 			}
 		});

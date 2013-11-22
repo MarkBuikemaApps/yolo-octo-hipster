@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.markbuikema.juliana32.model.NieuwsItem;
-import com.markbuikema.juliana32.model.Season;
+import com.markbuikema.juliana32.model.Team;
 
 public class DataManager {
 
 	private static DataManager instance;
 	private List<NieuwsItem> nieuwsItems;
-	private List<Season> teams;
+	private List<Team> teams;
 
 	private DataManager() {
 	}
@@ -33,9 +33,9 @@ public class DataManager {
 			return nieuwsItems;
 	}
 
-	public List<Season> getTeams() {
+	public List<Team> getTeams() {
 		if (teams == null)
-			return new ArrayList<Season>();
+			return new ArrayList<Team>();
 		else
 			return teams;
 	}
@@ -44,7 +44,7 @@ public class DataManager {
 		this.nieuwsItems = nieuwsItems;
 	}
 
-	public void setTeams(List<Season> teams) {
+	public void setTeams(List<Team> teams) {
 		this.teams = teams;
 	}
 

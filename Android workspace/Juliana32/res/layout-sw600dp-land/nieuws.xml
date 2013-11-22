@@ -4,17 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.markbuikema.juliana32.ui.ViewPagerCompatibleStaggeredGridView
-        android:id="@+id/nieuwsList"
+    <com.markbuikema.juliana32.ui.ViewPagerCompatiblePullToRefreshLayout
+        android:id="@+id/nieuwsListRefresher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/white"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarThumbVertical="@drawable/listitem_background"
-        staggered:drawSelectorOnTop="true"
-        staggered:numColumns="3" />
+        android:layout_height="match_parent" >
+
+        <com.markbuikema.juliana32.ui.ViewPagerCompatibleStaggeredGridView
+            android:id="@+id/nieuwsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/white"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:listSelector="@drawable/button"
+            android:scrollbarThumbVertical="@drawable/listitem_background"
+            staggered:drawSelectorOnTop="false"
+            staggered:numColumns="3" />
+    </com.markbuikema.juliana32.ui.ViewPagerCompatiblePullToRefreshLayout>
 
     <TextView
         android:id="@+id/noItems"

@@ -8,51 +8,51 @@ package net.simonvt.menudrawer;
 
 public final class R {
 	public static final class attr {
-		public static final int mdActiveIndicator = 0x7f010023;
-		public static final int mdAllowIndicatorAnimation = 0x7f010029;
-		public static final int mdContentBackground = 0x7f010020;
-		public static final int mdDrawOverlay = 0x7f01002e;
-		public static final int mdDrawerClosedUpContentDescription = 0x7f01002d;
-		public static final int mdDrawerOpenUpContentDescription = 0x7f01002c;
-		public static final int mdDropShadow = 0x7f010027;
-		public static final int mdDropShadowColor = 0x7f010026;
-		public static final int mdDropShadowEnabled = 0x7f010024;
-		public static final int mdDropShadowSize = 0x7f010025;
-		public static final int mdMaxAnimationDuration = 0x7f01002a;
-		public static final int mdMenuBackground = 0x7f010021;
-		public static final int mdMenuSize = 0x7f010022;
-		public static final int mdPosition = 0x7f01002f;
-		public static final int mdSlideDrawable = 0x7f01002b;
-		public static final int mdTouchBezelSize = 0x7f010028;
-		public static final int menuDrawerStyle = 0x7f01001f;
+		public static final int mdActiveIndicator = 0x7f0100da;
+		public static final int mdAllowIndicatorAnimation = 0x7f0100e0;
+		public static final int mdContentBackground = 0x7f0100d7;
+		public static final int mdDrawOverlay = 0x7f0100e5;
+		public static final int mdDrawerClosedUpContentDescription = 0x7f0100e4;
+		public static final int mdDrawerOpenUpContentDescription = 0x7f0100e3;
+		public static final int mdDropShadow = 0x7f0100de;
+		public static final int mdDropShadowColor = 0x7f0100dd;
+		public static final int mdDropShadowEnabled = 0x7f0100db;
+		public static final int mdDropShadowSize = 0x7f0100dc;
+		public static final int mdMaxAnimationDuration = 0x7f0100e1;
+		public static final int mdMenuBackground = 0x7f0100d8;
+		public static final int mdMenuSize = 0x7f0100d9;
+		public static final int mdPosition = 0x7f0100e6;
+		public static final int mdSlideDrawable = 0x7f0100e2;
+		public static final int mdTouchBezelSize = 0x7f0100df;
+		public static final int menuDrawerStyle = 0x7f0100d6;
 	}
 	public static final class color {
-		public static final int md__defaultBackground = 0x7f050011;
+		public static final int md__defaultBackground = 0x7f08002f;
 	}
 	public static final class id {
-		public static final int bottom = 0x7f040003;
-		public static final int left = 0x7f040005;
-		public static final int mdActiveViewPosition = 0x7f04000c;
-		public static final int mdContent = 0x7f040007;
-		public static final int mdMenu = 0x7f040008;
-		public static final int md__content = 0x7f040009;
-		public static final int md__drawer = 0x7f04000b;
-		public static final int md__menu = 0x7f04000a;
-		public static final int md__translationX = 0x7f04000d;
-		public static final int md__translationY = 0x7f04000e;
-		public static final int right = 0x7f040006;
-		public static final int top = 0x7f040004;
+		public static final int bottom = 0x7f07000f;
+		public static final int left = 0x7f07001a;
+		public static final int mdActiveViewPosition = 0x7f070037;
+		public static final int mdContent = 0x7f070032;
+		public static final int mdMenu = 0x7f070033;
+		public static final int md__content = 0x7f070034;
+		public static final int md__drawer = 0x7f070036;
+		public static final int md__menu = 0x7f070035;
+		public static final int md__translationX = 0x7f070038;
+		public static final int md__translationY = 0x7f070039;
+		public static final int right = 0x7f07001b;
+		public static final int top = 0x7f07001d;
 	}
 	public static final class string {
-		public static final int md__drawerClosedIndicatorDesc = 0x7f0a0001;
-		public static final int md__drawerOpenIndicatorDesc = 0x7f0a0000;
+		public static final int md__drawerClosedIndicatorDesc = 0x7f0c0036;
+		public static final int md__drawerOpenIndicatorDesc = 0x7f0c0035;
 	}
 	public static final class style {
-		public static final int Widget = 0x7f090001;
-		public static final int Widget_MenuDrawer = 0x7f090005;
+		public static final int Widget = 0x7f0d0131;
+		public static final int Widget_MenuDrawer = 0x7f0d0132;
 	}
 	public static final class styleable {
-		public static final int[] MenuDrawer = { 0x7f010020, 0x7f010021, 0x7f010022, 0x7f010023, 0x7f010024, 0x7f010025, 0x7f010026, 0x7f010027, 0x7f010028, 0x7f010029, 0x7f01002a, 0x7f01002b, 0x7f01002c, 0x7f01002d, 0x7f01002e, 0x7f01002f };
+		public static final int[] MenuDrawer = { 0x7f0100d7, 0x7f0100d8, 0x7f0100d9, 0x7f0100da, 0x7f0100db, 0x7f0100dc, 0x7f0100dd, 0x7f0100de, 0x7f0100df, 0x7f0100e0, 0x7f0100e1, 0x7f0100e2, 0x7f0100e3, 0x7f0100e4, 0x7f0100e5, 0x7f0100e6 };
 		public static final int MenuDrawer_mdActiveIndicator = 3;
 		public static final int MenuDrawer_mdAllowIndicatorAnimation = 9;
 		public static final int MenuDrawer_mdContentBackground = 0;

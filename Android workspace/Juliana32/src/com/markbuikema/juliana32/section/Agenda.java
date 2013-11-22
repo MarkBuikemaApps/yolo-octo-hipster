@@ -1,6 +1,6 @@
 package com.markbuikema.juliana32.section;
 
-import android.support.v4.view.ViewPager;
+import org.holoeverywhere.widget.ViewPager;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;

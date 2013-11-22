@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="@drawable/listselector"
     android:baselineAligned="false"
     android:orientation="horizontal" >
 
-    <LinearLayout
+    <org.holoeverywhere.widget.LinearLayout
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/settingTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black" />
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/settingSubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,9 +33,9 @@
             android:layout_marginRight="@dimen/small_margin"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/black" />
-    </LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
 
-    <FrameLayout
+    <org.holoeverywhere.widget.FrameLayout
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center_vertical"
@@ -54,6 +54,6 @@
             android:contentDescription="@string/none"
             android:scaleType="fitXY"
             android:src="@drawable/roundedcorner" />
-    </FrameLayout>
+    </org.holoeverywhere.widget.FrameLayout>
 
-</LinearLayout>
+</org.holoeverywhere.widget.LinearLayout>

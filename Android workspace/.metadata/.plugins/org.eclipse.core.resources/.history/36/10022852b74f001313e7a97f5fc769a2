@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.holoeverywhere.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp" >
+
+    <ImageView
+        android:id="@+id/menuItemIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/listitem_arrow"
+        android:contentDescription="@string/none" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/menuItemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/listselector"
+        android:padding="@dimen/default_margin"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+
+    <org.holoeverywhere.widget.View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/menudivider" />
+
+</org.holoeverywhere.widget.FrameLayout>

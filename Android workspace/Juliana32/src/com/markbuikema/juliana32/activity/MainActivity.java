@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,67 +13,65 @@ import net.simonvt.menudrawer.MenuDrawer.OnDrawerStateChangeListener;
 import net.simonvt.menudrawer.MenuDrawer.Type;
 import net.simonvt.menudrawer.Position;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.AlertDialog.Builder;
+import org.holoeverywhere.preference.PreferenceManagerHelper;
+import org.holoeverywhere.preference.SharedPreferences;
+import org.holoeverywhere.preference.SharedPreferences.Editor;
+import org.holoeverywhere.widget.CheckBox;
+import org.holoeverywhere.widget.EditText;
+import org.holoeverywhere.widget.ImageButton;
+import org.holoeverywhere.widget.LinearLayout;
+import org.holoeverywhere.widget.ListView;
+import org.holoeverywhere.widget.ProgressBar;
+import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.adapter.MenuAdapter;
 import com.markbuikema.juliana32.asynctask.EventRetriever;
 import com.markbuikema.juliana32.asynctask.TeamsRetriever;
-import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
-import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.section.Agenda;
 import com.markbuikema.juliana32.section.Contact;
@@ -89,6 +86,7 @@ import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChang
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
+import com.nineoldandroids.animation.Animator;
 
 public class MainActivity extends Activity {
 
@@ -102,12 +100,10 @@ public class MainActivity extends Activity {
 
 	private ImageView menuButton;
 	private LinearLayout menuToggler;
-	private ImageButton refreshButton;
-	private ImageButton commentsButton;
 	private ImageButton shareButton;
 	private ImageButton picturesButton;
 	private ImageButton searchButton;
-	private Spinner seasonButton;
+	private ImageButton overflowButton;
 	private ProgressBar loader;
 	private TextView title;
 
@@ -117,11 +113,6 @@ public class MainActivity extends Activity {
 	private View activePageView;
 	private View teamDetailView;
 	private View nieuwsDetailView;
-
-	private ImageButton webButton;
-	private ImageButton facebookButton;
-	private ImageButton twitterButton;
-	private ImageButton prefsButton;
 
 	private TeamDetail teamDetail;
 	private NieuwsDetail nieuwsDetail;
@@ -149,6 +140,8 @@ public class MainActivity extends Activity {
 
 	private boolean searching;
 
+	private Animator mCurrentAnimator;
+
 	public enum Page {
 		NIEUWS, AGENDA, TEAMS, TELETEKST, @Deprecated
 		CONTACT
@@ -170,7 +163,10 @@ public class MainActivity extends Activity {
 
 		Util.onOrientationChanged(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
 
-		menuDrawer = MenuDrawer.attach(this, Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW);
+		Type type =
+		// getResources().getBoolean(R.bool.isTablet) ? Type.STATIC :
+		Type.OVERLAY;
+		menuDrawer = MenuDrawer.attach(this, type, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW);
 		menuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
 		menuDrawer.setContentView(R.layout.activity_main);
 		menuDrawer.setMenuView(R.layout.menu_main);
@@ -193,35 +189,33 @@ public class MainActivity extends Activity {
 		menu.setDivider(null);
 		menu.setDividerHeight(0);
 		menu.setAdapter(menuAdapter);
-		menu.setOnItemClickListener(new OnItemClickListener() {
+		OnItemClickListener l = new OnItemClickListener() {
+
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(android.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				onPageChanged(Page.values()[arg2]);
 				menuDrawer.toggleMenu();
 
 				if (arg2 == 2)
 					showBetaDialogIfNecessary();
 			}
-		});
+		};
+		menu.setOnItemClickListener(l);
 
 		teamDetailView = findViewById(R.id.teamDetailView);
 		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
 		menuButton = (ImageView) findViewById(R.id.menuButton);
 		menuToggler = (LinearLayout) findViewById(R.id.menuToggler);
-		commentsButton = (ImageButton) findViewById(R.id.menuComments);
 		shareButton = (ImageButton) findViewById(R.id.menuShare);
 		picturesButton = (ImageButton) findViewById(R.id.menuPictures);
-		facebookButton = (ImageButton) findViewById(R.id.menuFacebook);
-		twitterButton = (ImageButton) findViewById(R.id.menuTwitter);
-		prefsButton = (ImageButton) findViewById(R.id.menuPrefs);
-		webButton = (ImageButton) findViewById(R.id.menuWeb);
 		title = (TextView) findViewById(R.id.titleText);
-		refreshButton = (ImageButton) findViewById(R.id.menuRefresh);
-		seasonButton = (Spinner) findViewById(R.id.menuSeason);
 		loader = (ProgressBar) findViewById(R.id.loading);
 		actionBarContent = (LinearLayout) findViewById(R.id.actionBarContent);
+		overflowButton = (ImageButton) findViewById(R.id.menuOverflow);
 		searchButton = (ImageButton) findViewById(R.id.menuSearch);
 		searchInput = (EditText) findViewById(R.id.searchInput);
+
+		title.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf"));
 
 		menuToggler.setClickable(true);
 		menuToggler.setOnClickListener(new OnClickListener() {
@@ -285,60 +279,9 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		facebookButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				menuDrawer.toggleMenu();
-
-				try {
-					getPackageManager().getPackageInfo("com.facebook.katana", 0);
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/294105307313875")));
-				} catch (Exception e) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/svjuliana32")));
-				}
-			}
-		});
-		twitterButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				menuDrawer.toggleMenu();
-
-				try {
-					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=svjuliana32"));
-					startActivity(intent);
-				} catch (Exception e) {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/svjuliana32")));
-				}
-			}
-		});
-
-		prefsButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				menuDrawer.toggleMenu();
-				Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-				i.putExtra("userName", userName);
-				i.putExtra("userPicUrl", userPicUrl);
-				startActivity(i);
-			}
-		});
-
-		webButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				menuDrawer.toggleMenu();
-				String url = "http://www.svjuliana32.nl";
-				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setData(Uri.parse(url));
-				startActivity(i);
-			}
-		});
+		// hide the overflow button if hardware menu button is detected
+		if (Build.VERSION.SDK_INT <= 10 || (Build.VERSION.SDK_INT >= 14 && ViewConfiguration.get(this).hasPermanentMenuKey()))
+			overflowButton.setVisibility(View.GONE);
 
 		initializePages();
 
@@ -385,7 +328,7 @@ public class MainActivity extends Activity {
 				teamDetail.onRestoreInstanceState(savedInstanceState);
 			}
 
-			String nieuwsId = savedInstanceState.getString("nieuwsId", "");
+			String nieuwsId = savedInstanceState.getString("nieuwsId");
 			if (nieuwsId != null)
 				for (NieuwsItem item : DataManager.getInstance().getNieuwsItems())
 					if (item.getId() == nieuwsId) {
@@ -443,13 +386,6 @@ public class MainActivity extends Activity {
 		return netInfo != null && netInfo.isConnected();
 	}
 
-	public ArrayList<Game> getLatestGames() {
-		if (teams != null)
-			return teams.getLatestGames();
-		else
-			return new ArrayList<Game>();
-	}
-
 	public Teams getTeams() {
 		return teams;
 	}
@@ -467,6 +403,7 @@ public class MainActivity extends Activity {
 		}
 
 		this.page = page;
+		menuAdapter.setPage(page);
 
 		if (activePageView != null)
 			activePageView.setVisibility(View.GONE);
@@ -481,7 +418,6 @@ public class MainActivity extends Activity {
 			activePageView = findViewById(R.id.nieuwsView);
 			if (nieuws == null)
 				nieuws = new Nieuws(this);
-			nieuws.showRefreshButton();
 			nieuws.clearSearch();
 
 			if (nieuws.getAdapterCount() < 1)
@@ -524,9 +460,6 @@ public class MainActivity extends Activity {
 		teamDetailView.setVisibility(View.GONE);
 		teamDetail = null;
 
-		if (isNieuwsDetailShown())
-			nieuwsDetail.hideComments();
-
 		hideNieuwsDetail();
 
 		loader.setVisibility(View.GONE);
@@ -543,9 +476,10 @@ public class MainActivity extends Activity {
 		if (reloadTeams)
 			new TeamsRetriever(this) {
 				@Override
-				protected void onPostExecute(List<Season> result) {
+				protected void onPostExecute(List<Team> result) {
 					DataManager.getInstance().setTeams(result);
 					teams = new Teams(MainActivity.this);
+					teams.onTeamsLoaded();
 				}
 			}.execute();
 
@@ -557,10 +491,10 @@ public class MainActivity extends Activity {
 
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void showBetaDialogIfNecessary() {
 
-		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		final SharedPreferences prefs = PreferenceManagerHelper.getDefaultSharedPreferences(this);
 
 		if (!prefs.getBoolean("showTeamsMessage", true))
 			return;
@@ -571,11 +505,7 @@ public class MainActivity extends Activity {
 		final CheckBox doNotShowAgain = (CheckBox) view.findViewById(R.id.do_not_show_again);
 		final Button close = (Button) view.findViewById(R.id.posbutton);
 
-		Builder b;
-		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			b = new Builder(this);
-		else
-			b = new Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+		Builder b = new Builder(this);
 
 		final AlertDialog dialog = b.setView(view).create();
 		close.setOnClickListener(new OnClickListener() {
@@ -597,17 +527,13 @@ public class MainActivity extends Activity {
 		switch (page) {
 
 		case NIEUWS:
-			refreshButton.setVisibility(refreshingNieuws || isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
-			loader.setVisibility(refreshingNieuws ? View.VISIBLE : View.GONE);
-			seasonButton.setVisibility(View.GONE);
+			loader.setVisibility(View.GONE);
 			shareButton.setVisibility(isNieuwsDetailShown() ? View.VISIBLE : View.GONE);
 			picturesButton.setVisibility(isNieuwsDetailShown() && currentNewsItemHasPhotos() ? View.VISIBLE : View.GONE);
 			searchButton.setVisibility(isNieuwsDetailShown() ? View.GONE : View.VISIBLE);
 			break;
 		case TEAMS:
-			refreshButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
-			seasonButton.setVisibility(isTeamDetailShown() ? View.GONE : View.VISIBLE);
 			picturesButton.setVisibility(View.GONE);
 			searchButton.setVisibility(View.GONE);
 			if (teams != null && !isTeamDetailShown())
@@ -615,17 +541,13 @@ public class MainActivity extends Activity {
 			break;
 		case TELETEKST:
 			loader.setVisibility(View.GONE);
-			refreshButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
-			seasonButton.setVisibility(View.GONE);
 			picturesButton.setVisibility(View.GONE);
 			searchButton.setVisibility(View.GONE);
 			break;
 		case CONTACT:
 			loader.setVisibility(View.GONE);
-			refreshButton.setVisibility(View.GONE);
 			shareButton.setVisibility(View.GONE);
-			seasonButton.setVisibility(View.GONE);
 			picturesButton.setVisibility(View.GONE);
 			searchButton.setVisibility(View.GONE);
 			break;
@@ -633,19 +555,17 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		if (isNieuwsDetailShown()) {
-			commentsButton.setVisibility(currentNewsItemHasComments() ? View.VISIBLE : View.GONE);
+		if (isNieuwsDetailShown())
 			hideSearchBar();
-		} else
-			commentsButton.setVisibility(View.GONE);
 
 		if (isTeamDetailShown() || isNieuwsDetailShown() || searching)
 			menuButton.setImageResource(R.drawable.menu_borderless);
 		else
-			if (menuDrawer.isMenuVisible())
-				menuButton.setImageResource(R.drawable.menu_slid_borderless);
+			if (getResources().getBoolean(R.bool.isTablet))
+				menuButton.setImageResource(R.drawable.ic_juliana);
 			else
-				menuButton.setImageResource(R.drawable.menu_slide_borderless);
+				menuButton.setImageResource(menuDrawer.isMenuVisible() ? R.drawable.menu_slid_borderless
+						: R.drawable.menu_slide_borderless);
 
 		if (page == Page.NIEUWS && searching)
 			if (!isNieuwsDetailShown()) {
@@ -713,12 +633,6 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public boolean onMenuOpened(int featureId, Menu menu) {
-		menuDrawer.toggleMenu();
-		return true;
-	}
-
-	@Override
 	public void onBackPressed() {
 		if (isPhotoDialogShown()) {
 			hidePhotoDialog();
@@ -726,10 +640,6 @@ public class MainActivity extends Activity {
 		}
 		if (menuDrawer.isMenuVisible()) {
 			menuDrawer.toggleMenu();
-			return;
-		}
-		if (isNieuwsDetailShown() && nieuwsDetail.isCommentsPanelOpened()) {
-			nieuwsDetail.hideComments();
 			return;
 		}
 		if (isSearchBarShown()) {
@@ -795,13 +705,6 @@ public class MainActivity extends Activity {
 
 	public boolean isNieuwsDetailShown() {
 		return nieuwsDetailView.getVisibility() == View.VISIBLE;
-	}
-
-	public void showAndClickCommentsButton() {
-		if (!isNieuwsDetailShown())
-			return;
-		commentsButton.setVisibility(View.VISIBLE);
-		commentsButton.performClick();
 	}
 
 	@Override
@@ -897,37 +800,14 @@ public class MainActivity extends Activity {
 	}
 
 	private Team findTeamById(int teamId) {
-		for (Season season : DataManager.getInstance().getTeams())
-			for (Team t : season.getTeams())
-				if (t.getId() == teamId)
-					return t;
+		for (Team t : DataManager.getInstance().getTeams())
+			if (t.getId() == teamId)
+				return t;
 		return null;
 	}
 
 	public Page getPage() {
 		return page;
-	}
-
-	private class MenuAdapter extends ArrayAdapter<String> {
-
-		public MenuAdapter(Context context) {
-			super(context, 0, context.getResources().getStringArray(R.array.menu_items));
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null)
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_menu, null);
-
-			TextView text = (TextView) convertView.findViewById(R.id.menuItemTitle);
-			View indicator = convertView.findViewById(R.id.menuItemIndicator);
-			text.setText(getItem(position));
-			indicator.setBackgroundResource(page == Page.values()[position] ? R.drawable.listitem_arrow
-					: R.drawable.listitem_background);
-
-			return convertView;
-		}
-
 	}
 
 	public void logHashKey() {
@@ -1045,9 +925,25 @@ public class MainActivity extends Activity {
 			hidePhotoDialog();
 
 		photoDialog = new PhotoPagerDialog(this, urls, callback);
-		photoDialog.show(position);
+		photoDialog.setPosition(position);
+		photoDialog.show();
 
 		hideTitle();
+	}
+
+	public void showPhotoDialog(final ImageView thumbView, String[] urls, int position,
+			OnPhotoPagerDialogPageChangedListener callback) {
+		if (urls == null || urls.length < 1)
+			return;
+		if (photoDialog != null)
+			hidePhotoDialog();
+
+		photoDialog = new PhotoPagerDialog(this, urls, callback);
+		photoDialog.setPosition(position);
+		photoDialog.show();
+
+		hideTitle();
+
 	}
 
 	public boolean isPhotoDialogShown() {
@@ -1066,8 +962,10 @@ public class MainActivity extends Activity {
 
 	public void setDrawersEnabled(boolean enabled) {
 		menuDrawer.setTouchMode(enabled ? MenuDrawer.TOUCH_MODE_BEZEL : MenuDrawer.TOUCH_MODE_NONE);
+		menuToggler.setEnabled(enabled);
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void hideTitle() {
 		try {
 			((View) findViewById(android.R.id.title).getParent()).setVisibility(View.GONE);
@@ -1075,9 +973,13 @@ public class MainActivity extends Activity {
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-
+		try {
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+		} catch (Exception e) {
+		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void showTitle() {
 		try {
 			((View) findViewById(android.R.id.title).getParent()).setVisibility(View.VISIBLE);
@@ -1085,6 +987,10 @@ public class MainActivity extends Activity {
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		try {
+			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+		} catch (Exception e) {
+		}
 
 	}
 
@@ -1104,5 +1010,62 @@ public class MainActivity extends Activity {
 
 	public void setRefreshingNieuws(boolean refreshing) {
 		refreshingNieuws = refreshing;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_item_website:
+			onWebsiteClick();
+			break;
+		case R.id.menu_item_facebook:
+			onFacebookClick();
+			break;
+		case R.id.menu_item_twitter:
+			onTwitterClick();
+			break;
+		case R.id.menu_item_settings:
+			onSettingsClick();
+			break;
+		}
+		return true;
+	}
+
+	private void onFacebookClick() {
+		try {
+			getPackageManager().getPackageInfo("com.facebook.katana", 0);
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/294105307313875")));
+		} catch (Exception e) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/svjuliana32")));
+		}
+	}
+
+	private void onTwitterClick() {
+		try {
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=svjuliana32"));
+			startActivity(intent);
+		} catch (Exception e) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/svjuliana32")));
+		}
+	}
+
+	private void onWebsiteClick() {
+		String url = "http://www.svjuliana32.nl";
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		startActivity(i);
+	}
+
+	private void onSettingsClick() {
+		Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+		i.putExtra("userName", userName);
+		i.putExtra("userPicUrl", userPicUrl);
+		startActivity(i);
 	}
 }

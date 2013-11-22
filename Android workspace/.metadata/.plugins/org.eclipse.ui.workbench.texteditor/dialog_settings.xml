@@ -13,18 +13,20 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getIntent" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
-			<item value="getintent"/>
-			<item value="Page."/>
-			<item value="Page"/>
-			<item value="ordinal"/>
-			<item value="date"/>
-			<item value="debug"/>
-			<item value="edbug"/>
-			<item value="nieuwsid"/>
+			<item value="addob"/>
+			<item value="new photoge"/>
+			<item value="refresh"/>
+			<item value="refres"/>
+			<item value="org.holoeverywhere.widget.ScrollView"/>
+			<item value="org.holoeverywhere.widget.ImageView"/>
+			<item value="onmenu"/>
+			<item value="defaults"/>
 		</list>
 		<list key="replacehistory">
+			<item value="ScrollView"/>
+			<item value="ImageView"/>
 			<item value=""/>
 			<item value="  "/>
 			<item value="private"/>

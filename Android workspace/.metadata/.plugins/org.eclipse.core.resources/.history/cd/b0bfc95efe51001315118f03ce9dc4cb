@@ -1,0 +1,80 @@
+package com.markbuikema.juliana32.model;
+
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+public class FacebookNieuwsItem extends NieuwsItem {
+
+	private String fbId;
+	private String link;
+	private int likeCount;// FIXME
+	private int commentCount;
+	private String imgUrl;
+	private String albumId;
+	private List<Like> likes;
+	private boolean liked;
+
+	public FacebookNieuwsItem(String fbId, String title, String content, GregorianCalendar createdAt, String link,
+			String imgUrl, List<Like> likes, int commentCount, String albumId, String defaultPictureId) {
+		super(title, null, content, createdAt);
+
+		this.albumId = albumId;
+		this.fbId = fbId;
+		this.likes = likes;
+		this.link = link;
+		this.imgUrl = imgUrl;
+		likeCount = likes.size();
+		this.commentCount = commentCount;
+	}
+
+	public String getFbId() {
+		return fbId;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public boolean isPhoto() {
+		return albumId != null;
+	}
+
+	public String getAlbumId() {
+		return albumId;
+	}
+
+	public List<Like> getLikes() {
+		return Collections.unmodifiableList(likes);
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void comment() {
+		commentCount++;
+	}
+
+	@Override
+	public String getId() {
+		return fbId;
+	}
+
+}

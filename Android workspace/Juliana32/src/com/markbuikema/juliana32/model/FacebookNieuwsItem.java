@@ -14,9 +14,10 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	private String albumId;
 	private List<Like> likes;
 	private boolean liked;
+	private String defaultPhotoId;
 
 	public FacebookNieuwsItem(String fbId, String title, String content, GregorianCalendar createdAt, String link,
-			String imgUrl, List<Like> likes, int commentCount, String albumId) {
+			String imgUrl, List<Like> likes, int commentCount, String albumId, String defaultPhotoId) {
 		super(title, null, content, createdAt);
 
 		this.albumId = albumId;
@@ -26,6 +27,7 @@ public class FacebookNieuwsItem extends NieuwsItem {
 		this.imgUrl = imgUrl;
 		likeCount = likes.size();
 		this.commentCount = commentCount;
+		this.defaultPhotoId = defaultPhotoId;
 	}
 
 	public String getFbId() {
@@ -48,6 +50,7 @@ public class FacebookNieuwsItem extends NieuwsItem {
 		return commentCount;
 	}
 
+	@Override
 	public boolean isPhoto() {
 		return albumId != null;
 	}
@@ -75,6 +78,17 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	@Override
 	public String getId() {
 		return fbId;
+	}
+
+	@Override
+	public void addPhoto(String url) {
+		if (url.equals(defaultPhotoId))
+			photos.add(0, url);
+		else
+			photos.add(url);
+
+		setChanged();
+		notifyObservers();
 	}
 
 }

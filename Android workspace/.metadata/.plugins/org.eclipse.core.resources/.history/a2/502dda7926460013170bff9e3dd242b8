@@ -1,7 +1,0 @@
-package com.markbuikema.juliana32.activity;
-
-import android.app.Activity;
-
-public class TeamDetailActivity extends Activity {
-
-}

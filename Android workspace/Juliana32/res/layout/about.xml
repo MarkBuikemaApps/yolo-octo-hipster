@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:background="@android:color/white" >
 
-    <LinearLayout
+    <org.holoeverywhere.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/aboutText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:text="@string/about_email" />
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/aboutText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +37,6 @@
             android:layout_margin="@dimen/default_margin"
             android:text="@string/about2"
             android:textColor="@android:color/black" />
-    </LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
 
 </ScrollView>

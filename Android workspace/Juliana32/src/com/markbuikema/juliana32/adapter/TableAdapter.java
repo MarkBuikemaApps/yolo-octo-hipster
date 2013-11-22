@@ -27,15 +27,16 @@ import static com.markbuikema.juliana32.R.string.won;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.ArrayAdapter;
+import org.holoeverywhere.widget.TextView;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.R.color;

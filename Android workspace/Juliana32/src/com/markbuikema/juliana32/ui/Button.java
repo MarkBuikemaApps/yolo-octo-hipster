@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import com.markbuikema.juliana32.R;
 
-public class Button extends android.widget.Button{
+public class Button extends org.holoeverywhere.widget.Button {
 
 	public Button(Context context, AttributeSet attrs) {
 		super(context, attrs);

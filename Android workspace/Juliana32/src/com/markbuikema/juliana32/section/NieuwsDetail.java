@@ -3,10 +3,22 @@ package com.markbuikema.juliana32.section;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.EditText;
+import org.holoeverywhere.widget.FrameLayout;
+import org.holoeverywhere.widget.ImageButton;
+import org.holoeverywhere.widget.LinearLayout;
+import org.holoeverywhere.widget.ProgressBar;
+import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -21,18 +33,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -46,7 +48,6 @@ import com.facebook.model.GraphObject;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
-import com.markbuikema.juliana32.adapter.CommentAdapter;
 import com.markbuikema.juliana32.model.Comment;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.Like;
@@ -68,11 +69,9 @@ public class NieuwsDetail {
 	private TextView subTitle;
 	private TextView date;
 	private ImageView logo;
-	private ImageButton showCommentsButton;
 	private ProgressBar loader;
-	private ListView comments;
+	private TextView commentsText;
 	private LinearLayout commentContainer;
-	private CommentAdapter commentAdapter;
 	private TextView content;
 	private TextView likeText;
 	private ImageView commentProfilePic;
@@ -80,7 +79,6 @@ public class NieuwsDetail {
 	private ImageButton likeButton;
 	private EditText commentInput;
 	private Button facebookLoginButton;
-	private View bottomMargin;
 	private ProgressBar likeLoader;
 	private FrameLayout likeButtonContainer;
 
@@ -95,20 +93,51 @@ public class NieuwsDetail {
 
 		View mainView = act.findViewById(R.id.nieuwsDetailView);
 
-		title = (TextView) mainView.findViewById(R.id.nieuwsDetailTitle);
+		Toast.makeText(act, "photo: " + item.isPhoto(), Toast.LENGTH_LONG).show();
+
+		if (item.isPhoto()) {
+			title = (TextView) mainView.findViewById(R.id.nieuwsDetailTitle);
+			date = (TextView) mainView.findViewById(R.id.nieuwsDetailDate);
+			logo = (ImageView) mainView.findViewById(R.id.nieuwsDetailIcon);
+			mainView.findViewById(R.id.nieuwsDetailPhotoFrame).setVisibility(View.VISIBLE);
+
+			mainView.findViewById(R.id.nieuwsDetailAlternativeTitle).setVisibility(View.GONE);
+			mainView.findViewById(R.id.nieuwsDetailAlternativeDate).setVisibility(View.GONE);
+			mainView.findViewById(R.id.nieuwsDetailAlternativeIcon).setVisibility(View.GONE);
+
+			int[] colors = new int[] {
+					act.getResources().getColor(R.color.transparentblack), Color.TRANSPARENT
+			};
+			Drawable titleProtection = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
+			Drawable dateProtection = new GradientDrawable(Orientation.TOP_BOTTOM, colors);
+			mainView.findViewById(R.id.nieuwsDetailTitleBackgroundProtection).setBackgroundDrawable(titleProtection);
+			mainView.findViewById(R.id.nieuwsDetailDateBackgroundProtection).setBackgroundDrawable(dateProtection);
+			ImageView picture = (ImageView) mainView.findViewById(R.id.nieuwsDetailPhoto);
+			UrlImageViewHelper.setUrlDrawable(picture, item.isFromFacebook() ? Util.PHOTO_URL_PREFIX + item.getPhoto(0)
+					+ Util.PHOTO_URL_SUFFIX : item.getPhoto(0));
+		} else {
+			title = (TextView) mainView.findViewById(R.id.nieuwsDetailAlternativeTitle);
+			date = (TextView) mainView.findViewById(R.id.nieuwsDetailAlternativeDate);
+			logo = (ImageView) mainView.findViewById(R.id.nieuwsDetailAlternativeIcon);
+
+			title.setVisibility(View.VISIBLE);
+			date.setVisibility(View.VISIBLE);
+			logo.setVisibility(View.VISIBLE);
+
+			mainView.findViewById(R.id.nieuwsDetailPhotoFrame).setVisibility(View.GONE);
+		}
+		title.setTextColor(item.isPhoto() ? Color.WHITE : Color.BLACK);
+		date.setTextColor(item.isPhoto() ? Color.WHITE : Color.BLACK);
+
+		commentsText = (TextView) mainView.findViewById(R.id.nieuwsDetailCommentsText);
 		subTitle = (TextView) mainView.findViewById(R.id.nieuwsDetailSubtitle);
-		content = (TextView) mainView.findViewById(R.id.nieuwsContent);
-		date = (TextView) mainView.findViewById(R.id.nieuwsDetailDate);
-		logo = (ImageView) mainView.findViewById(R.id.nieuwsDetailIcon);
+		content = (TextView) mainView.findViewById(R.id.nieuwsDetailContent);
 		commentContainer = (LinearLayout) mainView.findViewById(R.id.commentContainer);
-		comments = (ListView) mainView.findViewById(R.id.commentList);
 		commentInput = (EditText) mainView.findViewById(R.id.commentInput);
 		commentProfilePic = (ImageView) mainView.findViewById(R.id.commentProfilePic);
 		commentProfilePicOverlay = (ImageView) mainView.findViewById(R.id.commentProfilePicOverlay);
-		showCommentsButton = (ImageButton) act.findViewById(R.id.menuComments);
 		facebookLoginButton = (Button) act.findViewById(R.id.commentLoginButton);
 		loader = (ProgressBar) act.findViewById(R.id.loading);
-		bottomMargin = mainView.findViewById(R.id.view_bottommargin);
 		likeButton = (ImageButton) mainView.findViewById(R.id.likeButton);
 		likeText = (TextView) mainView.findViewById(R.id.likeText);
 		likeLoader = (ProgressBar) mainView.findViewById(R.id.likeLoading);
@@ -127,6 +156,13 @@ public class NieuwsDetail {
 			}
 			likeButton.setImageResource(fbni.isLiked() ? R.drawable.fb_liked : R.drawable.fb_like);
 			likeText.setText(Util.getLikeString(fbni, act.getUserName()));
+			if (fbni.getCommentCount() > 0)
+				populateComments();
+			else {
+				commentsText.setVisibility(View.GONE);
+				commentContainer.removeAllViews();
+			}
+
 		}
 
 		title.setText(item.getTitle());
@@ -143,7 +179,6 @@ public class NieuwsDetail {
 		likeText.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
 		facebookLoginButton.setVisibility(!item.isFromFacebook() || Session.getActiveSession().isOpened() ? View.GONE
 				: View.VISIBLE);
-		bottomMargin.setVisibility(item.isFromFacebook() ? View.VISIBLE : View.GONE);
 
 		likeButton.setOnClickListener(new OnClickListener() {
 
@@ -179,7 +214,7 @@ public class NieuwsDetail {
 		commentInput.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			public boolean onEditorAction(android.widget.TextView arg0, int arg1, KeyEvent arg2) {
 				int charCount = commentInput.getText().length();
 				if (charCount < 2 || charCount > 4000) {
 					Toast.makeText(act, "Deze reactie is te kort.", Toast.LENGTH_LONG).show();
@@ -193,57 +228,10 @@ public class NieuwsDetail {
 			}
 		});
 
-		commentAdapter = new CommentAdapter(act);
-		comments.setAdapter(commentAdapter);
-		comments.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				act.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/"
-						+ commentAdapter.getItem(position).getUserId())));
-			}
-		});
-
 		if (item.getSubTitle() == null)
 			subTitle.setVisibility(View.GONE);
 		else
 			subTitle.setText(Html.fromHtml("<i>" + item.getSubTitle() + "</i>"));
-
-		showCommentsButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (commentContainer.getVisibility() == View.VISIBLE) {
-					commentContainer.setVisibility(View.GONE);
-					return;
-				}
-
-				String id = ((FacebookNieuwsItem) item).getFbId();
-				commentLoader = new CommentLoader() {
-
-					@Override
-					protected void onPreExecute() {
-						showCommentsButton.setVisibility(View.GONE);
-						loader.setVisibility(View.VISIBLE);
-						commentAdapter.clear();
-					}
-
-					@Override
-					protected void onProgressUpdate(Comment... values) {
-						for (Comment comment : values)
-							commentAdapter.add(comment);
-					}
-
-					@Override
-					protected void onPostExecute(Void result) {
-						commentContainer.setVisibility(View.VISIBLE);
-						loader.setVisibility(View.GONE);
-						act.fixActionBar();
-					}
-				};
-				commentLoader.execute(id);
-			}
-		});
 
 		String contentString = item.getContent();
 		if (contentString == null)
@@ -261,10 +249,68 @@ public class NieuwsDetail {
 		else
 			logo.setImageResource(R.drawable.ic_juliana);
 
+		Toast
+				.makeText(act, "Alternative views used: " + (title.getId() == R.id.nieuwsDetailAlternativeTitle), Toast.LENGTH_LONG)
+				.show();
+	}
+
+	public void populateComments() {
+		String id = ((FacebookNieuwsItem) item).getFbId();
+		commentLoader = new CommentLoader() {
+
+			@Override
+			protected void onPreExecute() {
+				commentContainer.removeAllViews();
+				commentsText.setVisibility(View.GONE);
+				loader.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			protected void onProgressUpdate(Comment... values) {
+				for (Comment comment : values)
+					commentContainer.addView(getCommentView(comment));
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				loader.setVisibility(View.GONE);
+				act.fixActionBar();
+				if (commentContainer.getChildCount() > 0)
+					commentsText.setVisibility(View.VISIBLE);
+
+			}
+		};
+		commentLoader.execute(id);
+	}
+
+	private View getCommentView(final Comment comment) {
+		View view = LayoutInflater.from(act).inflate(R.layout.listitem_comment, null);
+
+		TextView name = (TextView) view.findViewById(R.id.commentName);
+		TextView date = (TextView) view.findViewById(R.id.commentDate);
+		TextView text = (TextView) view.findViewById(R.id.commentMessage);
+		final ImageView pic = (ImageView) view.findViewById(R.id.commentPicture);
+
+		name.setText(comment.getName());
+
+		String dateString = Util.getDateString(act, comment.getCreatedAt());
+		// Log.d("comment_date_adapter", dateString);
+		date.setText(dateString);
+		text.setText(comment.getText());
+		UrlImageViewHelper.setUrlDrawable(pic, comment.getImgUrl());
+
+		pic.setContentDescription(comment.getName());
+		view.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				act.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + comment.getUserId())));
+			}
+		});
+		return view;
 	}
 
 	public void setProfilePic(String url) {
-		// Log.d("USER_INFO", url + ".");
 		UrlImageViewHelper.setUrlDrawable(commentProfilePic, url, R.drawable.silhouette);
 	}
 
@@ -310,13 +356,9 @@ public class NieuwsDetail {
 					commentInput.setText("");
 					((FacebookNieuwsItem) item).comment();
 					act.fixActionBar();
-					if (!isCommentsPanelOpened())
-						showCommentsButton.performClick();
-				}
-				// else
-				// Toast.makeText(act,
-				// "Er is iets misgegaan. Probeer opnieuw in te loggen.",
-				// Toast.LENGTH_LONG).show();
+					populateComments();
+				} else
+					Toast.makeText(act, "Er is iets misgegaan. Probeer opnieuw in te loggen.", Toast.LENGTH_LONG).show();
 			}
 		});
 
@@ -360,16 +402,7 @@ public class NieuwsDetail {
 		}
 	}
 
-	public boolean isCommentsPanelOpened() {
-		return commentContainer.getVisibility() == View.VISIBLE;
-	}
-
-	public void hideComments() {
-		commentContainer.setVisibility(View.GONE);
-	}
-
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean("commentsOpened", isCommentsPanelOpened());
 		outState.putString("nieuwsId", item.getId());
 	}
 

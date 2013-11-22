@@ -3,15 +3,16 @@ package com.markbuikema.juliana32.adapter;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.ViewPager;
+
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
@@ -75,7 +76,7 @@ public class PhotoPagerAdapter extends PagerAdapter implements Observer {
 				@Override
 				public void onClick(View v) {
 					MainActivity act = (MainActivity) container.getContext();
-					act.showPhotoDialog(item.getPhotos(), position - 1, pagerCallback);
+					act.showPhotoDialog(image, item.getPhotos(), position - 1, pagerCallback);
 				}
 			});
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/listselector"
     android:padding="@dimen/small_margin" >
 
-    <FrameLayout
+    <org.holoeverywhere.widget.FrameLayout
         android:layout_width="42dp"
         android:layout_height="42dp" >
 
@@ -18,21 +19,22 @@
         <ImageView
             android:layout_width="42dp"
             android:layout_height="42dp"
+            android:contentDescription="@string/none"
             android:scaleType="fitXY"
             android:src="@drawable/roundedcorner_grey" />
-    </FrameLayout>
+    </org.holoeverywhere.widget.FrameLayout>
 
-    <LinearLayout
+    <org.holoeverywhere.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <org.holoeverywhere.widget.LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/commentName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,18 +43,18 @@
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/commentDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </org.holoeverywhere.widget.LinearLayout>
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/commentMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/small_margin"
             android:textColor="@android:color/black" />
-    </LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
 
-</LinearLayout>
+</org.holoeverywhere.widget.LinearLayout>

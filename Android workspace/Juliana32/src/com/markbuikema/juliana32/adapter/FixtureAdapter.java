@@ -2,12 +2,13 @@ package com.markbuikema.juliana32.adapter;
 
 import java.util.List;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.ArrayAdapter;
+import org.holoeverywhere.widget.TextView;
+
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.Game;
@@ -20,9 +21,8 @@ public class FixtureAdapter extends ArrayAdapter<Game> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
+		if (convertView == null)
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_game, null);
-		}
 		TextView date = (TextView) convertView.findViewById(R.id.game_date);
 		TextView homeTeam = (TextView) convertView.findViewById(R.id.game_home_team_name);
 		TextView awayTeam = (TextView) convertView.findViewById(R.id.game_away_team_name);

@@ -1,0 +1,27 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+
+ext.groupId = 'net.simonvt.messagebar'
+ext.compileSdkVersion = 18
+ext.buildToolsVersion = "18.1.0"
+ext.minSdkVersion = 7;
+ext.targetSdkVersion = 18;
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.withType(Compile) {
+        options.encoding = "UTF-8"
+    }
+
+    version = '3.0.4-SNAPSHOT'
+}

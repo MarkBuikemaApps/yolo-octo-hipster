@@ -72,5 +72,9 @@
     <string name="no_item">Er zijn geen nieuwsberichten gevonden. Selecteer in de instellingen ten minste één nieuwsbron of controleer je internetverbinding.</string>
     <string name="call">Bellen</string>
     <string name="email">Stuur een email</string>
+    <string name="settings">Instellingen</string>
+    <string name="menu_facebook">Facebook</string>
+    <string name="menu_twitter">Twitter</string>
+    <string name="menu_website">Website</string>
 
 </resources>

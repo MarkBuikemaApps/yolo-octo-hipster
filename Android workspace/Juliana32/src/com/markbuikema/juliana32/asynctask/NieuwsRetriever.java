@@ -20,18 +20,20 @@ import org.jsoup.select.Elements;
 
 import android.os.AsyncTask;
 
+import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
 
-public class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem>> {
+public abstract class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem>> {
 
 	private static final String TAG = "NieuwsRetriever";
 	private static final String GET_URL = "http://www.svjuliana32.nl/nieuws/";
 	private String statusCode;
 	private boolean retrieveFromFacebook;
 	private boolean retrieveFromWebsite;
+	private CountCallback photoCallback;
 
 	public NieuwsRetriever(boolean facebook, boolean website) {
 		retrieveFromFacebook = facebook;
@@ -99,6 +101,37 @@ public class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<NieuwsItem
 
 		Collections.sort(items);
 
+		int count = 0;
+		for (NieuwsItem item : items)
+			if (item.isFromFacebook() && ((FacebookNieuwsItem) item).isPhoto())
+				count++;
+		photoCallback = new CountCallback(count);
+
 		return items;
+	}
+
+	public void onPhotoLoaded() {
+		photoCallback.onCallback();
+	}
+
+	public abstract void onPhotosLoaded();
+
+	public class CountCallback {
+		private int countLeft;
+		private static final String TAG = "CountCallback";
+
+		public CountCallback(int count) {
+			// Log.d(TAG, "CountCallback created with count " + count);
+			countLeft = count;
+		}
+
+		public final void onCallback() {
+			if (countLeft > 1)
+				countLeft--;
+			else
+				onPhotosLoaded();
+
+			// Log.d(TAG, "onCallback() called, new count = " + countLeft);
+		}
 	}
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <org.holoeverywhere.widget.FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin" >
+
+            <org.holoeverywhere.widget.ViewPager
+                android:id="@+id/nieuwsDetailPhotoPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/nieuwsDetailPhotoPagerBackgroundProtection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <org.holoeverywhere.widget.LinearLayout>
+
+                <ImageView
+                    android:id="@+id/nieuwsDetailIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/none"
+                    android:scaleType="fitXY" />
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/nieuwsDetailTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white" >
+                </org.holoeverywhere.widget.TextView>
+            </org.holoeverywhere.widget.LinearLayout>
+        </org.holoeverywhere.widget.FrameLayout>
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/nieuwsDetailSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/nieuwsDetailContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+</com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView>

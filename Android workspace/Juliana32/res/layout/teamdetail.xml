@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.markbuikema.juliana32"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <org.holoeverywhere.widget.FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <LinearLayout
+        <org.holoeverywhere.widget.LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
@@ -26,14 +26,14 @@
                 app:selectedBold="true"
                 app:selectedColor="@color/blue" />
 
-            <android.support.v4.view.ViewPager
+            <ViewPager
                 android:id="@+id/tablePager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
-            </android.support.v4.view.ViewPager>
-        </LinearLayout>
+            </ViewPager>
+        </org.holoeverywhere.widget.LinearLayout>
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/noTablesFound"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,7 +42,7 @@
             android:textColor="@android:color/black"
             android:visibility="gone" />
 
-        <FrameLayout
+        <org.holoeverywhere.widget.FrameLayout
             android:id="@+id/uitslagenContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:background="@drawable/uitslagen"
             android:gravity="bottom" >
 
-            <ListView
+            <org.holoeverywhere.widget.ListView
                 android:id="@+id/uitslagenList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,20 +61,20 @@
                 android:scrollbarThumbVertical="@drawable/listitem_background"
                 android:stackFromBottom="true"
                 android:transcriptMode="alwaysScroll" >
-            </ListView>
-        </FrameLayout>
-    </FrameLayout>
+            </org.holoeverywhere.widget.ListView>
+        </org.holoeverywhere.widget.FrameLayout>
+    </org.holoeverywhere.widget.FrameLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey" />
 
-    <LinearLayout
+    <org.holoeverywhere.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp" >
 
-        <Button
+        <org.holoeverywhere.widget.Button
             android:id="@+id/uitslagenButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -88,36 +88,36 @@
             android:background="@color/grey" >
         </View>
 
-        <Button
+        <org.holoeverywhere.widget.Button
             android:id="@+id/programmaButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@drawable/listselector"
             android:text="@string/programma" />
-    </LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey" />
 
-    <FrameLayout
+    <org.holoeverywhere.widget.FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <LinearLayout
+        <org.holoeverywhere.widget.LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <android.support.v4.view.ViewPager
+            <ViewPager
                 android:id="@+id/photoPager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" >
-            </android.support.v4.view.ViewPager>
+            </ViewPager>
 
             <com.viewpagerindicator.UnderlinePageIndicator
                 android:id="@+id/photoIndicator"
@@ -126,9 +126,9 @@
                 android:background="@color/grey"
                 app:fades="false"
                 app:selectedColor="@color/blue" />
-        </LinearLayout>
+        </org.holoeverywhere.widget.LinearLayout>
 
-        <TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/noPhotosFound"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -137,13 +137,13 @@
             android:textColor="@android:color/black"
             android:visibility="gone" />
 
-        <FrameLayout
+        <org.holoeverywhere.widget.FrameLayout
             android:id="@+id/programmaContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/programma" >
 
-            <ListView
+            <org.holoeverywhere.widget.ListView
                 android:id="@+id/programmaList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,8 +153,7 @@
                 android:listSelector="@android:color/transparent"
                 android:scrollbarThumbVertical="@drawable/listitem_background"
                 android:transcriptMode="alwaysScroll" >
-            </ListView>
-        </FrameLayout>
-    </FrameLayout>
-
-</LinearLayout>
+            </org.holoeverywhere.widget.ListView>
+        </org.holoeverywhere.widget.FrameLayout>
+    </org.holoeverywhere.widget.FrameLayout>
+</org.holoeverywhere.widget.LinearLayout>

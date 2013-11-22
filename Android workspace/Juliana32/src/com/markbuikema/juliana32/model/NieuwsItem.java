@@ -26,7 +26,9 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 	}
 
 	public void addPhoto(String url) {
+
 		photos.add(url);
+
 		setChanged();
 		notifyObservers();
 	}
@@ -45,6 +47,10 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 
 	public String getContent() {
 		return content;
+	}
+
+	public boolean isPhoto() {
+		return photos.size() > 0;
 	}
 
 	public boolean isFromFacebook() {

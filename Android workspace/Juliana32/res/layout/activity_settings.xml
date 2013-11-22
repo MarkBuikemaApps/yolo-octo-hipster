@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <org.holoeverywhere.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/actionbar2"
         android:orientation="horizontal" >
 
-        <LinearLayout
+        <org.holoeverywhere.widget.LinearLayout
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
@@ -28,7 +28,7 @@
                 android:scaleType="fitStart"
                 android:src="@drawable/menu_borderless" />
 
-            <TextView
+            <org.holoeverywhere.widget.TextView
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -37,12 +37,11 @@
                 android:paddingRight="10dp"
                 android:text="@string/menu_settings"
                 android:textColor="@android:color/black"
-                android:textIsSelectable="false"
                 android:textSize="20sp" />
-        </LinearLayout>
-    </LinearLayout>
+        </org.holoeverywhere.widget.LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
 
-    <ListView
+    <org.holoeverywhere.widget.ListView
         android:id="@+id/settingsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,6 +50,6 @@
         android:divider="#d2d2d2"
         android:dividerHeight="1dp"
         android:listSelector="@android:color/transparent" >
-    </ListView>
+    </org.holoeverywhere.widget.ListView>
 
-</LinearLayout>
+</org.holoeverywhere.widget.LinearLayout>

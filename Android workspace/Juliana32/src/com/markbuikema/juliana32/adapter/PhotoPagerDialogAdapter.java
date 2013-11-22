@@ -1,16 +1,22 @@
 package com.markbuikema.juliana32.adapter;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.ViewPager;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.util.Util;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.Animator.AnimatorListener;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class PhotoPagerDialogAdapter extends PagerAdapter {
 
@@ -34,7 +40,32 @@ public class PhotoPagerDialogAdapter extends PagerAdapter {
 		else
 			url = urls[position];
 
-		UrlImageViewHelper.setUrlDrawable(image, url);
+		UrlImageViewHelper.setUrlDrawable(image, url, new UrlImageViewCallback() {
+
+			@Override
+			public void onLoaded(final ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+				ViewPropertyAnimator.animate(imageView).alpha(0f).setDuration(1).setListener(new AnimatorListener() {
+
+					@Override
+					public void onAnimationStart(Animator animation) {
+					}
+
+					@Override
+					public void onAnimationRepeat(Animator animation) {
+					}
+
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						ViewPropertyAnimator.animate(imageView).alpha(1f).setDuration(1000);
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation) {
+					}
+				});
+
+			}
+		});
 
 		((ViewPager) container).addView(view);
 

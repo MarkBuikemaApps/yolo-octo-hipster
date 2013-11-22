@@ -1,10 +1,12 @@
 package com.markbuikema.juliana32.ui;
 
+import org.holoeverywhere.widget.ViewPager;
+
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
@@ -44,9 +46,16 @@ public class PhotoPagerDialog {
 
 	}
 
-	public void show(int position) {
-		((MainActivity) context).setDrawersEnabled(false);
+	public ImageView getImageView() {
+		return (ImageView) photoPager.getChildAt(photoPager.getCurrentItem()).findViewById(R.id.facebookPhoto);
+	}
+
+	public void setPosition(int position) {
 		photoPager.setCurrentItem(position, true);
+	}
+
+	public void show() {
+		((MainActivity) context).setDrawersEnabled(false);
 		photoPager.setVisibility(View.VISIBLE);
 	}
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <org.holoeverywhere.widget.FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/huge_margin"
         android:paddingRight="@dimen/huge_margin" >
 
-        <ProgressBar
+        <org.holoeverywhere.widget.ProgressBar
             android:id="@+id/progressBar1"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="202dp"
             android:contentDescription="@string/none"
-            android:scaleType="fitCenter" />
-    </FrameLayout>
+            android:scaleType="centerCrop" />
+    </org.holoeverywhere.widget.FrameLayout>
 
-</LinearLayout>
+</org.holoeverywhere.widget.LinearLayout>

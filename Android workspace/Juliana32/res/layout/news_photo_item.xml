@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.holoeverywhere.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:padding="@dimen/default_margin"
     android:layout_height="wrap_content" >
 
-    <ProgressBar
+    <org.holoeverywhere.widget.ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
@@ -17,7 +17,7 @@
         android:contentDescription="@string/none" >
     </ImageView>
 
-    <ImageButton
+    <org.holoeverywhere.widget.ImageButton
         android:id="@+id/photoShareButton"
         android:layout_width="wrap_content"
         android:background="@drawable/listselector"
@@ -28,4 +28,4 @@
         android:src="@drawable/ic_menu_share"
         android:visibility="gone" />
 
-</FrameLayout>
+</org.holoeverywhere.widget.FrameLayout>

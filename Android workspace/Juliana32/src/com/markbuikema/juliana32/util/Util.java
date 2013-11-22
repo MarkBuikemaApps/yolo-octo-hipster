@@ -30,7 +30,6 @@ import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Like;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
-import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
 
@@ -175,15 +174,14 @@ public class Util {
 				for (String team : teams)
 					if (checkString.contains(team)) {
 						// Log.d("photoadder", checkString + " contains " + team);
-						for (Season s : DataManager.getInstance().getTeams())
-							for (Team t : s.getTeams())
-								if (isTeam(team, t)) {
-									// Log.d("photoadder", "FBNI " + fbni.getTitle() +
-									// " first has " + fbni.getPhotoCount() + " photos");
-									for (String photo : fbni.getPhotos())
-										t.addPhoto(photo);
-									break;
-								}
+						for (Team t : DataManager.getInstance().getTeams())
+							if (isTeam(team, t)) {
+								// Log.d("photoadder", "FBNI " + fbni.getTitle() +
+								// " first has " + fbni.getPhotoCount() + " photos");
+								for (String photo : fbni.getPhotos())
+									t.addPhoto(photo);
+								break;
+							}
 						break;
 					}
 

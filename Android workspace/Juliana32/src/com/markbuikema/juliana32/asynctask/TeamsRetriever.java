@@ -11,7 +11,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.markbuikema.juliana32.model.Game;
-import com.markbuikema.juliana32.model.Season;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.TableRow;
 import com.markbuikema.juliana32.model.Team;
@@ -19,7 +18,7 @@ import com.markbuikema.juliana32.model.Team.Category;
 import com.markbuikema.juliana32.util.Util;
 
 //FIXME
-public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
+public class TeamsRetriever extends AsyncTask<Void, Team, List<Team>> {
 
 	private static final String TAG = "SplashActivity";
 	private Context context;
@@ -29,9 +28,9 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 	}
 
 	@Override
-	protected List<Season> doInBackground(Void... params) {
+	protected List<Team> doInBackground(Void... params) {
 
-		List<Season> list = new ArrayList<Season>();
+		List<Team> list = new ArrayList<Team>();
 
 		// Log.d(TAG, "Started retrieving teams");
 
@@ -47,49 +46,19 @@ public class TeamsRetriever extends AsyncTask<Void, Season, List<Season>> {
 			// Log.d(TAG, "1");
 			try {
 				JSONArray seasons = base.getJSONArray("seasons");
-				for (int i = 0; i < seasons.length(); i++) {
-					Season season = processSeasonJSON(seasons.getJSONObject(i));
-					if (season != null)
-						list.add(season);
+				JSONObject o = seasons.getJSONObject(0);
+				JSONArray teams = o.getJSONArray("teams");
+				for (int i = 0; i < teams.length(); i++) {
+					Team team = processTeamJSON(teams.getJSONObject(i));
+					if (team != null)
+						list.add(team);
 				}
 			} catch (JSONException e) {
-				JSONObject season = base.getJSONObject("seasons");
-				Season seasonObject = processSeasonJSON(season);
-				if (seasonObject != null)
-					list.add(seasonObject);
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
-			return list;
 		}
-
 		// Log.d("TAG", "Done loading teams");
 		return list;
-	}
-
-	private Season processSeasonJSON(JSONObject seasonJSON) {
-		Season season = null;
-		try {
-			int year = seasonJSON.getInt("year");
-			season = new Season(year);
-
-			try {
-				JSONArray seasonTeams = seasonJSON.getJSONArray("teams");
-				for (int i = 0; i < seasonTeams.length(); i++) {
-					Team team = processTeamJSON(seasonTeams.getJSONObject(i));
-					if (team != null)
-						season.addTeam(team);
-				}
-			} catch (JSONException e) {
-				JSONObject seasonTeam = seasonJSON.getJSONObject("teams");
-				Team team = processTeamJSON(seasonTeam);
-				if (team != null)
-					season.addTeam(team);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return season;
 	}
 
 	private Team processTeamJSON(JSONObject teamJSON) {

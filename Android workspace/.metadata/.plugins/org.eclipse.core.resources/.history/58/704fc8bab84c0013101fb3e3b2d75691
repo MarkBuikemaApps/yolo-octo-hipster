@@ -1,0 +1,5 @@
+package com.markbuikema.juliana32.ui;
+
+public class ViewPagerCompatiblePullToRefreshLayout {
+
+}
