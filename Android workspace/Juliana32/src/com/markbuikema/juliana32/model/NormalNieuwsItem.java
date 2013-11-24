@@ -28,6 +28,10 @@ public class NormalNieuwsItem extends NieuwsItem {
 		this.id = id;
 	}
 
+	public NormalNieuwsItem() {
+		super(null, null, null, null);
+	}
+
 	public String getDetailUrl() {
 		return detailUrl;
 	}
@@ -37,10 +41,12 @@ public class NormalNieuwsItem extends NieuwsItem {
 		return id;
 	}
 
+	@Override
 	public boolean isContentLoaded() {
 		return content != null;
 	}
 
+	@Override
 	public void startLoading(OnContentLoadedListener callback) {
 		if (!isContentLoaded())
 			new ContentLoader(callback).execute();

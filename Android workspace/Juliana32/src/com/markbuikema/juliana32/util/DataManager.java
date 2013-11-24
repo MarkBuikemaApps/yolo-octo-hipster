@@ -57,4 +57,12 @@ public class DataManager {
 		// Log.d("DataManager", "Nieuws loaded: " + (nieuwsItems != null));
 	}
 
+	public NieuwsItem getNieuwsItemById(String itemRequestId) {
+		NieuwsItem item = null;
+		for (NieuwsItem i : DataManager.getInstance().getNieuwsItems())
+			if (i.getId().equals(itemRequestId))
+				return i;
+		return null;
+	}
+
 }

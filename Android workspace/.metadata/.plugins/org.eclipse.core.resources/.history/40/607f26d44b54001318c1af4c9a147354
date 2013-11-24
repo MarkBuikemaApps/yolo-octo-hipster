@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <org.holoeverywhere.widget.LinearLayout
+        android:id="@+id/rowBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingBottom="1dp"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin"
+        android:paddingTop="1dp" >
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowPosition"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowTeam"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowPlayed"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowWon"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowDrawn"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowLost"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowPoints"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowScored"
+            android:layout_width="@dimen/table_column_width"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowConceded"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/rowMinusPoints"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black" />
+    </org.holoeverywhere.widget.LinearLayout>
+
+    <View
+        android:id="@+id/rowDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue" />
+
+</org.holoeverywhere.widget.LinearLayout>

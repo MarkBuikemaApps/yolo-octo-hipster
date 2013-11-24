@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="JulianaTheme" parent="android:Theme.Holo.Light">
+
+    <item name="android:editTextBackground">@drawable/edit_text_holo_light</item>
+
+    <item name="android:listChoiceIndicatorMultiple">@drawable/btn_check_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonJulianaTheme</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonJulianaTheme</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerJulianaTheme</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarJulianaTheme</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/list_selector_holo_light</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/activated_background_holo_light</item>
+
+  </style>
+
+</resources>

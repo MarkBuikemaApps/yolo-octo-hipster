@@ -30,7 +30,7 @@ public class ScrollYDelegate extends PullToRefreshAttacher.ViewDelegate {
 	public boolean isReadyForPull(View view, float x, float y) {
 		if (view instanceof ViewPagerCompatibleStaggeredGridView) {
 			ViewPagerCompatibleStaggeredGridView sgv = ((ViewPagerCompatibleStaggeredGridView) view);
-			boolean atTop = sgv.isAtTop() && sgv.getChildAt(0).getTop() >= 0;
+			boolean atTop = sgv.getChildCount() == 0 || (sgv.isAtTop() && sgv.getChildAt(0).getTop() >= 0);
 			Log.d("isReadyForPull", "at top: " + atTop);
 			return atTop;
 		} else

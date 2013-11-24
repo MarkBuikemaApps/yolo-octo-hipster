@@ -97,7 +97,6 @@ public class Util {
 
 	public static float pxToDp(float px) {
 		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, Resources.getSystem().getDisplayMetrics());
-
 	}
 
 	public static GregorianCalendar parseDate(String websiteDate) {

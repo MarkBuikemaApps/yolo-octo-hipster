@@ -391,7 +391,7 @@ public class NieuwsDetail {
 	}
 
 	public boolean hasPhotos() {
-		return item.getPhotoCount() > 0;
+		return item.isPhoto();
 	}
 
 	public boolean hasComments() {

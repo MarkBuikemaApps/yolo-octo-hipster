@@ -18,17 +18,17 @@ public final class R {
 		public static final int ptrReleaseText = 0x7f0100ee;
 	}
 	public static final class drawable {
-		public static final int ptr_progress_horizontal_holo_center = 0x7f02017b;
-		public static final int ptr_progress_indeterminate_horizontal_holo = 0x7f02017c;
-		public static final int ptr_progress_primary_holo = 0x7f02017d;
-		public static final int ptr_progressbar_indeterminate_holo1 = 0x7f02017e;
-		public static final int ptr_progressbar_indeterminate_holo2 = 0x7f02017f;
-		public static final int ptr_progressbar_indeterminate_holo3 = 0x7f020180;
-		public static final int ptr_progressbar_indeterminate_holo4 = 0x7f020181;
-		public static final int ptr_progressbar_indeterminate_holo5 = 0x7f020182;
-		public static final int ptr_progressbar_indeterminate_holo6 = 0x7f020183;
-		public static final int ptr_progressbar_indeterminate_holo7 = 0x7f020184;
-		public static final int ptr_progressbar_indeterminate_holo8 = 0x7f020185;
+		public static final int ptr_progress_horizontal_holo_center = 0x7f020182;
+		public static final int ptr_progress_indeterminate_horizontal_holo = 0x7f020183;
+		public static final int ptr_progress_primary_holo = 0x7f020184;
+		public static final int ptr_progressbar_indeterminate_holo1 = 0x7f020185;
+		public static final int ptr_progressbar_indeterminate_holo2 = 0x7f020186;
+		public static final int ptr_progressbar_indeterminate_holo3 = 0x7f020187;
+		public static final int ptr_progressbar_indeterminate_holo4 = 0x7f020188;
+		public static final int ptr_progressbar_indeterminate_holo5 = 0x7f020189;
+		public static final int ptr_progressbar_indeterminate_holo6 = 0x7f02018a;
+		public static final int ptr_progressbar_indeterminate_holo7 = 0x7f02018b;
+		public static final int ptr_progressbar_indeterminate_holo8 = 0x7f02018c;
 	}
 	public static final class id {
 		public static final int ptr_content = 0x7f07003a;
@@ -44,7 +44,7 @@ public final class R {
 		public static final int pull_to_refresh_release_label = 0x7f0c0038;
 	}
 	public static final class style {
-		public static final int Widget_PullToRefresh_ProgressBar_Horizontal_Center = 0x7f0d0133;
+		public static final int Widget_PullToRefresh_ProgressBar_Horizontal_Center = 0x7f0d013e;
 	}
 	public static final class styleable {
 		public static final int[] PullToRefreshHeader = { 0x7f0100e8, 0x7f0100e9, 0x7f0100ea, 0x7f0100eb, 0x7f0100ec, 0x7f0100ed, 0x7f0100ee };

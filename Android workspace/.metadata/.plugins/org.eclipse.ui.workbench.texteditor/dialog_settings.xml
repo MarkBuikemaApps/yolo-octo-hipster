@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="Typefa" key="selection"/>
 		<list key="findhistory">
-			<item value="addob"/>
-			<item value="new photoge"/>
-			<item value="refresh"/>
-			<item value="refres"/>
-			<item value="org.holoeverywhere.widget.ScrollView"/>
-			<item value="org.holoeverywhere.widget.ImageView"/>
-			<item value="onmenu"/>
-			<item value="defaults"/>
+			<item value="typefa"/>
+			<item value="rounded"/>
+			<item value="reques"/>
+			<item value="photogetter"/>
+			<item value="64"/>
+			<item value="getadapterc"/>
+			<item value="getCount()"/>
+			<item value="getCount() "/>
 		</list>
 		<list key="replacehistory">
 			<item value="ScrollView"/>

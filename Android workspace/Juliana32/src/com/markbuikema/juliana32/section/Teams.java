@@ -70,4 +70,8 @@ public class Teams {
 		return teamAdapter.getCount();
 	}
 
+	public boolean isAdapterEmpty() {
+		return teamAdapter.getCount() <= 0;
+	}
+
 }

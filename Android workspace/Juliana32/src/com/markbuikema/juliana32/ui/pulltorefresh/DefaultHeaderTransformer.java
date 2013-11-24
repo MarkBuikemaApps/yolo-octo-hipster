@@ -84,11 +84,10 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 		setProgressBarColor(mHeaderView.getContext().getResources().getColor(com.markbuikema.juliana32.R.color.blue));
 		applyProgressBarColor();
 
-		mHeaderTextView.setBackgroundResource(com.markbuikema.juliana32.R.color.grey);
+		mHeaderTextView.setBackgroundResource(com.markbuikema.juliana32.R.color.red);
 		mHeaderTextView.setTypeface(Typeface.createFromAsset(mHeaderTextView.getContext().getAssets(), "Roboto-Light.ttf"));
-		mHeaderTextView.setTextColor(Color.BLACK);
+		mHeaderTextView.setTextColor(Color.WHITE);
 
-		// FIXME: I do not like this call here
 		onReset();
 	}
 

@@ -2,15 +2,15 @@
 <org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
     <org.holoeverywhere.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:background="@drawable/button_unpressed"
-        android:orientation="horizontal" >
+        android:background="@drawable/card_frame"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_margin" >
 
         <ImageView
             android:layout_width="20dp"
@@ -49,41 +49,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@android:color/darker_gray" />
-                <!--
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/none"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/fb_like" />
-
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/facebook_likecount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="8dp"
-                    android:gravity="right"
-                    android:textColor="@android:color/darker_gray" />
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/none"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/fb_comment" />
-
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/facebook_commentcount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:textColor="@android:color/darker_gray" />
-                -->
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp" />
             </org.holoeverywhere.widget.LinearLayout>
         </org.holoeverywhere.widget.LinearLayout>
     </org.holoeverywhere.widget.LinearLayout>

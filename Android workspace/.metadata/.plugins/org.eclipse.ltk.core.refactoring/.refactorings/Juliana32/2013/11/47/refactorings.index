@@ -1,2 +1,20 @@
 1384877017953	Delete element
 1385130039754	Rename local variable 'convertView'
+1385172864689	Rename local variable 'arg1'
+1385207666866	Delete element
+1385207760472	Delete elements
+1385207791307	Delete element
+1385207899941	Copy file
+1385207915056	Copy file
+1385208037595	Copy file
+1385208073069	Move file
+1385208107248	Delete element
+1385212900505	Delete element
+1385229330216	Delete element
+1385230478369	Rename local variable 'content'
+1385230489516	Rename local variable 'likeCount'
+1385230495161	Rename local variable 'commentCount'
+1385230499371	Rename local variable 'createdAt'
+1385234838832	Delete element
+1385237512978	Copy file
+1385320257832	Rename field 'roboto'

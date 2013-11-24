@@ -8,11 +8,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nieuws_header_margin" />
+
         <org.holoeverywhere.widget.FrameLayout
             android:id="@+id/nieuwsDetailPhotoFrame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin" >
+            android:layout_height="wrap_content" >
 
             <ImageView
                 android:id="@+id/nieuwsDetailPhoto"
@@ -34,15 +37,36 @@
                 android:id="@+id/nieuwsDetailDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textColor="@android:color/white" />
+
+            <org.holoeverywhere.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom" >
+
+                <ImageView
+                    android:id="@+id/nieuwsDetailIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/none"
+                    android:scaleType="fitXY" />
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/nieuwsDetailTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white" />
+            </org.holoeverywhere.widget.LinearLayout>
         </org.holoeverywhere.widget.FrameLayout>
 
         <org.holoeverywhere.widget.LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom" >
+            android:layout_height="wrap_content" >
 
             <ImageView
                 android:id="@+id/nieuwsDetailAlternativeIcon"
@@ -66,26 +90,6 @@
             android:gravity="right"
             android:textColor="@android:color/black" />
 
-        <org.holoeverywhere.widget.LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom" >
-
-            <ImageView
-                android:id="@+id/nieuwsDetailIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:contentDescription="@string/none"
-                android:scaleType="fitXY" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/nieuwsDetailTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@android:color/white" />
-        </org.holoeverywhere.widget.LinearLayout>
-
         <org.holoeverywhere.widget.TextView
             android:id="@+id/nieuwsDetailSubtitle"
             android:layout_width="match_parent"
@@ -98,7 +102,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textColorLink="@color/red" />
 
         <TextView
             android:id="@+id/nieuwsDetailCommentsText"

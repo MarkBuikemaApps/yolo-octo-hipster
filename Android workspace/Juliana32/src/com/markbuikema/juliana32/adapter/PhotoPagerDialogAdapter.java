@@ -56,7 +56,7 @@ public class PhotoPagerDialogAdapter extends PagerAdapter {
 
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						ViewPropertyAnimator.animate(imageView).alpha(1f).setDuration(1000);
+						ViewPropertyAnimator.animate(imageView).alpha(1f).setDuration(700);
 					}
 
 					@Override

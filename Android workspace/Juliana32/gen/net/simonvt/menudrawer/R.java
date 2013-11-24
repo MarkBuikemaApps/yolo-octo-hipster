@@ -48,8 +48,8 @@ public final class R {
 		public static final int md__drawerOpenIndicatorDesc = 0x7f0c0035;
 	}
 	public static final class style {
-		public static final int Widget = 0x7f0d0131;
-		public static final int Widget_MenuDrawer = 0x7f0d0132;
+		public static final int Widget = 0x7f0d013c;
+		public static final int Widget_MenuDrawer = 0x7f0d013d;
 	}
 	public static final class styleable {
 		public static final int[] MenuDrawer = { 0x7f0100d7, 0x7f0100d8, 0x7f0100d9, 0x7f0100da, 0x7f0100db, 0x7f0100dc, 0x7f0100dd, 0x7f0100de, 0x7f0100df, 0x7f0100e0, 0x7f0100e1, 0x7f0100e2, 0x7f0100e3, 0x7f0100e4, 0x7f0100e5, 0x7f0100e6 };

@@ -53,11 +53,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 
@@ -70,7 +73,6 @@ import com.markbuikema.juliana32.adapter.MenuAdapter;
 import com.markbuikema.juliana32.asynctask.EventRetriever;
 import com.markbuikema.juliana32.asynctask.TeamsRetriever;
 import com.markbuikema.juliana32.model.NieuwsItem;
-import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.section.Agenda;
@@ -86,7 +88,7 @@ import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChang
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
-import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class MainActivity extends Activity {
 
@@ -99,6 +101,7 @@ public class MainActivity extends Activity {
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
 
 	private ImageView menuButton;
+	private ImageView menuDrawerIcon;
 	private LinearLayout menuToggler;
 	private ImageButton shareButton;
 	private ImageButton picturesButton;
@@ -140,8 +143,6 @@ public class MainActivity extends Activity {
 
 	private boolean searching;
 
-	private Animator mCurrentAnimator;
-
 	public enum Page {
 		NIEUWS, AGENDA, TEAMS, TELETEKST, @Deprecated
 		CONTACT
@@ -180,31 +181,41 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onDrawerSlide(float openRatio, int offsetPixels) {
+				float newValue = -11.0f * openRatio;
+				ViewPropertyAnimator.animate(menuDrawerIcon).translationX(newValue).setDuration(0).start();
 			}
 		});
 
 		menu = (ListView) findViewById(R.id.menuDrawer);
 		menuAdapter = new MenuAdapter(this);
 
-		menu.setDivider(null);
 		menu.setDividerHeight(0);
 		menu.setAdapter(menuAdapter);
-		OnItemClickListener l = new OnItemClickListener() {
+		menu.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(android.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				onPageChanged(Page.values()[arg2]);
 				menuDrawer.toggleMenu();
 
 				if (arg2 == 2)
 					showBetaDialogIfNecessary();
 			}
-		};
-		menu.setOnItemClickListener(l);
+		});
+
+		// make the menuToggler work when menu is opened
+		findViewById(R.id.menuCorner).setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				return menuToggler.onTouchEvent(arg1);
+			}
+		});
 
 		teamDetailView = findViewById(R.id.teamDetailView);
 		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
 		menuButton = (ImageView) findViewById(R.id.menuButton);
+		menuDrawerIcon = (ImageView) findViewById(R.id.menuDrawerIcon);
 		menuToggler = (LinearLayout) findViewById(R.id.menuToggler);
 		shareButton = (ImageButton) findViewById(R.id.menuShare);
 		picturesButton = (ImageButton) findViewById(R.id.menuPictures);
@@ -222,12 +233,10 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-
 				if (isTeamDetailShown() || isNieuwsDetailShown() || isSearchBarShown())
 					onBackPressed();
 				else
 					menuDrawer.toggleMenu();
-
 			}
 		});
 
@@ -420,7 +429,7 @@ public class MainActivity extends Activity {
 				nieuws = new Nieuws(this);
 			nieuws.clearSearch();
 
-			if (nieuws.getAdapterCount() < 1)
+			if (nieuws.isAdapterEmpty())
 				reloadNieuws = true;
 			break;
 		case TEAMS:
@@ -431,7 +440,7 @@ public class MainActivity extends Activity {
 			if (!teams.isLoaded())
 				loader.setVisibility(View.VISIBLE);
 
-			if (teams.getAdapterCount() < 1)
+			if (teams.isAdapterEmpty())
 				reloadTeams = true;
 
 			break;
@@ -486,7 +495,8 @@ public class MainActivity extends Activity {
 		if (reloadNieuws) {
 			if (nieuws == null)
 				nieuws = new Nieuws(this);
-			nieuws.refresh();
+			if (!nieuws.isRefreshing())
+				nieuws.refresh();
 		}
 
 	}
@@ -558,27 +568,23 @@ public class MainActivity extends Activity {
 		if (isNieuwsDetailShown())
 			hideSearchBar();
 
-		if (isTeamDetailShown() || isNieuwsDetailShown() || searching)
+		if (isTeamDetailShown() || isNieuwsDetailShown() || searching) {
 			menuButton.setImageResource(R.drawable.menu_borderless);
-		else
-			if (getResources().getBoolean(R.bool.isTablet))
-				menuButton.setImageResource(R.drawable.ic_juliana);
-			else
-				menuButton.setImageResource(menuDrawer.isMenuVisible() ? R.drawable.menu_slid_borderless
-						: R.drawable.menu_slide_borderless);
+			menuDrawerIcon.setVisibility(View.GONE);
+		} else {
+			menuButton.setImageResource(R.drawable.menu_icon);
+			menuDrawerIcon.setVisibility(View.VISIBLE);
+		}
 
 		if (page == Page.NIEUWS && searching)
 			if (!isNieuwsDetailShown()) {
 				requestSearchBar();
 				menuButton.setImageResource(R.drawable.menu_borderless);
+				menuDrawerIcon.setVisibility(View.GONE);
 			}
 
-	}
+		actionBarContent.setVisibility(menuDrawer.isMenuVisible() ? View.INVISIBLE : View.VISIBLE);
 
-	private boolean currentNewsItemHasComments() {
-		if (nieuwsDetail == null)
-			return false;
-		return nieuwsDetail.hasComments();
 	}
 
 	private boolean currentNewsItemHasPhotos() {
@@ -605,18 +611,15 @@ public class MainActivity extends Activity {
 		if ((page != Page.NIEUWS && page != Page.TEAMS) || isNieuwsDetailShown())
 			return;
 
-		if (item instanceof NormalNieuwsItem) {
-			NormalNieuwsItem nni = (NormalNieuwsItem) item;
-			if (!nni.isContentLoaded()) {
-				nni.startLoading(new OnContentLoadedListener() {
+		if (!item.isContentLoaded()) {
+			item.startLoading(new OnContentLoadedListener() {
 
-					@Override
-					public void onContentLoaded(String content, List<String> photos) {
-						requestNieuwsDetailPage(item);
-					}
-				});
-				return;
-			}
+				@Override
+				public void onContentLoaded(String content, List<String> photos) {
+					requestNieuwsDetailPage(item);
+				}
+			});
+			return;
 		}
 
 		nieuwsDetail = new NieuwsDetail(this, item);
@@ -726,7 +729,7 @@ public class MainActivity extends Activity {
 				urlNieuwsId = split[split.length - 1];
 			}
 			if (nieuws.getAdapterCount() > 0)
-				requestNieuwsDetailPage(nieuws.getNewsItem(urlNieuwsId));
+				requestNieuwsDetailPage(DataManager.getInstance().getNieuwsItemById(urlNieuwsId));
 			else
 				nieuws.setItemRequest(urlNieuwsId);
 		}
@@ -756,6 +759,7 @@ public class MainActivity extends Activity {
 
 		title.setVisibility(View.GONE);
 		menuButton.setImageResource(R.drawable.menu_borderless);
+		menuDrawerIcon.setVisibility(View.GONE);
 
 	}
 

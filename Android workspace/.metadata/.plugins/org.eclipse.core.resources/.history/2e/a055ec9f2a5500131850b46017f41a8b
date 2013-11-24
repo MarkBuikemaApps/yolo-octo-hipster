@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <org.holoeverywhere.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundedcorner_grey"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_margin" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:contentDescription="@string/none"
+            android:src="@drawable/ic_juliana" />
+
+        <org.holoeverywhere.widget.LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/nieuwsitem_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/nieuwsitem_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <org.holoeverywhere.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/nieuwsitem_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black" />
+            </org.holoeverywhere.widget.LinearLayout>
+        </org.holoeverywhere.widget.LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
+</org.holoeverywhere.widget.LinearLayout>
