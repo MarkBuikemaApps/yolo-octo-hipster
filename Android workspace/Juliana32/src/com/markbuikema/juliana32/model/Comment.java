@@ -7,15 +7,13 @@ import com.markbuikema.juliana32.util.FacebookHelper;
 public class Comment extends Like {
 
 	private String text;
-	private String imgUrl;
 	private GregorianCalendar createdAt;
 	private String userId;
 
-	public Comment(String id, String name, String imgUrl, String userId, String text, String dateString) {
+	public Comment(String id, String name, String userId, String text, String dateString) {
 		super(id, name);
 
 		this.text = text;
-		this.imgUrl = imgUrl;
 		this.userId = userId;
 
 		createdAt = FacebookHelper.toDate(dateString);
@@ -26,15 +24,15 @@ public class Comment extends Like {
 		return text;
 	}
 
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
 	public GregorianCalendar getCreatedAt() {
 		return createdAt;
 	}
 
 	public String getUserId() {
 		return userId;
+	}
+
+	public String getImgUrl() {
+		return "http://graph.facebook.com/" + userId + "/picture?type=square";
 	}
 }

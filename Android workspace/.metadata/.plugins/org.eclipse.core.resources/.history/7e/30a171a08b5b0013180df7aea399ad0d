@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_item_website"
+        android:icon="@drawable/ic_action_web_site"
+        android:title="@string/menu_website"/>
+    <item
+        android:id="@+id/menu_item_facebook"
+        android:icon="@drawable/ic_action_facebook"
+        android:title="@string/menu_facebook"/>
+    <item
+        android:id="@+id/menu_item_twitter"
+        android:icon="@drawable/ic_action_twitter"
+        android:title="@string/menu_twitter"/>
+    <item
+        android:id="@+id/menu_item_settings"
+        android:icon="@drawable/ic_menu_settings_holo_light"
+        android:title="@string/settings"/>
+
+</menu>

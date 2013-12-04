@@ -1,0 +1,29 @@
+package com.markbuikema.juliana32.ui;
+
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+
+import com.markbuikema.juliana32.model.NieuwsItem;
+
+public class NieuwsDetailAnimation extends Animation {
+
+	private View view;
+	private NieuwsItem item;
+
+	public NieuwsDetailAnimation(View view, NieuwsItem item) {
+		this.view = view;
+		this.item = item;
+	}
+
+	@Override
+	protected void applyTransformation(float interpolatedTime, Transformation t) {
+		// TODO Auto-generated method stub
+		super.applyTransformation(interpolatedTime, t);
+	}
+
+	@Override
+	public boolean willChangeBounds() {
+		return true;
+	}
+}

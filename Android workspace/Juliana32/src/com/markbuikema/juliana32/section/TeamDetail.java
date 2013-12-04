@@ -127,7 +127,7 @@ public class TeamDetail {
 					if (item == null)
 						Toast.makeText(act, "Er is voor deze wedstrijd geen wedstrijdverslag gevonden", Toast.LENGTH_SHORT).show();
 					else
-						TeamDetail.this.act.requestNieuwsDetailPage(item);
+						TeamDetail.this.act.requestNieuwsDetailPage(item, null);
 
 				} catch (ClassCastException e) {
 

@@ -7,17 +7,17 @@ import java.util.Locale;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.widget.ArrayAdapter;
 import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
 import org.holoeverywhere.widget.ViewPager;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
@@ -25,8 +25,7 @@ import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.Util;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.Animator.AnimatorListener;
+import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
@@ -34,7 +33,6 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	private List<NieuwsItem> items;
 	private int columnCount;
 	private boolean scrollingDown = true;
-	private Typeface robotoLight;
 
 	private static final int VIEW_TYPE_HEADER = 0;
 	private static final int VIEW_TYPE_NORMAL = 1;
@@ -44,9 +42,7 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	public NieuwsAdapter(Context context) {
 		super(context, 0);
 		columnCount = context.getResources().getInteger(R.integer.columnCount);
-		Toast.makeText(getContext(), "Columns:" + columnCount, Toast.LENGTH_LONG).show();
 		items = new ArrayList<NieuwsItem>(DataManager.getInstance().getNieuwsItems());
-		robotoLight = Typeface.createFromAsset(getContext().getAssets(), "Roboto-Light.ttf");
 	}
 
 	public void setScrollDirection(boolean down) {
@@ -120,16 +116,8 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 
 		switch (getItemViewType(position)) {
 		case VIEW_TYPE_NORMAL:
-			if (convertView == null)
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_nieuwsitem, null);
+			convertView = constructNormalView(getContext(), item, convertView);
 
-			TextView titleView = (TextView) convertView.findViewById(R.id.nieuwsitem_content);
-			TextView subTitleView = (TextView) convertView.findViewById(R.id.nieuwsitem_subtitle);
-			titleView.setText(item.getTitle());
-			subTitleView.setText(item.getSubTitle());
-			TextView createdAtView = (TextView) convertView.findViewById(R.id.nieuwsitem_date);
-			createdAtView.setText(Util.getDateString(getContext(), ((NormalNieuwsItem) item).getCreatedAt()));
-			createdAtView.setTypeface(robotoLight);
 			item.startLoading(new OnContentLoadedListener() {
 
 				@Override
@@ -141,86 +129,32 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 		case VIEW_TYPE_FACEBOOK_PHOTO:
 			FacebookNieuwsItem fbPhotoItem = (FacebookNieuwsItem) item;
 
-			if (convertView == null)
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_facebookitem_photo, null);
-			final ViewPager pager = (ViewPager) convertView.findViewById(R.id.facebookPhotoPager);
-			final PhotoPagerAdapter adapter = new PhotoPagerAdapter(getContext(), fbPhotoItem,
-					new OnPhotoPagerDialogPageChangedListener() {
-
-						@Override
-						public void onPhotoPagerDialogPageChanged(int pageIndex) {
-							pager.setCurrentItem(pageIndex);
-						}
-
-					});
-			pager.setCurrentItem(0, true);
-
-			pager.setOffscreenPageLimit(1);
-			pager.setAdapter(adapter);
-
-			if (fbPhotoItem.getPhotoCount() == 0)
-				fbPhotoItem.startLoading(new OnContentLoadedListener() {
-
-					@Override
-					public void onContentLoaded(String content, List<String> photos) {
-						adapter.notifyDataSetChanged();
-					}
-				});
-
-			TextView fbContent = (TextView) convertView.findViewById(R.id.facebook_content);
-			TextView fbLikeCount = (TextView) convertView.findViewById(R.id.facebook_likecount);
-			TextView fbCommentCount = (TextView) convertView.findViewById(R.id.facebook_commentcount);
-			TextView fbCreatedAt = (TextView) convertView.findViewById(R.id.facebook_date);
-			TextView fbSubTitle = (TextView) convertView.findViewById(R.id.facebook_subtitle);
-
-			fbContent.setText(fbPhotoItem.getTitle());
-			fbSubTitle.setText(fbPhotoItem.getContent());
-			fbLikeCount.setText(Integer.toString(fbPhotoItem.getLikeCount()));
-			fbCommentCount.setText(Integer.toString(fbPhotoItem.getCommentCount()));
-			fbCreatedAt.setText(Util.getDateString(getContext(), fbPhotoItem.getCreatedAt()));
-			fbCreatedAt.setTypeface(robotoLight);
+			convertView = constructFacebookPhotoView(getContext(), fbPhotoItem, convertView);
 
 			break;
 		case VIEW_TYPE_FACEBOOK:
 			FacebookNieuwsItem fbItem = (FacebookNieuwsItem) item;
 
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.listitem_facebookitem, null);
-			TextView content = (TextView) convertView.findViewById(R.id.facebook_content);
-			TextView likeCount = (TextView) convertView.findViewById(R.id.facebook_likecount);
-			TextView commentCount = (TextView) convertView.findViewById(R.id.facebook_commentcount);
-			TextView createdAt = (TextView) convertView.findViewById(R.id.facebook_date);
-
-			content.setText(fbItem.getContent());
-			likeCount.setText(Integer.toString(fbItem.getLikeCount()));
-			commentCount.setText(Integer.toString(fbItem.getCommentCount()));
-			createdAt.setText(Util.getDateString(getContext(), fbItem.getCreatedAt()));
-			createdAt.setTypeface(robotoLight);
+			convertView = constructFacebookView(getContext(), fbItem, convertView);
 
 			break;
 		default:
 			break;
 		}
 
-		final ViewPropertyAnimator animator = ViewPropertyAnimator.animate(convertView);
-		animator.setDuration(0).translationY(scrollingDown ? 48 : -48).setListener(new AnimatorListener() {
+		ViewHelper.setTranslationY(convertView, scrollingDown ? 48 : -48);
+		ViewPropertyAnimator.animate(convertView).setDuration(250).translationY(0).setListener(null);
+
+		final View animatedView = convertView;
+		animatedView.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onAnimationStart(Animator animation) {
+			public void onClick(View arg0) {
+				if (arg0 == animatedView)
+					((MainActivity) getContext()).requestNieuwsDetailPage(item, animatedView);
 			}
+		});
 
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				animator.setDuration(250).translationY(0).setListener(null).start();
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-			}
-		}).start();
 		return convertView;
 
 	}
@@ -251,6 +185,106 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 	public void notifyDataSetChanged() {
 		Log.d("nieuwsadapter", "notifyDataSetChanged() called");
 		super.notifyDataSetChanged();
+	}
+
+	public static View constructNormalView(Context context, NieuwsItem item, View convertView) {
+		if (convertView == null)
+			convertView = LayoutInflater.from(context).inflate(R.layout.listitem_normal_nieuws_item, null);
+
+		TextView titleView = (TextView) convertView.findViewById(R.id.nieuwsitem_title);
+		TextView subTitleView = (TextView) convertView.findViewById(R.id.nieuwsitem_subtitle);
+		TextView createdAtView = (TextView) convertView.findViewById(R.id.nieuwsitem_date);
+
+		titleView.setText(item.getTitle());
+		subTitleView.setText(item.getSubTitle());
+		createdAtView.setText(Util.getDateString(context, ((NormalNieuwsItem) item).getCreatedAt()));
+
+		titleView.setTypeface(Util.getRobotoCondensed(context));
+		subTitleView.setTypeface(Util.getRobotoLight(context));
+		createdAtView.setTypeface(Util.getRobotoCondensed(context));
+
+		TextView contentView = (TextView) convertView.findViewById(R.id.nieuwsitem_content);
+		ViewHelper.setAlpha(contentView, 0);
+		contentView.setTypeface(Util.getRobotoLight(context));
+
+		Log.d("constructview", "text:" + subTitleView.getText().toString());
+
+		return convertView;
+	}
+
+	public static View constructFacebookView(Context context, FacebookNieuwsItem fbItem, View convertView) {
+		if (convertView == null)
+			convertView = LayoutInflater.from(context).inflate(R.layout.listitem_facebook_nieuws_item, null);
+		TextView title = (TextView) convertView.findViewById(R.id.facebook_content);
+		TextView content = (TextView) convertView.findViewById(R.id.nieuwsitem_subtitle);
+		TextView likeCount = (TextView) convertView.findViewById(R.id.facebook_likecount);
+		TextView commentCount = (TextView) convertView.findViewById(R.id.facebook_commentcount);
+		TextView createdAt = (TextView) convertView.findViewById(R.id.facebook_date);
+
+		content.setText(fbItem.getContent());
+		likeCount.setText(Integer.toString(fbItem.getLikeCount()));
+		commentCount.setText(Integer.toString(fbItem.getComments().size()));
+		createdAt.setText(Util.getDateString(context, fbItem.getCreatedAt()));
+
+		title.setTypeface(Util.getRobotoCondensed(context));
+		createdAt.setTypeface(Util.getRobotoCondensed(context));
+		content.setTypeface(Util.getRobotoLight(context));
+		likeCount.setTypeface(Util.getRobotoLight(context));
+		commentCount.setTypeface(Util.getRobotoLight(context));
+
+		TextView contentView = (TextView) convertView.findViewById(R.id.nieuwsitem_content);
+		ViewHelper.setAlpha(contentView, 0);
+		contentView.setTypeface(Util.getRobotoLight(context));
+
+		return convertView;
+	}
+
+	public static View constructFacebookPhotoView(Context context, FacebookNieuwsItem fbPhotoItem, View convertView) {
+		if (convertView == null)
+			convertView = LayoutInflater.from(context).inflate(R.layout.listitem_facebook_nieuws_item_photo, null);
+		final ViewPager pager = (ViewPager) convertView.findViewById(R.id.facebookPhotoPager);
+		final PhotoPagerAdapter adapter = new PhotoPagerAdapter(context, fbPhotoItem,
+				new OnPhotoPagerDialogPageChangedListener() {
+
+					@Override
+					public void onPhotoPagerDialogPageChanged(int pageIndex) {
+						pager.setCurrentItem(pageIndex);
+					}
+
+				});
+		pager.setCurrentItem(0, true);
+
+		pager.setOffscreenPageLimit(0);
+		pager.setAdapter(adapter);
+
+		if (fbPhotoItem.getPhotoCount() == 0)
+			fbPhotoItem.startLoading(new OnContentLoadedListener() {
+
+				@Override
+				public void onContentLoaded(String content, List<String> photos) {
+					adapter.notifyDataSetChanged();
+				}
+			});
+
+		TextView fbContent = (TextView) convertView.findViewById(R.id.facebook_content);
+		TextView fbLikeCount = (TextView) convertView.findViewById(R.id.facebook_likecount);
+		TextView fbCommentCount = (TextView) convertView.findViewById(R.id.facebook_commentcount);
+		TextView fbCreatedAt = (TextView) convertView.findViewById(R.id.facebook_date);
+		TextView fbSubTitle = (TextView) convertView.findViewById(R.id.facebook_subTitle);
+
+		fbContent.setText(fbPhotoItem.getTitle());
+		fbSubTitle.setText(fbPhotoItem.getContent());
+		fbLikeCount.setText(Integer.toString(fbPhotoItem.getLikeCount()));
+		fbCommentCount.setText(Integer.toString(fbPhotoItem.getComments().size()));
+		fbCreatedAt.setText(Util.getDateString(context, fbPhotoItem.getCreatedAt()));
+
+		fbCreatedAt.setTypeface(Util.getRobotoCondensed(context));
+		fbContent.setTypeface(Util.getRobotoCondensed(context));
+		fbLikeCount.setTypeface(Util.getRobotoLight(context));
+		fbCommentCount.setTypeface(Util.getRobotoLight(context));
+		fbSubTitle.setTypeface(Util.getRobotoLight(context));
+
+		return convertView;
 	}
 
 }

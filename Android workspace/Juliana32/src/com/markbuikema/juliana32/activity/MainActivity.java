@@ -22,12 +22,12 @@ import org.holoeverywhere.preference.SharedPreferences;
 import org.holoeverywhere.preference.SharedPreferences.Editor;
 import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.EditText;
+import org.holoeverywhere.widget.FrameLayout;
 import org.holoeverywhere.widget.ImageButton;
 import org.holoeverywhere.widget.LinearLayout;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.ProgressBar;
 import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,10 +47,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -58,21 +62,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.Settings;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.adapter.MenuAdapter;
+import com.markbuikema.juliana32.adapter.NieuwsAdapter;
 import com.markbuikema.juliana32.asynctask.EventRetriever;
 import com.markbuikema.juliana32.asynctask.TeamsRetriever;
+import com.markbuikema.juliana32.model.Comment;
+import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NormalNieuwsItem;
 import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.section.Agenda;
@@ -85,9 +96,14 @@ import com.markbuikema.juliana32.section.Teletekst;
 import com.markbuikema.juliana32.ui.Button;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
+import com.markbuikema.juliana32.ui.Toaster;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
+import com.markbuikema.juliana32.util.Util.LinkifyExtra;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.Animator.AnimatorListener;
+import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class MainActivity extends Activity {
@@ -110,15 +126,20 @@ public class MainActivity extends Activity {
 	private ProgressBar loader;
 	private TextView title;
 
+	private PopupMenu popupMenu;
+
 	private LinearLayout actionBarContent;
 	private EditText searchInput;
 
 	private View activePageView;
 	private View teamDetailView;
-	private View nieuwsDetailView;
 
 	private TeamDetail teamDetail;
 	private NieuwsDetail nieuwsDetail;
+	private boolean nieuwsDetailShown;
+	private View clickedNieuwsView;
+
+	private ScrollView animatedViewContainer;
 
 	private Teletekst teletekst;
 	private Nieuws nieuws;
@@ -140,6 +161,9 @@ public class MainActivity extends Activity {
 	protected String userName;
 	protected String userPicUrl;
 	protected String userId;
+
+	private int actionBarHeight;
+	private int defaultNieuwsViewWidth;
 
 	private boolean searching;
 
@@ -163,6 +187,8 @@ public class MainActivity extends Activity {
 		logHashKey();
 
 		Util.onOrientationChanged(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+
+		actionBarHeight = getResources().getDimensionPixelSize(R.dimen.nieuws_header_margin);
 
 		Type type =
 		// getResources().getBoolean(R.bool.isTablet) ? Type.STATIC :
@@ -213,7 +239,6 @@ public class MainActivity extends Activity {
 		});
 
 		teamDetailView = findViewById(R.id.teamDetailView);
-		nieuwsDetailView = findViewById(R.id.nieuwsDetailView);
 		menuButton = (ImageView) findViewById(R.id.menuButton);
 		menuDrawerIcon = (ImageView) findViewById(R.id.menuDrawerIcon);
 		menuToggler = (LinearLayout) findViewById(R.id.menuToggler);
@@ -225,6 +250,7 @@ public class MainActivity extends Activity {
 		overflowButton = (ImageButton) findViewById(R.id.menuOverflow);
 		searchButton = (ImageButton) findViewById(R.id.menuSearch);
 		searchInput = (EditText) findViewById(R.id.searchInput);
+		animatedViewContainer = (ScrollView) findViewById(R.id.animatedViewContainer);
 
 		title.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf"));
 
@@ -291,6 +317,18 @@ public class MainActivity extends Activity {
 		// hide the overflow button if hardware menu button is detected
 		if (Build.VERSION.SDK_INT <= 10 || (Build.VERSION.SDK_INT >= 14 && ViewConfiguration.get(this).hasPermanentMenuKey()))
 			overflowButton.setVisibility(View.GONE);
+		else {
+			popupMenu = new PopupMenu(this, overflowButton);
+			popupMenu.getMenuInflater().inflate(R.menu.main, popupMenu.getMenu());
+			popupMenu.setOnMenuItemClickListener(menuListener);
+			overflowButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					popupMenu.show();
+				}
+			});
+		}
 
 		initializePages();
 
@@ -341,7 +379,7 @@ public class MainActivity extends Activity {
 			if (nieuwsId != null)
 				for (NieuwsItem item : DataManager.getInstance().getNieuwsItems())
 					if (item.getId() == nieuwsId) {
-						requestNieuwsDetailPage(item);
+						requestNieuwsDetailPage(item, null);
 						break;
 					}
 
@@ -607,7 +645,9 @@ public class MainActivity extends Activity {
 		fixActionBar();
 	}
 
-	public void requestNieuwsDetailPage(final NieuwsItem item) {
+	// FIXME request
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void requestNieuwsDetailPage(final NieuwsItem item, final View clickedView) {
 		if ((page != Page.NIEUWS && page != Page.TEAMS) || isNieuwsDetailShown())
 			return;
 
@@ -616,23 +656,150 @@ public class MainActivity extends Activity {
 
 				@Override
 				public void onContentLoaded(String content, List<String> photos) {
-					requestNieuwsDetailPage(item);
+					requestNieuwsDetailPage(item, clickedView);
 				}
 			});
+			loader.setVisibility(View.VISIBLE);
 			return;
 		}
+		loader.setVisibility(View.GONE);
 
 		nieuwsDetail = new NieuwsDetail(this, item);
+		nieuwsDetailShown = true;
 		saveGraphUser();
 
-		activePageView.setVisibility(View.GONE);
-		nieuwsDetailView.setVisibility(View.VISIBLE);
+		clickedNieuwsView = clickedView;
+		ViewHelper.setAlpha(clickedNieuwsView, 0);
+
+		animatedViewContainer.removeAllViews();
+		final View view = getAnimationView(item);
+		ViewHelper.setTranslationX(view, clickedView.getLeft() - view.getLeft());
+		ViewHelper.setTranslationY(view, clickedView.getTop() - view.getTop() - actionBarHeight);
+		view.setLayoutParams(new LayoutParams(clickedView.getWidth(), clickedView.getHeight()));
+
+		animatedViewContainer.addView(view);
+		nieuws.setScrollingEnabled(false);
+
+		ViewPropertyAnimator.animate(activePageView).alpha(.05f).setDuration(300);
+		ViewPropertyAnimator.animate(view).translationX(0).translationY(0).setDuration(300);
+		if (!item.isFromFacebook())
+			ViewPropertyAnimator.animate(view.findViewById(R.id.nieuwsitem_subtitle)).alpha(0).setListener(new AnimatorListener() {
+
+				@Override
+				public void onAnimationStart(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animator arg0) {
+					ViewPropertyAnimator.animate(view.findViewById(R.id.nieuwsitem_content)).alpha(1).setDuration(300);
+				}
+
+				@Override
+				public void onAnimationCancel(Animator arg0) {
+				}
+			}).setDuration(300);
+
+		String contentString = null;
+		contentString = item.getContent();
+		if (contentString == null)
+			contentString = getResources().getString(R.string.content_not_found);
+		contentString = contentString.replaceAll(Character.toString((char) 65532), "");
+
+		TextView subTitleView = (TextView) view.findViewById(R.id.nieuwsitem_content);
+		subTitleView.setText(Util.trimTrailingWhitespace(LinkifyExtra.addLinksHtmlAware(contentString)));
+		subTitleView.setMovementMethod(LinkMovementMethod.getInstance());
+		subTitleView.setLinksClickable(true);
+		if (Build.VERSION.SDK_INT >= 11)
+			subTitleView.setTextIsSelectable(true);
+		if (getResources().getInteger(R.integer.columnCount) > 1)
+			subTitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.readableTextSize));
+
+		if (item.isFromFacebook() && ((FacebookNieuwsItem) item).getComments().size() > 0) {
+			LinearLayout comments = (LinearLayout) view.findViewById(R.id.nieuwsitem_comments_container);
+
+			populateComments(comments, (FacebookNieuwsItem) item);
+			Util.expand(comments);
+			ViewPropertyAnimator.animate(comments).alpha(1).setDuration(300);
+		}
+
+		Util.expandX(view);
+		Util.expand(subTitleView);
 
 		hideSearchBar();
 		fixActionBar();
 
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
+	}
+
+	private View getAnimationView(NieuwsItem item) {
+		View view = null;
+		if (item instanceof NormalNieuwsItem)
+			view = NieuwsAdapter.constructNormalView(this, item, null);
+		else
+			if (item instanceof FacebookNieuwsItem)
+				if (item.isPhoto())
+					view = NieuwsAdapter.constructFacebookPhotoView(this, (FacebookNieuwsItem) item, null);
+				else
+					view = NieuwsAdapter.constructFacebookView(this, (FacebookNieuwsItem) item, null);
+		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		lp.topMargin = actionBarHeight;
+		view.setLayoutParams(lp);
+		return view;
+	}
+
+	public void populateComments(LinearLayout container, FacebookNieuwsItem item) {
+		if (item.getComments().size() == 0) {
+			container.setVisibility(View.GONE);
+			return;
+		} else
+			container.setVisibility(View.VISIBLE);
+
+		TextView caption = (TextView) container.findViewById(R.id.nieuwsitem_comments_caption);
+		caption.setTypeface(Util.getRobotoCondensed(this));
+
+		for (int i = 2; i < container.getChildCount(); i++)
+			container.removeViewAt(i);
+
+		for (Comment comment : item.getComments())
+			container.addView(getCommentView(comment));
+
+	}
+
+	private View getCommentView(final Comment comment) {
+		View view = LayoutInflater.from(this).inflate(R.layout.listitem_comment, null);
+
+		TextView name = (TextView) view.findViewById(R.id.commentName);
+		TextView date = (TextView) view.findViewById(R.id.commentDate);
+		TextView text = (TextView) view.findViewById(R.id.commentMessage);
+		final ImageView pic = (ImageView) view.findViewById(R.id.commentPicture);
+
+		name.setTypeface(Util.getRobotoCondensed(this));
+		date.setTypeface(Util.getRobotoCondensed(this));
+		text.setTypeface(Util.getRobotoLight(this));
+
+		name.setText(comment.getName());
+
+		String dateString = Util.getDateString(this, comment.getCreatedAt());
+		// Log.d("comment_date_adapter", dateString);
+		date.setText(dateString);
+		text.setText(comment.getText());
+		UrlImageViewHelper.setUrlDrawable(pic, comment.getImgUrl());
+
+		pic.setContentDescription(comment.getName());
+		view.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + comment.getUserId())));
+			}
+		});
+
+		return view;
 	}
 
 	@Override
@@ -673,7 +840,7 @@ public class MainActivity extends Activity {
 
 	private void startBackPressTimer() {
 		waitingForSecondBackPress = true;
-		Toast.makeText(this, getResources().getString(R.string.second_back_press), Toast.LENGTH_LONG).show();
+		Toaster.toast(this, getResources().getString(R.string.second_back_press));
 		new Timer().schedule(new TimerTask() {
 
 			@Override
@@ -684,12 +851,70 @@ public class MainActivity extends Activity {
 		}, SECOND_BACK_PRESS_TIMEOUT);
 	}
 
+	// FIXME hide
 	public void hideNieuwsDetail() {
 		if (nieuwsDetail != null)
 			nieuwsDetail.cancelTasks();
-		nieuwsDetailView.setVisibility(View.GONE);
-		activePageView.setVisibility(View.VISIBLE);
+		if (clickedNieuwsView != null) {
+			final View view = animatedViewContainer.getChildAt(0);
+			TextView tvContent = (TextView) view.findViewById(R.id.nieuwsitem_content);
+			Util.collapse(tvContent);
+			Util.collapseX(view);
+			LinearLayout comments = (LinearLayout) view.findViewById(R.id.nieuwsitem_comments_container);
+			final boolean fb = comments != null;
+			if (fb)
+				Util.collapse(comments);
+			ViewPropertyAnimator.animate(tvContent).alpha(fb ? 1 : 0).setListener(new AnimatorListener() {
+
+				@Override
+				public void onAnimationStart(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator arg0) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animator arg0) {
+					TextView tvSubTitle = (TextView) view.findViewById(R.id.nieuwsitem_subtitle);
+					ViewPropertyAnimator.animate(tvSubTitle).alpha(1).setListener(new AnimatorListener() {
+
+						@Override
+						public void onAnimationStart(Animator arg0) {
+						}
+
+						@Override
+						public void onAnimationRepeat(Animator arg0) {
+						}
+
+						@Override
+						public void onAnimationEnd(Animator arg0) {
+							animatedViewContainer.scrollTo(0, 0);
+							animatedViewContainer.removeAllViews();
+							nieuws.setScrollingEnabled(true);
+							if (clickedNieuwsView != null) {
+								ViewHelper.setAlpha(clickedNieuwsView, 1f);
+								clickedNieuwsView = null;
+							}
+						}
+
+						@Override
+						public void onAnimationCancel(Animator arg0) {
+
+						}
+					}).setDuration(300);
+				}
+
+				@Override
+				public void onAnimationCancel(Animator arg0) {
+				}
+			}).setDuration(300);
+			ViewPropertyAnimator.animate(view).translationX(clickedNieuwsView.getLeft() - view.getLeft())
+					.translationY(clickedNieuwsView.getTop() - view.getTop() - actionBarHeight).setDuration(300);
+		}
+		ViewPropertyAnimator.animate(activePageView).alpha(1f).setDuration(300);
 		nieuwsDetail = null;
+		nieuwsDetailShown = false;
 
 		fixActionBar();
 	}
@@ -707,7 +932,7 @@ public class MainActivity extends Activity {
 	}
 
 	public boolean isNieuwsDetailShown() {
-		return nieuwsDetailView.getVisibility() == View.VISIBLE;
+		return nieuwsDetailShown;
 	}
 
 	@Override
@@ -729,7 +954,7 @@ public class MainActivity extends Activity {
 				urlNieuwsId = split[split.length - 1];
 			}
 			if (nieuws.getAdapterCount() > 0)
-				requestNieuwsDetailPage(DataManager.getInstance().getNieuwsItemById(urlNieuwsId));
+				requestNieuwsDetailPage(DataManager.getInstance().getNieuwsItemById(urlNieuwsId), null);
 			else
 				nieuws.setItemRequest(urlNieuwsId);
 		}
@@ -1023,22 +1248,17 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	public boolean onMenuOpened(int featureId, Menu menu) {
+		if (popupMenu == null)
+			return super.onMenuOpened(featureId, menu);
+		else
+			popupMenu.show();
+		return false;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_item_website:
-			onWebsiteClick();
-			break;
-		case R.id.menu_item_facebook:
-			onFacebookClick();
-			break;
-		case R.id.menu_item_twitter:
-			onTwitterClick();
-			break;
-		case R.id.menu_item_settings:
-			onSettingsClick();
-			break;
-		}
-		return true;
+		return menuListener.onMenuItemClick(item);
 	}
 
 	private void onFacebookClick() {
@@ -1072,4 +1292,25 @@ public class MainActivity extends Activity {
 		i.putExtra("userPicUrl", userPicUrl);
 		startActivity(i);
 	}
+
+	private OnMenuItemClickListener menuListener = new OnMenuItemClickListener() {
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.menu_item_website:
+				onWebsiteClick();
+				break;
+			case R.id.menu_item_facebook:
+				onFacebookClick();
+				break;
+			case R.id.menu_item_twitter:
+				onTwitterClick();
+				break;
+			case R.id.menu_item_settings:
+				onSettingsClick();
+				break;
+			}
+			return true;
+		}
+	};
 }

@@ -8,6 +8,8 @@ import org.holoeverywhere.widget.TextView;
 
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
@@ -21,7 +23,6 @@ import com.markbuikema.juliana32.ui.pulltorefresh.PullToRefreshLayout;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.Util;
 import com.origamilabs.library.views.StaggeredGridView;
-import com.origamilabs.library.views.StaggeredGridView.OnItemClickListener;
 import com.origamilabs.library.views.StaggeredGridView.OnScrollDirectionChangeListener;
 
 public class Nieuws {
@@ -69,20 +70,6 @@ public class Nieuws {
 				refresh();
 			}
 		});
-
-		nieuwsList.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(StaggeredGridView parent, View view, int position, long id) {
-				Nieuws.this.onItemClick(position);
-			}
-		});
-	}
-
-	public void onItemClick(int position) {
-
-		NieuwsItem item = nieuwsAdapter.getItem(position);
-		activity.requestNieuwsDetailPage(item);
 	}
 
 	public void refresh() {
@@ -118,7 +105,7 @@ public class Nieuws {
 
 					NieuwsItem item = DataManager.getInstance().getNieuwsItemById(itemRequestId);
 					if (item != null)
-						activity.requestNieuwsDetailPage(item);
+						activity.requestNieuwsDetailPage(item, null);
 
 					itemRequestId = null;
 				}
@@ -183,7 +170,32 @@ public class Nieuws {
 		return refresherAttacher.isRefreshing();
 	}
 
+	public void setScrollingEnabled(boolean enabled) {
+		nieuwsList.setScrollingEnabled(enabled);
+		refresherAttacher.setEnabled(enabled);
+	}
+
 	public boolean isAdapterEmpty() {
 		return nieuwsAdapter.getCount() <= nieuwsAdapter.getColumnCount();
+	}
+
+	public void animateNormalNieuwsDetail(boolean in, final View animatedView) {
+		Animation a = new Animation() {
+
+			@Override
+			protected void applyTransformation(float interpolatedTime, Transformation t) {
+
+				animatedView.requestLayout();
+				animatedView.invalidate();
+				Log.d("applytransformation", "time: " + interpolatedTime);
+			}
+
+			@Override
+			public boolean willChangeBounds() {
+				return true;
+			}
+		};
+		a.setDuration(3000);
+		animatedView.setAnimation(a);
 	}
 }

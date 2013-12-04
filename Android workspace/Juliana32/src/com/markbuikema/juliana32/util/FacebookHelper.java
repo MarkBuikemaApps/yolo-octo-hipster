@@ -90,7 +90,7 @@ public class FacebookHelper {
 		String link;
 		String imgUrl;
 		List<Like> likes = new ArrayList<Like>();
-		int commentCount;
+		List<Comment> comments = new ArrayList<Comment>();
 		String albumId = null;
 		String defaultPhoto;
 		if (photo)
@@ -174,19 +174,19 @@ public class FacebookHelper {
 
 		try {
 			JSONObject commentJSON = o.getJSONObject("comments");
-			JSONArray comments = commentJSON.getJSONArray("data");
-			commentCount = comments.length();
+			JSONArray commentArray = commentJSON.getJSONArray("data");
+			for (int i = 0; i < commentArray.length(); i++) {
+				JSONObject c = commentArray.getJSONObject(i);
+				Comment comment = new Comment(c.getString("id"), c.getJSONObject("from").getString("name"), c.getJSONObject("from")
+						.getString("id"), c.getString("message"), c.getString("created_time"));
+				comments.add(comment);
+			}
 		} catch (JSONException e) {
-			commentCount = 0;
 		}
 
-		String yearString = dateString.substring(0, 4);
-		String monthString = dateString.substring(5, 7);
-		String dayString = dateString.substring(8, 10);
-		GregorianCalendar date = new GregorianCalendar(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1,
-				Integer.parseInt(dayString));
+		GregorianCalendar date = toDate(dateString);
 
-		FacebookNieuwsItem item = new FacebookNieuwsItem(id, title, content, date, link, imgUrl, likes, commentCount,
+		FacebookNieuwsItem item = new FacebookNieuwsItem(id, title, content, date, link, imgUrl, likes, comments,
 				photo ? albumId : null, photo ? defaultPhoto : null);
 
 		return item;
@@ -240,23 +240,10 @@ public class FacebookHelper {
 			}
 
 			String userId = null;
-			String imgUrl = null;
 			try {
-
 				userId = data.getJSONObject("from").getString("id");
-				Bundle params = new Bundle();
-				params.putString("access_token", FacebookHelper.ACCESS_TOKEN);
-				params.putString("fields", "picture");
-
-				JSONObject person = new JSONObject(FacebookHelper.getFacebook().request("/" + userId, params));
-				imgUrl = person.getJSONObject("picture").getJSONObject("data").getString("url");
-
 			} catch (JSONException e1) {
 				e1.printStackTrace();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 
 			String text;
@@ -273,7 +260,7 @@ public class FacebookHelper {
 				dateString = "2019-12-31T23:59:59+0000";
 			}
 
-			Comment comment = new Comment(id, name, imgUrl, userId, text, dateString);
+			Comment comment = new Comment(id, name, userId, text, dateString);
 			return comment;
 		}
 	}

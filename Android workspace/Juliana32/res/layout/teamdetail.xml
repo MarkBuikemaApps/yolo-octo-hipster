@@ -79,7 +79,6 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@drawable/listselector"
             android:text="@string/uitslagen" />
 
         <View
@@ -93,7 +92,6 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@drawable/listselector"
             android:text="@string/programma" />
     </org.holoeverywhere.widget.LinearLayout>
 
@@ -156,4 +154,4 @@
             </org.holoeverywhere.widget.ListView>
         </org.holoeverywhere.widget.FrameLayout>
     </org.holoeverywhere.widget.FrameLayout>
-</org.holoeverywhere.widget.LinearLayout>
+</org.holoeverywhere.widget.LinearLayout>

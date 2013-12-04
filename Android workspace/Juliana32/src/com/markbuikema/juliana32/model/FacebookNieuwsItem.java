@@ -12,24 +12,24 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	private String fbId;
 	private String link;
 	private int likeCount;// FIXME
-	private int commentCount;
 	private String imgUrl;
 	private String albumId;
 	private List<Like> likes;
 	private boolean liked;
 	private String defaultPhotoId;
+	private List<Comment> comments;
 
 	public FacebookNieuwsItem(String fbId, String title, String content, GregorianCalendar createdAt, String link,
-			String imgUrl, List<Like> likes, int commentCount, String albumId, String defaultPhotoId) {
+			String imgUrl, List<Like> likes, List<Comment> comments, String albumId, String defaultPhotoId) {
 		super(title, null, content, createdAt);
 
 		this.albumId = albumId;
 		this.fbId = fbId;
 		this.likes = likes;
+		this.comments = comments;
 		this.link = link;
 		this.imgUrl = imgUrl;
 		likeCount = likes.size();
-		this.commentCount = commentCount;
 		this.defaultPhotoId = defaultPhotoId;
 	}
 
@@ -47,10 +47,6 @@ public class FacebookNieuwsItem extends NieuwsItem {
 
 	public int getLikeCount() {
 		return likeCount;
-	}
-
-	public int getCommentCount() {
-		return commentCount;
 	}
 
 	@Override
@@ -74,10 +70,6 @@ public class FacebookNieuwsItem extends NieuwsItem {
 		return liked;
 	}
 
-	public void comment() {
-		commentCount++;
-	}
-
 	@Override
 	public String getId() {
 		return fbId;
@@ -98,11 +90,30 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	public void startLoading(final OnContentLoadedListener callback) {
 		new PhotoGetter() {
 			@Override
-			protected void onPostExecute(List<String> result) {
+			protected void onPostExecute(final List<String> result) {
 				photos.clear();
 				for (String photo : result)
 					addPhoto(photo);
 				callback.onContentLoaded(null, result);
+
+				// new CommentLoader() {
+				//
+				// @Override
+				// protected void onPreExecute() {
+				// comments.clear();
+				// }
+				//
+				// @Override
+				// protected void onProgressUpdate(Comment... values) {
+				// for (int i = 0; i < values.length; i++)
+				// comments.add(values[i]);
+				// }
+				//
+				// @Override
+				// protected void onPostExecute(Void v) {
+				// commentCount = comments.size();
+				// }
+				// }.execute(fbId);
 			}
 		}.execute(this);
 	}
@@ -113,6 +124,10 @@ public class FacebookNieuwsItem extends NieuwsItem {
 			return getPhotoCount() > 0;
 		else
 			return true;
+	}
+
+	public List<Comment> getComments() {
+		return Collections.unmodifiableList(comments);
 	}
 
 }

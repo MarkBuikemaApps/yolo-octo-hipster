@@ -1,0 +1,53 @@
+package com.markbuikema.juliana32.ui;
+
+import org.holoeverywhere.widget.TextView;
+
+import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.model.FacebookNieuwsItem;
+import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NormalNieuwsItem;
+
+public class NieuwsDetailAnimation extends Animation {
+
+	private View view;
+	private NieuwsItem item;
+	private int targetHeight;
+	private View primaryView;
+	private View secondaryView;
+
+	public NieuwsDetailAnimation(View view, NieuwsItem item) {
+		this.view = view;
+		this.item = item;
+
+		if (item instanceof NormalNieuwsItem) {
+			TextView tv = (TextView) view.findViewById(R.id.nieuwsitem_subtitle);
+			String text = tv.getText().toString();
+			tv.setText(item.getContent());
+			targetHeight = tv.getHeight();
+			tv.setText(text);
+			Log.d("heights", "current:" + tv.getHeight() + ", target:" + targetHeight);
+
+		} else
+			if (item instanceof FacebookNieuwsItem)
+				if (item.isPhoto()) {
+
+				} else {
+
+				}
+	}
+
+	@Override
+	protected void applyTransformation(float interpolatedTime, Transformation t) {
+
+	}
+
+	@Override
+	public boolean willChangeBounds() {
+		return true;
+	}
+}

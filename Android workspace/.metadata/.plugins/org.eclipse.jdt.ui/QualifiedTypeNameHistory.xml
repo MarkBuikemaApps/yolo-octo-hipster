@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.activity.MainActivity"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.menu"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
-<fullyQualifiedTypeName name="android.content.pm.Signature"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.preference.PreferenceManagerHelper"/>
-<fullyQualifiedTypeName name="android.content.SharedPreferences.Editor"/>
-<fullyQualifiedTypeName name="android.content.SharedPreferences"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.preference.SharedPreferences.Editor"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.widget.PopupWindow.OnDismissListener"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.app.AlertDialog"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.widget.CheckBox"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.app.AlertDialog.Builder"/>
 <fullyQualifiedTypeName name="android.widget.CompoundButton.OnCheckedChangeListener"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface.OnDismissListener"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.ArrayAdapter"/>
@@ -19,7 +7,6 @@
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.LinearLayout"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.EditText"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.Button"/>
-<fullyQualifiedTypeName name="org.holoeverywhere.widget.FrameLayout"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.ImageButton"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.AdapterView"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.ListView"/>
@@ -35,19 +22,13 @@
 <fullyQualifiedTypeName name="android.graphics.drawable.GradientDrawable.Orientation"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
 <fullyQualifiedTypeName name="android.graphics.drawable.GradientDrawable"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.util.Util"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.asynctask.NieuwsRetriever.CountCallback"/>
 <fullyQualifiedTypeName name="org.json.JSONException"/>
 <fullyQualifiedTypeName name="com.koushikdutta.urlimageviewhelper.UrlImageViewHelper"/>
 <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
-<fullyQualifiedTypeName name="com.nineoldandroids.animation.Animator.AnimatorListener"/>
-<fullyQualifiedTypeName name="com.nineoldandroids.animation.Animator"/>
-<fullyQualifiedTypeName name="com.nineoldandroids.view.ViewPropertyAnimator"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView"/>
 <fullyQualifiedTypeName name="android.view.View.OnTouchListener"/>
 <fullyQualifiedTypeName name="com.origamilabs.library.views.StaggeredGridView.OnScrollDirectionChangeListener"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.widget.Toast"/>
 <fullyQualifiedTypeName name="android.widget.AbsListView.LayoutParams"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.util.DataManager"/>
@@ -55,9 +36,28 @@
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.R.integer"/>
 <fullyQualifiedTypeName name="org.holoeverywhere.LayoutInflater"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
-<fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
-<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.dimen"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener"/>
 <fullyQualifiedTypeName name="com.markbuikema.juliana32.util.FacebookHelper.PhotoGetter"/>
 <fullyQualifiedTypeName name="android.graphics.Typeface"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+<fullyQualifiedTypeName name="android.R.anim"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.ui.Toaster"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.util.Util"/>
+<fullyQualifiedTypeName name="android.view.ViewTreeObserver.OnGlobalLayoutListener"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.animation.Animator"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.animation.ObjectAnimator"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.animation.AnimatorListenerAdapter"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.animation.AnimatorSet"/>
+<fullyQualifiedTypeName name="android.view.animation.AccelerateInterpolator"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.dimen"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.NormalNieuwsItem"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.adapter.NieuwsAdapter"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.model.FacebookNieuwsItem"/>
+<fullyQualifiedTypeName name="org.holoeverywhere.widget.FrameLayout"/>
+<fullyQualifiedTypeName name="com.markbuikema.juliana32.R.id"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.view.ViewHelper"/>
+<fullyQualifiedTypeName name="android.support.v4.view.ViewCompat"/>
+<fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.view.ViewPropertyAnimator"/>
+<fullyQualifiedTypeName name="com.nineoldandroids.animation.Animator.AnimatorListener"/>
 </qualifiedTypeNameHistroy>

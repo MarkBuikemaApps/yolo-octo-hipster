@@ -4,5 +4,5 @@
     <gradient
         android:angle="270"
         android:endColor="@android:color/transparent"
-        android:startColor="@color/protection_center_color" />
+        android:startColor="@color/transparentblack" />
 </shape>

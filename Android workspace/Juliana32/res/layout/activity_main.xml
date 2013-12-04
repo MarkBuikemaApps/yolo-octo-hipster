@@ -6,13 +6,6 @@
     tools:context=".MainActivity" >
 
     <include
-        android:id="@+id/nieuwsDetailView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/nieuwsdetail"
-        android:visibility="gone" />
-
-    <include
         android:id="@+id/teamDetailView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -53,6 +46,12 @@
         android:layout_height="match_parent"
         layout="@layout/agenda"
         android:visibility="gone" />
+
+    <com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView
+        android:id="@+id/animatedViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView>
 
     <org.holoeverywhere.widget.LinearLayout
         android:id="@+id/actionBar"
@@ -111,10 +110,10 @@
             android:drawableLeft="@drawable/ic_menu_search"
             android:hint="@string/search"
             android:imeOptions="actionSearch"
-            android:textColor="@android:color/white"
-            android:textColorHint="@color/grey"
             android:inputType="text"
             android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/grey"
             android:visibility="gone" />
 
         <org.holoeverywhere.widget.LinearLayout
@@ -149,7 +148,7 @@
                 android:contentDescription="@string/share"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
-                android:src="@drawable/ic_menu_share"
+                android:src="@drawable/ic_action_social_share"
                 android:visibility="gone" />
 
             <org.holoeverywhere.widget.ImageButton
@@ -160,7 +159,7 @@
                 android:contentDescription="@string/none"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
-                android:src="@drawable/ic_menu_search"
+                android:src="@drawable/ic_action_action_search"
                 android:visibility="gone" />
 
             <org.holoeverywhere.widget.ImageButton
@@ -171,7 +170,7 @@
                 android:contentDescription="@string/none"
                 android:padding="@dimen/small_margin"
                 android:scaleType="fitStart"
-                android:src="@drawable/overflow_borderless" />
+                android:src="@drawable/ic_action_core_overflow" />
         </org.holoeverywhere.widget.LinearLayout>
     </org.holoeverywhere.widget.LinearLayout>
 

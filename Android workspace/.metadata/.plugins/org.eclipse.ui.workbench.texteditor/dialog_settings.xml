@@ -3,35 +3,36 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="178" key="DIALOG_Y_ORIGIN"/>
-		<item value="381" key="DIALOG_HEIGHT"/>
 		<item value="1349" key="DIALOG_X_ORIGIN"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Typefa" key="selection"/>
+		<item value="animate(active" key="selection"/>
 		<list key="findhistory">
-			<item value="typefa"/>
-			<item value="rounded"/>
-			<item value="reques"/>
-			<item value="photogetter"/>
-			<item value="64"/>
-			<item value="getadapterc"/>
-			<item value="getCount()"/>
-			<item value="getCount() "/>
+			<item value="animate(active"/>
+			<item value="actionbarhei"/>
+			<item value="requestni"/>
+			<item value="hideni"/>
+			<item value="animate"/>
+			<item value="requestn"/>
+			<item value="request"/>
+			<item value="setalpha"/>
 		</list>
 		<list key="replacehistory">
+			<item value="context"/>
+			<item value="nieuwsDetailV"/>
+			<item value="CondensedBold"/>
+			<item value="@dimen/card_padding"/>
 			<item value="ScrollView"/>
 			<item value="ImageView"/>
 			<item value=""/>
 			<item value="  "/>
-			<item value="private"/>
-			<item value="ro"/>
-			<item value="@dimen/table_column_width"/>
 		</list>
 	</section>
 </section>

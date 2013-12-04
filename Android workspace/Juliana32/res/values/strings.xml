@@ -53,8 +53,8 @@
     <string name="no_photos_found">Er zijn voor dit team geen foto\'s gevonden.</string>
     <string name="fotos">Foto\'s</string>
     <string name="second_back_press">Druk nogmaals op terug om te sluiten</string>
-    <string name="facebook">Open de Facebook pagina</string>
-    <string name="twitter">Open de Twitter pagina</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
     <string name="search">Zoeken…</string>
     <string name="comments">Reacties</string>
     <string name="no_connection">Kan geen gegevens ophalen. Controleer internetverbinding en probeer het opnieuw!</string>
@@ -76,5 +76,6 @@
     <string name="menu_facebook">Facebook</string>
     <string name="menu_twitter">Twitter</string>
     <string name="menu_website">Website</string>
+    <string name="content_not_found">Nieuwsbericht niet gevonden. Bekijk het bericht op de website.</string>
 
 </resources>

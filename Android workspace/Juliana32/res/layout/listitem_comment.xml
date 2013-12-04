@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/listselector"
-    android:padding="@dimen/small_margin" >
+    android:padding="@dimen/card_padding" >
 
     <org.holoeverywhere.widget.FrameLayout
         android:layout_width="42dp"
@@ -21,7 +21,7 @@
             android:layout_height="42dp"
             android:contentDescription="@string/none"
             android:scaleType="fitXY"
-            android:src="@drawable/roundedcorner_grey" />
+            android:src="@drawable/rounded_corners" />
     </org.holoeverywhere.widget.FrameLayout>
 
     <org.holoeverywhere.widget.LinearLayout
@@ -46,7 +46,10 @@
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/commentDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="12sp" />
         </org.holoeverywhere.widget.LinearLayout>
 
         <org.holoeverywhere.widget.TextView

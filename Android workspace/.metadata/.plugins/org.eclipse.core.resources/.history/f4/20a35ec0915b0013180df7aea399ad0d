@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="default_margin">10dp</dimen>
+    <dimen name="small_margin">5dp</dimen>
+    <dimen name="table_column_width">32dp</dimen>
+    <dimen name="huge_margin">20dp</dimen>
+    <dimen name="nieuws_header_margin">52dp</dimen>
+    <dimen name="card_line_thickness">0.5dp</dimen>
+    <dimen name="card_padding">8dp</dimen>
+
+    <integer name="columnCount">1</integer>
+
+</resources>

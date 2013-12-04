@@ -16,9 +16,9 @@
             android:cacheColorHint="@android:color/white"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"
-            android:listSelector="@drawable/button"
+            android:listSelector="@drawable/listselector_card"
             android:scrollbarThumbVertical="@drawable/listitem_background"
-            staggered:drawSelectorOnTop="false"
+            staggered:drawSelectorOnTop="true"
             staggered:numColumns="@integer/columnCount" />
     </com.markbuikema.juliana32.ui.ViewPagerCompatiblePullToRefreshLayout>
 

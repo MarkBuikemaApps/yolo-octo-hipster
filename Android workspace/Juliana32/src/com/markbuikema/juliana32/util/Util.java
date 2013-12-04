@@ -17,14 +17,30 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Looper;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
+import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
+import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Like;
@@ -39,6 +55,11 @@ public class Util {
 	public static final String PHOTO_URL_SUFFIX = "/picture";
 	public static final long WEEK = 1000 * 60 * 60 * 24 * 7;
 	private static float screenWidth = -1;
+	private static Typeface robotoLight;
+	private static Typeface robotoThin;
+	private static Typeface robotoCondensed;
+
+	private static int viewWidth;
 
 	public static String getHttpContent(String url) {
 		HttpClient client = new DefaultHttpClient();
@@ -308,5 +329,194 @@ public class Util {
 				continue;
 			}
 		return null;
+	}
+
+	public static Typeface getRobotoLight(Context context) {
+		if (robotoLight == null)
+			robotoLight = Typeface.createFromAsset(context.getAssets(), "Roboto-Light.ttf");
+		return robotoLight;
+	}
+
+	public static Typeface getRobotoThin(Context context) {
+		if (robotoThin == null)
+			robotoThin = Typeface.createFromAsset(context.getAssets(), "Roboto-Thin.ttf");
+		return robotoThin;
+	}
+
+	public static Typeface getRobotoCondensed(Context context) {
+		if (robotoCondensed == null)
+			robotoCondensed = Typeface.createFromAsset(context.getAssets(), "RobotoCondensed-Light.ttf");
+		return robotoCondensed;
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
+		if (Build.VERSION.SDK_INT < 16)
+			v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+		else
+			v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+	}
+
+	// EXPAND ANIMATION
+	public static void expand(final View v) {
+
+		v.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@Override
+			public void onGlobalLayout() {
+				final int targetHeight = v.getHeight();
+				Log.d("expand", "target:" + targetHeight);
+
+				v.getLayoutParams().height = 0;
+				v.setVisibility(View.VISIBLE);
+				Animation a = new Animation() {
+					@Override
+					protected void applyTransformation(float interpolatedTime, Transformation t) {
+						v.getLayoutParams().height = interpolatedTime == 1 ? LayoutParams.WRAP_CONTENT
+								: (int) (targetHeight * interpolatedTime);
+						v.getParent().requestLayout();
+					}
+
+					@Override
+					public boolean willChangeBounds() {
+						return true;
+					}
+				};
+				a.setDuration(
+				// (int) (targetHeight /
+				// v.getContext().getResources().getDisplayMetrics().density)
+				500);
+				v.startAnimation(a);
+				removeOnGlobalLayoutListener(v, this);
+			}
+		});
+
+	}
+
+	// EXPAND ANIMATION
+	public static void expandX(final View v) {
+
+		final int columnCount = v.getContext().getResources().getInteger(R.integer.columnCount);
+
+		v.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@Override
+			public void onGlobalLayout() {
+
+				final int targetWidth = v.getWidth() * columnCount;
+				final int initialWidth = v.getWidth();
+				final int relativeWidth = targetWidth - v.getWidth();
+
+				viewWidth = initialWidth;
+
+				v.getLayoutParams().height = 0;
+				v.setVisibility(View.VISIBLE);
+				Animation a = new Animation() {
+					@Override
+					protected void applyTransformation(float interpolatedTime, Transformation t) {
+						v.getLayoutParams().width = (int) (initialWidth + interpolatedTime * relativeWidth);
+						v.getParent().requestLayout();
+					}
+
+					@Override
+					public boolean willChangeBounds() {
+						return true;
+					}
+				};
+				a.setDuration(
+				// (int) (targetHeight /
+				// v.getContext().getResources().getDisplayMetrics().density)
+				500);
+				v.startAnimation(a);
+				removeOnGlobalLayoutListener(v, this);
+			}
+		});
+
+	}
+
+	public static void collapse(final View v) {
+		final int initialHeight = v.getMeasuredHeight();
+
+		Animation a = new Animation() {
+			@Override
+			protected void applyTransformation(float interpolatedTime, Transformation t) {
+				if (interpolatedTime == 1)
+					v.setVisibility(View.GONE);
+				else {
+					v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
+					v.requestLayout();
+				}
+			}
+
+			@Override
+			public boolean willChangeBounds() {
+				return true;
+			}
+		};
+		a.setDuration(
+		// (int) (initialHeight /
+		// v.getContext().getResources().getDisplayMetrics().density)
+		500);
+		v.startAnimation(a);
+	}
+
+	public static void collapseX(final View v) {
+		final int initialWidth = v.getMeasuredWidth();
+		final int relativeWidth = initialWidth - viewWidth;
+
+		Animation a = new Animation() {
+			@Override
+			protected void applyTransformation(float interpolatedTime, Transformation t) {
+				if (interpolatedTime == 1)
+					v.setVisibility(View.GONE);
+				else {
+					v.getLayoutParams().height = initialWidth - (int) (relativeWidth * interpolatedTime);
+					v.requestLayout();
+				}
+			}
+
+			@Override
+			public boolean willChangeBounds() {
+				return true;
+			}
+		};
+		a.setDuration(
+		// (int) (initialHeight /
+		// v.getContext().getResources().getDisplayMetrics().density)
+		500);
+		v.startAnimation(a);
+	}
+
+	public static class LinkifyExtra extends Linkify {
+		public static Spanned addLinksHtmlAware(String htmlString) {
+			// gather links from html
+			Spanned spann = Html.fromHtml(htmlString);
+			URLSpan[] old = spann.getSpans(0, spann.length(), URLSpan.class);
+			List<Pair<Integer, Integer>> htmlLinks = new ArrayList<Pair<Integer, Integer>>();
+			for (URLSpan span : old)
+				htmlLinks.add(new Pair<Integer, Integer>(spann.getSpanStart(span), spann.getSpanEnd(span)));
+			// linkify spanned, html link will be lost
+			Linkify.addLinks((Spannable) spann, Linkify.ALL);
+			// add html links back
+			for (int i = 0; i < old.length; i++)
+				((Spannable) spann).setSpan(old[i], htmlLinks.get(i).first, htmlLinks.get(i).second,
+						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			return spann;
+		}
+	}
+
+	public static CharSequence trimTrailingWhitespace(CharSequence source) {
+
+		if (source == null)
+			return "";
+
+		int end = source.length();
+		int start = -1;
+
+		while (--end >= 0 && Character.isWhitespace(source.charAt(end)));
+		while (++start < end && Character.isWhitespace(source.charAt(start)));
+
+		return source.subSequence(start, end + 1);
 	}
 }
