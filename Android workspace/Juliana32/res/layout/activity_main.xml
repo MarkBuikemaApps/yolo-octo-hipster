@@ -47,11 +47,29 @@
         layout="@layout/agenda"
         android:visibility="gone" />
 
-    <com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView
-        android:id="@+id/animatedViewContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView>
+    <org.holoeverywhere.widget.LinearLayout>
+
+        <com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView
+            android:id="@+id/animatedViewContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+        </com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView>
+
+        <com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView
+            android:id="@+id/facebookLikeContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+        </com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView>
+
+        <com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView
+            android:id="@+id/facebookCommentContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+        </com.markbuikema.juliana32.ui.ViewPagerCompatibleScrollView>
+    </org.holoeverywhere.widget.LinearLayout>
 
     <org.holoeverywhere.widget.LinearLayout
         android:id="@+id/actionBar"

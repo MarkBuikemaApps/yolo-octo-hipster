@@ -8,8 +8,6 @@ import java.util.Observable;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
-
 public abstract class NieuwsItem extends Observable implements Comparable<NieuwsItem> {
 
 	protected String title;
@@ -89,4 +87,8 @@ public abstract class NieuwsItem extends Observable implements Comparable<Nieuws
 	public abstract void startLoading(final OnContentLoadedListener callback);
 
 	public abstract boolean isContentLoaded();
+
+	public interface OnContentLoadedListener {
+		public void onContentLoaded(String content, List<String> photos);
+	}
 }

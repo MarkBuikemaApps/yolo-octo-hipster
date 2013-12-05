@@ -22,7 +22,6 @@ import org.holoeverywhere.preference.SharedPreferences;
 import org.holoeverywhere.preference.SharedPreferences.Editor;
 import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.FrameLayout;
 import org.holoeverywhere.widget.ImageButton;
 import org.holoeverywhere.widget.LinearLayout;
 import org.holoeverywhere.widget.ListView;
@@ -83,8 +82,8 @@ import com.markbuikema.juliana32.asynctask.TeamsRetriever;
 import com.markbuikema.juliana32.model.Comment;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
-import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.section.Agenda;
 import com.markbuikema.juliana32.section.Contact;
@@ -140,6 +139,8 @@ public class MainActivity extends Activity {
 	private View clickedNieuwsView;
 
 	private ScrollView animatedViewContainer;
+	private ScrollView likeViewContainer;
+	private ScrollView commentViewContainer;// TODO
 
 	private Teletekst teletekst;
 	private Nieuws nieuws;
@@ -208,7 +209,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onDrawerSlide(float openRatio, int offsetPixels) {
 				float newValue = -11.0f * openRatio;
-				ViewPropertyAnimator.animate(menuDrawerIcon).translationX(newValue).setDuration(0).start();
+				ViewHelper.setTranslationX(menuDrawerIcon, newValue);
 			}
 		});
 
@@ -682,26 +683,25 @@ public class MainActivity extends Activity {
 
 		ViewPropertyAnimator.animate(activePageView).alpha(.05f).setDuration(300);
 		ViewPropertyAnimator.animate(view).translationX(0).translationY(0).setDuration(300);
-		if (!item.isFromFacebook())
-			ViewPropertyAnimator.animate(view.findViewById(R.id.nieuwsitem_subtitle)).alpha(0).setListener(new AnimatorListener() {
+		ViewPropertyAnimator.animate(view.findViewById(R.id.nieuwsitem_subtitle)).alpha(0).setListener(new AnimatorListener() {
 
-				@Override
-				public void onAnimationStart(Animator arg0) {
-				}
+			@Override
+			public void onAnimationStart(Animator arg0) {
+			}
 
-				@Override
-				public void onAnimationRepeat(Animator arg0) {
-				}
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+			}
 
-				@Override
-				public void onAnimationEnd(Animator arg0) {
-					ViewPropertyAnimator.animate(view.findViewById(R.id.nieuwsitem_content)).alpha(1).setDuration(300);
-				}
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+				ViewPropertyAnimator.animate(view.findViewById(R.id.nieuwsitem_content)).alpha(1).setDuration(300);
+			}
 
-				@Override
-				public void onAnimationCancel(Animator arg0) {
-				}
-			}).setDuration(300);
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+			}
+		}).setDuration(300);
 
 		String contentString = null;
 		contentString = item.getContent();
@@ -715,8 +715,7 @@ public class MainActivity extends Activity {
 		subTitleView.setLinksClickable(true);
 		if (Build.VERSION.SDK_INT >= 11)
 			subTitleView.setTextIsSelectable(true);
-		if (getResources().getInteger(R.integer.columnCount) > 1)
-			subTitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.readableTextSize));
+		subTitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.readableTextSize));
 
 		if (item.isFromFacebook() && ((FacebookNieuwsItem) item).getComments().size() > 0) {
 			LinearLayout comments = (LinearLayout) view.findViewById(R.id.nieuwsitem_comments_container);
@@ -726,7 +725,6 @@ public class MainActivity extends Activity {
 			ViewPropertyAnimator.animate(comments).alpha(1).setDuration(300);
 		}
 
-		Util.expandX(view);
 		Util.expand(subTitleView);
 
 		hideSearchBar();
@@ -746,10 +744,16 @@ public class MainActivity extends Activity {
 					view = NieuwsAdapter.constructFacebookPhotoView(this, (FacebookNieuwsItem) item, null);
 				else
 					view = NieuwsAdapter.constructFacebookView(this, (FacebookNieuwsItem) item, null);
-		FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		lp.topMargin = actionBarHeight;
-		view.setLayoutParams(lp);
-		return view;
+
+		LinearLayout ll = new LinearLayout(this);
+		ll.setOrientation(LinearLayout.VERTICAL);
+		View margin = new View(this);
+		margin.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(
+				R.dimen.nieuws_header_margin)));
+
+		ll.addView(margin);
+		ll.addView(view);
+		return ll;
 	}
 
 	public void populateComments(LinearLayout container, FacebookNieuwsItem item) {
@@ -859,12 +863,11 @@ public class MainActivity extends Activity {
 			final View view = animatedViewContainer.getChildAt(0);
 			TextView tvContent = (TextView) view.findViewById(R.id.nieuwsitem_content);
 			Util.collapse(tvContent);
-			Util.collapseX(view);
 			LinearLayout comments = (LinearLayout) view.findViewById(R.id.nieuwsitem_comments_container);
 			final boolean fb = comments != null;
 			if (fb)
 				Util.collapse(comments);
-			ViewPropertyAnimator.animate(tvContent).alpha(fb ? 1 : 0).setListener(new AnimatorListener() {
+			ViewPropertyAnimator.animate(tvContent).alpha(0).setListener(new AnimatorListener() {
 
 				@Override
 				public void onAnimationStart(Animator arg0) {

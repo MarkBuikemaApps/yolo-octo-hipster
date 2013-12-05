@@ -65,6 +65,7 @@
     <string name="timestamp_minutes_ago">%s minuten geleden</string>
     <string name="timestamp_hours_ago">%s uur geleden</string>
     <string name="comment">Reageer</string>
+    <string name="commenthint">Schrijf een reactie</string>
     <string name="facebooklogin">Log in met Facebook om te reageren</string>
     <string name="like">Like</string>
     <string name="help">Over deze app</string>

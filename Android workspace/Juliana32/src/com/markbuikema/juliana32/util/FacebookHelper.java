@@ -315,7 +315,7 @@ public class FacebookHelper {
 		GregorianCalendar createdAt = new GregorianCalendar();
 		createdAt.setTimeZone(TimeZone.getTimeZone("GMT" + timezoneString + ":00"));
 		createdAt.set(Integer.parseInt(yearString), Integer.parseInt(monthString) - 1, Integer.parseInt(dayString),
-				Integer.parseInt(hourString) + 2, Integer.parseInt(minuteString), Integer.parseInt(secondString));
+				Integer.parseInt(hourString), Integer.parseInt(minuteString), Integer.parseInt(secondString));
 		return createdAt;
 	}
 

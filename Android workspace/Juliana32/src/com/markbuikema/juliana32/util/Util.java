@@ -40,7 +40,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.Game;
 import com.markbuikema.juliana32.model.Like;
@@ -393,47 +392,6 @@ public class Util {
 
 	}
 
-	// EXPAND ANIMATION
-	public static void expandX(final View v) {
-
-		final int columnCount = v.getContext().getResources().getInteger(R.integer.columnCount);
-
-		v.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-			@Override
-			public void onGlobalLayout() {
-
-				final int targetWidth = v.getWidth() * columnCount;
-				final int initialWidth = v.getWidth();
-				final int relativeWidth = targetWidth - v.getWidth();
-
-				viewWidth = initialWidth;
-
-				v.getLayoutParams().height = 0;
-				v.setVisibility(View.VISIBLE);
-				Animation a = new Animation() {
-					@Override
-					protected void applyTransformation(float interpolatedTime, Transformation t) {
-						v.getLayoutParams().width = (int) (initialWidth + interpolatedTime * relativeWidth);
-						v.getParent().requestLayout();
-					}
-
-					@Override
-					public boolean willChangeBounds() {
-						return true;
-					}
-				};
-				a.setDuration(
-				// (int) (targetHeight /
-				// v.getContext().getResources().getDisplayMetrics().density)
-				500);
-				v.startAnimation(a);
-				removeOnGlobalLayoutListener(v, this);
-			}
-		});
-
-	}
-
 	public static void collapse(final View v) {
 		final int initialHeight = v.getMeasuredHeight();
 
@@ -444,33 +402,6 @@ public class Util {
 					v.setVisibility(View.GONE);
 				else {
 					v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
-					v.requestLayout();
-				}
-			}
-
-			@Override
-			public boolean willChangeBounds() {
-				return true;
-			}
-		};
-		a.setDuration(
-		// (int) (initialHeight /
-		// v.getContext().getResources().getDisplayMetrics().density)
-		500);
-		v.startAnimation(a);
-	}
-
-	public static void collapseX(final View v) {
-		final int initialWidth = v.getMeasuredWidth();
-		final int relativeWidth = initialWidth - viewWidth;
-
-		Animation a = new Animation() {
-			@Override
-			protected void applyTransformation(float interpolatedTime, Transformation t) {
-				if (interpolatedTime == 1)
-					v.setVisibility(View.GONE);
-				else {
-					v.getLayoutParams().height = initialWidth - (int) (relativeWidth * interpolatedTime);
 					v.requestLayout();
 				}
 			}

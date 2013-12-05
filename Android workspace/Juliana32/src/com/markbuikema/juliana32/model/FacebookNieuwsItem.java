@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.util.FacebookHelper.PhotoGetter;
 
 public class FacebookNieuwsItem extends NieuwsItem {

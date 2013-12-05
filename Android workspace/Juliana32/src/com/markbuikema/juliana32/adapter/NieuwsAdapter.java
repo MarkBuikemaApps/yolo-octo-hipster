@@ -11,8 +11,9 @@ import org.holoeverywhere.widget.ViewPager;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
@@ -20,8 +21,8 @@ import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.NormalNieuwsItem;
-import com.markbuikema.juliana32.model.NormalNieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.util.DataManager;
 import com.markbuikema.juliana32.util.Util;
@@ -142,19 +143,31 @@ public class NieuwsAdapter extends ArrayAdapter<NieuwsItem> {
 			break;
 		}
 
-		ViewHelper.setTranslationY(convertView, scrollingDown ? 48 : -48);
-		ViewPropertyAnimator.animate(convertView).setDuration(250).translationY(0).setListener(null);
-
 		final View animatedView = convertView;
-		animatedView.setOnClickListener(new OnClickListener() {
+
+		ViewHelper.setScaleX(animatedView, .9f);
+		ViewHelper.setScaleY(animatedView, .9f);
+		ViewPropertyAnimator.animate(animatedView).setDuration(250).scaleX(1).scaleY(1);
+
+		animatedView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				if (arg0 == animatedView)
-					((MainActivity) getContext()).requestNieuwsDetailPage(item, animatedView);
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				switch (arg1.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					animatedView.setBackgroundColor(getContext().getResources().getColor(R.color.touched));
+					break;
+				case MotionEvent.ACTION_UP:
+					if (arg0 == animatedView)
+						((MainActivity) getContext()).requestNieuwsDetailPage(item, animatedView);
+				case MotionEvent.ACTION_OUTSIDE:
+				case MotionEvent.ACTION_CANCEL:
+					animatedView.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+					break;
+				}
+				return true;
 			}
 		});
-
 		return convertView;
 
 	}

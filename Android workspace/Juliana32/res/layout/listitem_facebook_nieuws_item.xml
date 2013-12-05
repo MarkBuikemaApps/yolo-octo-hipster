@@ -59,29 +59,6 @@
                 android:textSize="12sp" />
         </org.holoeverywhere.widget.FrameLayout>
 
-        <org.holoeverywhere.widget.LinearLayout
-            android:id="@+id/nieuwsitem_comments_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone" >
-
-            
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/card_line_thickness"
-                android:background="@color/grey" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/nieuwsitem_comments_caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/card_padding"
-                android:text="@string/comments"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />           
-        </org.holoeverywhere.widget.LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_line_thickness"

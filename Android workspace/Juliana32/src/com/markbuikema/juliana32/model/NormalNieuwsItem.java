@@ -52,10 +52,6 @@ public class NormalNieuwsItem extends NieuwsItem {
 			new ContentLoader(callback).execute();
 	}
 
-	public interface OnContentLoadedListener {
-		public void onContentLoaded(String content, List<String> photos);
-	}
-
 	private class ContentLoader extends AsyncTask<Void, String, String> {
 
 		private OnContentLoadedListener callback;
