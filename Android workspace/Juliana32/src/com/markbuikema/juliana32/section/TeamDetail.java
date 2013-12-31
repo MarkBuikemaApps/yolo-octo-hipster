@@ -31,7 +31,7 @@ import com.markbuikema.juliana32.adapter.FixtureAdapter;
 import com.markbuikema.juliana32.adapter.TableAdapter;
 import com.markbuikema.juliana32.asynctask.PhotoSharer;
 import com.markbuikema.juliana32.model.Game;
-import com.markbuikema.juliana32.model.NormalNieuwsItem;
+import com.markbuikema.juliana32.model.WebsiteNieuwsItem;
 import com.markbuikema.juliana32.model.Table;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
@@ -123,7 +123,7 @@ public class TeamDetail {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				try {
-					NormalNieuwsItem item = Util.findWedstrijdVerslag((Game) uitslagen.getAdapter().getItem(arg2));
+					WebsiteNieuwsItem item = Util.findWedstrijdVerslag((Game) uitslagen.getAdapter().getItem(arg2));
 					if (item == null)
 						Toast.makeText(act, "Er is voor deze wedstrijd geen wedstrijdverslag gevonden", Toast.LENGTH_SHORT).show();
 					else

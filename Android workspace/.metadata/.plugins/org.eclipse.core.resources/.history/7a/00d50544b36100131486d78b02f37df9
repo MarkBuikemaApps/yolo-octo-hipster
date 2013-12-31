@@ -1,0 +1,280 @@
+package com.markbuikema.juliana32.section;
+
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.LinearLayout;
+import org.holoeverywhere.widget.TextView;
+import org.holoeverywhere.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Request.Callback;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.Session.NewPermissionsRequest;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
+import com.facebook.model.GraphObject;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activity.MainActivity;
+import com.markbuikema.juliana32.adapter.NieuwsAdapter;
+import com.markbuikema.juliana32.model.Comment;
+import com.markbuikema.juliana32.model.FacebookNieuwsItem;
+import com.markbuikema.juliana32.model.NieuwsItem;
+import com.markbuikema.juliana32.model.NormalNieuwsItem;
+import com.markbuikema.juliana32.util.Util;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
+
+public class NieuwsDetail {
+
+	private static final String TAG = "NieuwsDetail";
+
+	private MainActivity act;
+	private NieuwsItem item;
+	private View clickedView;
+	private View animatedView;
+	private View detailView;
+	private View nieuwsList;
+	private ViewGroup contentContainer;
+	private View likeView;
+	private View commentView;
+
+	public NieuwsDetail(final MainActivity act, final View clickedView, final NieuwsItem item) {
+		this.act = act;
+		this.item = item;
+		this.clickedView = clickedView;
+
+		nieuwsList = act.findViewById(R.id.nieuwsList);
+
+		detailView = act.findViewById(R.id.nieuwsDetailView);
+		contentContainer = (ViewGroup) detailView.findViewById(R.id.detailContainer);
+
+		animatedView = getAnimationView(act, item);
+		contentContainer.addView(animatedView, 0);
+
+		likeView = detailView.findViewById(R.id.likesView);
+		commentView = detailView.findViewById(R.id.commentsView);
+
+		float likeStartX = animatedView.getLeft() - likeView.getLeft();
+		float likeStartY = animatedView.getTop() - likeView.getTop();
+		float commentStartX = animatedView.getLeft() - commentView.getLeft();
+		float commentStartY = animatedView.getTop() - commentView.getTop();
+
+		ViewHelper.setTranslationX(likeView, likeStartX);
+		ViewHelper.setTranslationY(likeView, likeStartY);
+		ViewHelper.setTranslationX(commentView, commentStartX);
+		ViewHelper.setTranslationY(commentView, commentStartY);
+
+		Log.d("likeStartX", animatedView.getLeft() + " - " + likeView.getLeft() + " = " + likeStartX);
+		Log.d("likeStartY", animatedView.getTop() + " - " + likeView.getTop() + " = " + likeStartY);
+
+	}
+
+	public void show() {
+		ViewPropertyAnimator.animate(nieuwsList).alpha(.1f).setDuration(300);
+	}
+
+	public void hide() {
+		ViewPropertyAnimator.animate(nieuwsList).alpha(1f).setDuration(300);
+
+		contentContainer.removeAllViews();
+
+	}
+
+	protected void postComment(final String message) {
+
+		if (!Session.getActiveSession().isOpened())
+			Toast.makeText(act, "Facebook session is not opened!", Toast.LENGTH_LONG).show();
+
+		if (!Session.getActiveSession().getPermissions().contains("publish_actions")
+				|| !Session.getActiveSession().getPermissions().contains("publish_stream")) {
+			Session.getActiveSession().requestNewPublishPermissions(
+					new NewPermissionsRequest(act, "publish_actions", "publish_stream"));
+			Session.getActiveSession().addCallback(new StatusCallback() {
+
+				@Override
+				public void call(Session session, SessionState state, Exception exception) {
+					if (session.getPermissions().contains("publish_actions") && session.getPermissions().contains("publish_stream")) {
+						postComment(message);
+						Session.getActiveSession().removeCallback(this);
+					}
+				}
+			});
+			return;
+		}
+
+		Session session = Session.getActiveSession();
+		String id = ((FacebookNieuwsItem) item).getFbId();
+		String graphPath = id + "/comments";
+		JSONObject object = new JSONObject();
+		try {
+			object.put("message", message);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		GraphObject graphObject = GraphObject.Factory.create(object);
+
+		Request request = Request.newPostRequest(session, graphPath, graphObject, new Callback() {
+
+			@Override
+			public void onCompleted(Response response) {
+				if (response.getError() == null) {
+					Toast.makeText(act, "Reactie is geplaatst!", Toast.LENGTH_LONG).show();
+					act.fixActionBar();
+				} else
+					Toast.makeText(act, "Er is iets misgegaan. Probeer opnieuw in te loggen.", Toast.LENGTH_LONG).show();
+			}
+		});
+
+		request.executeAsync();
+	}
+
+	public String getDetailUrl() {
+		if (item instanceof NormalNieuwsItem)
+			return ((NormalNieuwsItem) item).getDetailUrl();
+		else
+			return "http://www.facebook.com/" + ((FacebookNieuwsItem) item).getFbId().replace("_", "/posts/");
+	}
+
+	public boolean hasPhotos() {
+		return item.isPhoto();
+	}
+
+	public boolean hasComments() {
+		try {
+			return ((FacebookNieuwsItem) item).getComments().size() > 0;
+		} catch (ClassCastException e) {
+			return false;
+		}
+	}
+
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putString("nieuwsId", item.getId());
+	}
+
+	public void onLikedChanged(final boolean liked) {
+		final FacebookNieuwsItem fbni;
+		try {
+			fbni = ((FacebookNieuwsItem) item);
+		} catch (ClassCastException e) {
+			return;
+		}
+
+		if (!Session.getActiveSession().getPermissions().contains("publish_actions")
+				|| !Session.getActiveSession().getPermissions().contains("publish_stream")) {
+
+			Session.getActiveSession().requestNewPublishPermissions(
+					new NewPermissionsRequest(act, "publish_actions", "publish_stream"));
+			Session.getActiveSession().addCallback(new StatusCallback() {
+
+				@Override
+				public void call(Session session, SessionState state, Exception exception) {
+					if (session.getPermissions().contains("publish_actions") && session.getPermissions().contains("publish_stream")) {
+						onLikedChanged(liked);
+						Session.getActiveSession().removeCallback(this);
+					}
+				}
+			});
+			return;
+		}
+
+		Request request = Request.newGraphPathRequest(Session.getActiveSession(), fbni.getFbId() + "/likes", new Callback() {
+
+			@Override
+			public void onCompleted(Response response) {
+				// TODO
+			}
+		});
+		if (liked)
+			request.setHttpMethod(HttpMethod.POST);
+		else
+			request.setHttpMethod(HttpMethod.DELETE);
+
+		request.executeAsync();
+	}
+
+	public String getContent() {
+		return item.getContent();
+	}
+
+	private View getCommentView(final Comment comment) {
+		View view = LayoutInflater.from(act).inflate(R.layout.listitem_comment, null);
+
+		TextView name = (TextView) view.findViewById(R.id.commentName);
+		TextView date = (TextView) view.findViewById(R.id.commentDate);
+		TextView text = (TextView) view.findViewById(R.id.commentMessage);
+		final ImageView pic = (ImageView) view.findViewById(R.id.commentPicture);
+
+		name.setTypeface(Util.getRobotoCondensed(act));
+		date.setTypeface(Util.getRobotoCondensed(act));
+		text.setTypeface(Util.getRobotoLight(act));
+
+		name.setText(comment.getName());
+
+		String dateString = Util.getDateString(act, comment.getCreatedAt());
+		// Log.d("comment_date_adapter", dateString);
+		date.setText(dateString);
+		text.setText(comment.getText());
+		UrlImageViewHelper.setUrlDrawable(pic, comment.getImgUrl());
+
+		pic.setContentDescription(comment.getName());
+		view.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				act.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + comment.getUserId())));
+			}
+		});
+
+		return view;
+	}
+
+	private static View getAnimationView(Context context, NieuwsItem item) {
+		View view = null;
+		if (item instanceof NormalNieuwsItem)
+			view = NieuwsAdapter.constructNormalView(context, item, null);
+		else
+			if (item instanceof FacebookNieuwsItem)
+				if (item.isPhoto())
+					view = NieuwsAdapter.constructFacebookPhotoView(context, (FacebookNieuwsItem) item, null);
+				else
+					view = NieuwsAdapter.constructFacebookView(context, (FacebookNieuwsItem) item, null);
+
+		return view;
+	}
+
+	public void populateComments(LinearLayout container, FacebookNieuwsItem item) {
+		if (item.getComments().size() == 0) {
+			container.setVisibility(View.GONE);
+			return;
+		} else
+			container.setVisibility(View.VISIBLE);
+
+		TextView caption = (TextView) container.findViewById(R.id.nieuwsitem_comments_caption);
+		caption.setTypeface(Util.getRobotoCondensed(act));
+
+		for (int i = 2; i < container.getChildCount(); i++)
+			container.removeViewAt(i);
+
+		for (Comment comment : item.getComments())
+			container.addView(getCommentView(comment));
+
+	}
+
+	public String getTitle() {
+		return item.getTitle();
+	}
+}

@@ -26,11 +26,10 @@
                 app:selectedBold="true"
                 app:selectedColor="@color/blue" />
 
-            <ViewPager
+            <org.holoeverywhere.widget.ViewPager
                 android:id="@+id/tablePager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </ViewPager>
+                android:layout_height="match_parent" />
         </org.holoeverywhere.widget.LinearLayout>
 
         <org.holoeverywhere.widget.TextView
@@ -110,12 +109,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <ViewPager
+            <org.holoeverywhere.widget.ViewPager
                 android:id="@+id/photoPager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" >
-            </ViewPager>
+                android:layout_weight="1" />
 
             <com.viewpagerindicator.UnderlinePageIndicator
                 android:id="@+id/photoIndicator"

@@ -1,7 +1,0 @@
-package com.markbuikema.juliana32.ui;
-
-import android.view.animation.Animation;
-
-public class NieuwsDetailAnimation extends Animation {
-
-}

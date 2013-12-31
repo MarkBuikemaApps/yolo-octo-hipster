@@ -1,0 +1,21 @@
+package com.markbuikema.juliana32.adapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.widget.ArrayAdapter;
+import org.holoeverywhere.widget.TextView;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.adapter.TeamAdapter.TeamListItem;
+import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.model.Team.Category;
+
+public class TeamAdapter extends ArrayAdapter<Team> {
+
+}

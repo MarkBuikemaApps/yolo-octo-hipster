@@ -13,18 +13,19 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getAnim" key="selection"/>
+		<item value="mShowDividers" key="selection"/>
 		<list key="findhistory">
-			<item value="getanim"/>
-			<item value="setoncl"/>
-			<item value="onmen"/>
-			<item value="oncrea"/>
-			<item value="onop"/>
-			<item value="open"/>
-			<item value="on"/>
-			<item value="overfl"/>
+			<item value="mShowDividers"/>
+			<item value="if (mSho"/>
+			<item value="style"/>
+			<item value="typedarray"/>
+			<item value="mTabSelector ="/>
+			<item value="popup"/>
+			<item value="popupmenu"/>
+			<item value="tools"/>
 		</list>
 		<list key="replacehistory">
+			<item value="@dimen/action_bar_height"/>
 			<item value="context"/>
 			<item value="nieuwsDetailV"/>
 			<item value="CondensedBold"/>
@@ -32,7 +33,6 @@
 			<item value="ScrollView"/>
 			<item value="ImageView"/>
 			<item value=""/>
-			<item value="  "/>
 		</list>
 	</section>
 </section>

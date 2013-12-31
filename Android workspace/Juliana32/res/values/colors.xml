@@ -10,9 +10,11 @@
     <color name="blue">#15589e</color>
     <color name="white">#ffffff</color>
     <color name="ltgrey">#f1f1f1</color>
-    <color name="touched">#fafafa</color>
+    <color name="touched">#1A000000</color>
+    <color name="focused">#77000000</color>
     <color name="secondary_text_color">#bbbbbb</color>
     <color name="protection_center_color">#aa000000</color>
     <color name="transparentwhite">#00ffffff</color>
+    <color name="stacked_action_bar_color">#d815589e</color>
 
 </resources>

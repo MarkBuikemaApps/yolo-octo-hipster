@@ -41,23 +41,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <org.holoeverywhere.widget.ViewPager
-                android:id="@+id/facebookPhotoPager"
+            <org.holoeverywhere.widget.FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="222dp" />
+                android:layout_height="wrap_content" >
+
+                <org.holoeverywhere.widget.ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <org.holoeverywhere.widget.ViewPager
+                    android:id="@+id/facebookPhotoPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp" />
+
+                <ImageView
+                    android:id="@+id/facebookSinglePhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/none" />
+            </org.holoeverywhere.widget.FrameLayout>
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/facebook_subTitle"
+                android:id="@+id/nieuwsitem_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/protection_black_t_b"
                 android:padding="@dimen/card_padding"
                 android:shadowColor="@android:color/black"
-                android:background="@drawable/protection_black_t_b"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="3"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/normalTextSize" />
         </org.holoeverywhere.widget.FrameLayout>
 
         <View

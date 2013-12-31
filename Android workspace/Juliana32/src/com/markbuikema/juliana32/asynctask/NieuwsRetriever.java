@@ -22,7 +22,7 @@ import android.os.AsyncTask;
 
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem;
-import com.markbuikema.juliana32.model.NormalNieuwsItem;
+import com.markbuikema.juliana32.model.WebsiteNieuwsItem;
 import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
 
@@ -35,77 +35,77 @@ public abstract class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<N
 	private boolean retrieveFromWebsite;
 	private CountCallback photoCallback;
 
-	public NieuwsRetriever(boolean facebook, boolean website) {
+	public NieuwsRetriever( boolean facebook, boolean website ) {
 		retrieveFromFacebook = facebook;
 		retrieveFromWebsite = website;
 	}
 
 	@Override
-	protected List<NieuwsItem> doInBackground(Void... params) {
+	protected List<NieuwsItem> doInBackground( Void... params ) {
 		// Log.d("nieuwsloader", "1");
 		final ArrayList<NieuwsItem> items = new ArrayList<NieuwsItem>();
 
-		if (retrieveFromWebsite) {
+		if ( retrieveFromWebsite ) {
 			HttpClient client = new DefaultHttpClient();
-			client.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+			client.getParams().setParameter( CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1 );
 
-			HttpGet get = new HttpGet(GET_URL);
+			HttpGet get = new HttpGet( GET_URL );
 			// Log.d("nieuwsloader", "2");
 			try {
-				HttpResponse response = client.execute(get);
+				HttpResponse response = client.execute( get );
 				// Log.d("nieuwsloader", "3");
-				statusCode = Integer.toString(response.getStatusLine().getStatusCode());
-				if (!statusCode.startsWith("2"))
+				statusCode = Integer.toString( response.getStatusLine().getStatusCode() );
+				if ( ! statusCode.startsWith( "2" ) )
 					return null;
 				String html = null;
-				html = EntityUtils.toString(response.getEntity(), "UTF-8");
-				Document doc = Jsoup.parse(html);
-				Elements eles = doc.getElementsByClass("item-inhoud-home");
-				for (Element ele : eles) {
+				html = EntityUtils.toString( response.getEntity(), "UTF-8" );
+				Document doc = Jsoup.parse( html );
+				Elements eles = doc.getElementsByClass( "item-inhoud-home" );
+				for ( Element ele : eles ) {
 					String title;
 					String subTitle;
 					GregorianCalendar createdAt;
 					String detailUrl;
 
-					Element a = ele.getElementsByClass("title").get(0);
-					detailUrl = a.attr("href");
-					title = a.attr("title");
+					Element a = ele.getElementsByClass( "title" ).get( 0 );
+					detailUrl = a.attr( "href" );
+					title = a.attr( "title" );
 
-					Element sum = ele.getElementsByClass("sum").get(0);
+					Element sum = ele.getElementsByClass( "sum" ).get( 0 );
 					subTitle = sum.html();
 					try {
-						createdAt = Util.parseDate(ele.getElementsByClass("datum").get(0).html().split("plaatst op: ")[1]);
-					} catch (ArrayIndexOutOfBoundsException e) {
+						createdAt = Util.parseDate( ele.getElementsByClass( "datum" ).get( 0 ).html().split( "plaatst op: " )[ 1 ] );
+					} catch ( ArrayIndexOutOfBoundsException e ) {
 						createdAt = new GregorianCalendar();
 					}
 
-					title = title.replace("&eacute;", "'");
-					subTitle = subTitle.replace("&eacute;", "é");
+					title = title.replace( "&eacute;", "'" );
+					subTitle = subTitle.replace( "&eacute;", "é" );
 
 					String nieuwsId;
 					try {
-						nieuwsId = detailUrl.split("/")[5];
-					} catch (ArrayIndexOutOfBoundsException e) {
+						nieuwsId = detailUrl.split( "/" )[ 5 ];
+					} catch ( ArrayIndexOutOfBoundsException e ) {
 						nieuwsId = null;
 					}
 
-					items.add(new NormalNieuwsItem(nieuwsId, title, subTitle, createdAt, detailUrl));
+					items.add( new WebsiteNieuwsItem( nieuwsId, title, subTitle, createdAt, detailUrl ) );
 				}
 
-			} catch (IOException e) {
+			} catch ( IOException e ) {
 				e.printStackTrace();
 			}
 		}
-		if (retrieveFromFacebook)
-			FacebookHelper.addFacebookFeed(items);
+		if ( retrieveFromFacebook )
+			FacebookHelper.addFacebookFeed( items );
 
-		Collections.sort(items);
+		Collections.sort( items );
 
 		int count = 0;
-		for (NieuwsItem item : items)
-			if (item.isFromFacebook() && ((FacebookNieuwsItem) item).isPhoto())
-				count++;
-		photoCallback = new CountCallback(count);
+		for ( NieuwsItem item : items )
+			if ( item.isFromFacebook() && ( (FacebookNieuwsItem) item ).isPhoto() )
+				count++ ;
+		photoCallback = new CountCallback( count );
 
 		return items;
 	}
@@ -120,14 +120,14 @@ public abstract class NieuwsRetriever extends AsyncTask<Void, NieuwsItem, List<N
 		private int countLeft;
 		private static final String TAG = "CountCallback";
 
-		public CountCallback(int count) {
+		public CountCallback( int count ) {
 			// Log.d(TAG, "CountCallback created with count " + count);
 			countLeft = count;
 		}
 
 		public final void onCallback() {
-			if (countLeft > 1)
-				countLeft--;
+			if ( countLeft > 1 )
+				countLeft-- ;
 			else
 				onPhotosLoaded();
 

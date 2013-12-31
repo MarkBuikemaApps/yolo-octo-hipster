@@ -7,20 +7,20 @@
 
     <org.holoeverywhere.widget.LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/action_bar_height"
         android:background="@drawable/actionbar2"
         android:orientation="horizontal" >
 
         <org.holoeverywhere.widget.LinearLayout
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/action_bar_height"
             android:background="@drawable/listselector"
             android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="64dp"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/action_bar_height"
                 android:layout_margin="0dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/content_description_menubutton"
@@ -31,7 +31,7 @@
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/action_bar_height"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

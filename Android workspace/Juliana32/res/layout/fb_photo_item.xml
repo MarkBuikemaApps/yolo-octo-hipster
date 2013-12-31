@@ -7,19 +7,14 @@
 
     <org.holoeverywhere.widget.FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" >
 
-        <org.holoeverywhere.widget.ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        
 
         <ImageView
             android:id="@+id/facebookPhoto"
             android:layout_width="match_parent"
-            android:layout_height="222dp"
+            android:layout_height="240dp"
             android:contentDescription="@string/none"
             android:scaleType="centerCrop" />
     </org.holoeverywhere.widget.FrameLayout>

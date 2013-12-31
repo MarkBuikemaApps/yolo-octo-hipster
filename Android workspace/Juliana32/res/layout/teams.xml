@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <org.holoeverywhere.widget.ListView
-        android:id="@+id/teams_list"
+    <org.holoeverywhere.widget.ViewPager
+        android:id="@+id/teamsPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/white"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:drawSelectorOnTop="true"
-        android:listSelector="@android:color/transparent"
-        android:padding="@dimen/default_margin"
-        android:scrollbarThumbVertical="@drawable/listitem_background" >
-    </org.holoeverywhere.widget.ListView>
+        android:layout_height="match_parent" />
 
-</org.holoeverywhere.widget.LinearLayout>
+    <com.viewpagerindicator.TabPageIndicator
+        android:id="@+id/teamsTabsIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/action_bar_height" />
+
+</FrameLayout>

@@ -7,7 +7,7 @@
     <View
         android:id="@+id/menuCorner"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/action_bar_height"
         android:background="@drawable/corner" />
 
     <org.holoeverywhere.widget.ListView

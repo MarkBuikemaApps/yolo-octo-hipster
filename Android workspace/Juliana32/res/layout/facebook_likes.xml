@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.holoeverywhere.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <org.holoeverywhere.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_frame"
+        android:orientation="vertical" >
+
+        <org.holoeverywhere.widget.LinearLayout
+            android:id="@+id/likeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/listselector"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:padding="@dimen/card_padding" >
+
+            <org.holoeverywhere.widget.FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <org.holoeverywhere.widget.ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/none"
+                    android:src="@drawable/fb_like" />
+            </org.holoeverywhere.widget.FrameLayout>
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/nieuwsitem_likes_caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/card_padding"
+                android:layout_weight="1"
+                android:text="@string/like"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+        </org.holoeverywhere.widget.LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_line_thickness"
+            android:background="@color/grey" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/card_padding" >
+
+            <org.holoeverywhere.widget.LinearLayout
+                android:id="@+id/nieuwsitem_likes_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+            </org.holoeverywhere.widget.LinearLayout>
+        </HorizontalScrollView>
+    </org.holoeverywhere.widget.LinearLayout>
+
+</org.holoeverywhere.widget.FrameLayout>

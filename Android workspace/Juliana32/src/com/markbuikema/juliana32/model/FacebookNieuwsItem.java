@@ -18,9 +18,9 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	private String defaultPhotoId;
 	private List<Comment> comments;
 
-	public FacebookNieuwsItem(String fbId, String title, String content, GregorianCalendar createdAt, String link,
-			String imgUrl, List<Like> likes, List<Comment> comments, String albumId, String defaultPhotoId) {
-		super(title, null, content, createdAt);
+	public FacebookNieuwsItem( String fbId, String title, String content, GregorianCalendar createdAt, String link,
+			String imgUrl, List<Like> likes, List<Comment> comments, String albumId, String defaultPhotoId ) {
+		super( title, null, content, createdAt );
 
 		this.albumId = albumId;
 		this.fbId = fbId;
@@ -30,6 +30,24 @@ public class FacebookNieuwsItem extends NieuwsItem {
 		this.imgUrl = imgUrl;
 		likeCount = likes.size();
 		this.defaultPhotoId = defaultPhotoId;
+
+		if ( ! isPhoto() && content.contains( " #" ) ) {
+			this.title = "";
+			String[] words = content.split( " " );
+			for ( int i = 0; i < words.length; i++ ) {
+				String word = words[ i ];
+
+				if ( word.startsWith( "#" ) ) {
+					if ( word.equals( "#" ) && i < words.length - 1 ) {
+						word = word + words[ i + 1 ];
+						i++ ;
+					}
+					this.title += word + " ";
+				}
+			}
+
+			this.title = this.title.trim();
+		}
 	}
 
 	public String getFbId() {
@@ -50,18 +68,22 @@ public class FacebookNieuwsItem extends NieuwsItem {
 
 	@Override
 	public boolean isPhoto() {
-		return albumId != null;
+		return albumId != null || defaultPhotoId != null;
 	}
 
 	public String getAlbumId() {
 		return albumId;
 	}
 
-	public List<Like> getLikes() {
-		return Collections.unmodifiableList(likes);
+	public String getDefaultPhoto() {
+		return defaultPhotoId;
 	}
 
-	public void setLiked(boolean liked) {
+	public List<Like> getLikes() {
+		return Collections.unmodifiableList( likes );
+	}
+
+	public void setLiked( boolean liked ) {
 		this.liked = liked;
 	}
 
@@ -75,58 +97,39 @@ public class FacebookNieuwsItem extends NieuwsItem {
 	}
 
 	@Override
-	public void addPhoto(String url) {
-		if (url.equals(defaultPhotoId))
-			photos.add(0, url);
+	public void addPhoto( String url ) {
+		if ( url.equals( defaultPhotoId ) )
+			photos.add( 0, url );
 		else
-			photos.add(url);
+			photos.add( url );
 
 		setChanged();
 		notifyObservers();
 	}
 
 	@Override
-	public void startLoading(final OnContentLoadedListener callback) {
+	public void startLoading( final OnContentLoadedListener callback ) {
 		new PhotoGetter() {
 			@Override
-			protected void onPostExecute(final List<String> result) {
+			protected void onPostExecute( final List<String> result ) {
 				photos.clear();
-				for (String photo : result)
-					addPhoto(photo);
-				callback.onContentLoaded(null, result);
-
-				// new CommentLoader() {
-				//
-				// @Override
-				// protected void onPreExecute() {
-				// comments.clear();
-				// }
-				//
-				// @Override
-				// protected void onProgressUpdate(Comment... values) {
-				// for (int i = 0; i < values.length; i++)
-				// comments.add(values[i]);
-				// }
-				//
-				// @Override
-				// protected void onPostExecute(Void v) {
-				// commentCount = comments.size();
-				// }
-				// }.execute(fbId);
+				for ( String photo : result )
+					addPhoto( photo );
+				callback.onContentLoaded( null, result );
 			}
-		}.execute(this);
+		}.execute( this );
 	}
 
 	@Override
 	public boolean isContentLoaded() {
-		if (isPhoto())
+		if ( isPhoto() )
 			return getPhotoCount() > 0;
 		else
 			return true;
 	}
 
 	public List<Comment> getComments() {
-		return Collections.unmodifiableList(comments);
+		return Collections.unmodifiableList( comments );
 	}
 
 }

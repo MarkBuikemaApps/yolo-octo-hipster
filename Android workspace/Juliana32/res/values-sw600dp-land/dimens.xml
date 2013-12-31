@@ -2,8 +2,13 @@
 <resources>
 
     <integer name="columnCount">3</integer>
+    <integer name="teamColumns">4</integer>
 
-    <dimen name="readableTextSize">12sp</dimen>
-    <dimen name="card_padding">32dp</dimen>
+    <dimen name="action_bar_height">56dp</dimen>
+    <dimen name="action_bar_height_stacked">56dp</dimen>
+    <dimen name="readableTextSize">24sp</dimen>
+    <dimen name="normalTextSize">16sp</dimen>
+    <dimen name="nieuws_header_margin">60dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
 
 </resources>

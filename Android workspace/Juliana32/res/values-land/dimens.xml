@@ -2,7 +2,8 @@
 <resources>
 
     <integer name="columnCount">2</integer>
-
+    <integer name="teamColumns">3</integer>
+    
     <dimen name="card_padding">10dp</dimen>
     <dimen name="readableTextSize">16sp</dimen>
 

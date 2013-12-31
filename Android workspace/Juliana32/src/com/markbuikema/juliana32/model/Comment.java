@@ -8,13 +8,13 @@ public class Comment extends Like {
 
 	private String text;
 	private GregorianCalendar createdAt;
-	private String userId;
+	private String id;
 
 	public Comment(String id, String name, String userId, String text, String dateString) {
-		super(id, name);
+		super(userId, name);
 
 		this.text = text;
-		this.userId = userId;
+		this.id = id;
 
 		createdAt = FacebookHelper.toDate(dateString);
 		// Log.d("comment_date", createdAt.toString());
@@ -28,11 +28,8 @@ public class Comment extends Like {
 		return createdAt;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getId() {
+		return id;
 	}
 
-	public String getImgUrl() {
-		return "http://graph.facebook.com/" + userId + "/picture?type=square";
-	}
 }

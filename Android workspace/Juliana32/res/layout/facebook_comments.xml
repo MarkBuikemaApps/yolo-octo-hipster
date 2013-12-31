@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.holoeverywhere.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <org.holoeverywhere.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_frame"
+        android:orientation="vertical" >
+
+        <org.holoeverywhere.widget.LinearLayout
+            android:id="@+id/commentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/listselector"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:padding="@dimen/card_padding" >
+
+            <ImageView
+                android:id="@+id/nieuwsitem_comment_profilepic"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/none"
+                android:src="@drawable/fb_comment" />
+
+            <org.holoeverywhere.widget.FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <org.holoeverywhere.widget.ProgressBar
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/nieuwsitem_comments_caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/card_padding"
+                    android:text="@string/comment"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <org.holoeverywhere.widget.EditText
+                    android:id="@+id/nieuwsitem_comments_comment_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/commenthint"
+                    android:visibility="gone" />
+            </org.holoeverywhere.widget.FrameLayout>
+        </org.holoeverywhere.widget.LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_line_thickness"
+            android:background="@color/grey" />
+
+        <org.holoeverywhere.widget.LinearLayout
+            android:id="@+id/nieuwsitem_comments_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </org.holoeverywhere.widget.LinearLayout>
+    </org.holoeverywhere.widget.LinearLayout>
+
+</org.holoeverywhere.widget.FrameLayout>

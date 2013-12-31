@@ -13,6 +13,10 @@ import com.markbuikema.juliana32.util.Util;
 
 public abstract class Toaster {
 	public static void toast(Activity context, String message) {
+		toast(context, message, -1, -1, Toast.LENGTH_LONG);
+	}
+
+	public static void toast(Activity context, String message, int x, int y, int duration) {
 		LayoutInflater inflater = context.getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toaster, (ViewGroup) context.findViewById(R.id.toast_layout_root));
 
@@ -21,8 +25,11 @@ public abstract class Toaster {
 		text.setTypeface(Util.getRobotoCondensed(context));
 
 		Toast toast = new Toast(context);
-		toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 50);
-		toast.setDuration(Toast.LENGTH_LONG);
+		if (x > -1 && y > -1)
+			toast.setGravity(Gravity.LEFT | Gravity.TOP, x, y + 50);
+		else
+			toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 50);
+		toast.setDuration(duration);
 		toast.setView(layout);
 		toast.show();
 	}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@color/stacked_action_bar_color"/>
+    <item android:drawable="@drawable/listselector"/>
+    <item android:drawable="@drawable/tab_background"/>
+
+</layer-list>
