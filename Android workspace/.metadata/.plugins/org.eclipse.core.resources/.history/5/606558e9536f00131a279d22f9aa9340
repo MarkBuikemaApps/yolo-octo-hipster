@@ -1,9 +1,0 @@
-package com.markbuikema.juliana32.adapter;
-
-import org.holoeverywhere.widget.ArrayAdapter;
-
-import com.markbuikema.juliana32.model.Team;
-
-public class TeamAdapter extends ArrayAdapter<Team> {
-
-}

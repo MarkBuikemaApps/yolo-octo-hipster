@@ -8,8 +8,11 @@
     <org.holoeverywhere.widget.GridView
         android:id="@+id/teamsGrid"
         android:layout_width="match_parent"
-        android:numColumns="@integer/teamColumns"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="1dp"
         android:listSelector="@drawable/listselector"
-        android:layout_height="match_parent" />
+        android:numColumns="@integer/teamColumns"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="1dp" />
 
 </org.holoeverywhere.widget.LinearLayout>

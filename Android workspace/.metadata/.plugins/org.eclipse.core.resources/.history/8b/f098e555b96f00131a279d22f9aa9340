@@ -1,7 +1,0 @@
-package com.markbuikema.juliana32.ui;
-
-import org.holoeverywhere.app.Fragment;
-
-public class TeamGridFragment extends Fragment {
-
-}

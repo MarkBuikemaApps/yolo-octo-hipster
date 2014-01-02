@@ -8,12 +8,14 @@ import org.holoeverywhere.widget.TextView;
 
 import android.content.Context;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ImageView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.markbuikema.juliana32.R;
+import com.markbuikema.juliana32.activity.MainActivity;
 import com.markbuikema.juliana32.model.Team;
 import com.markbuikema.juliana32.model.Team.Category;
 import com.markbuikema.juliana32.util.Util;
@@ -49,11 +51,19 @@ public class TeamAdapter extends ArrayAdapter<Team> {
 		ImageView teamPhoto = (ImageView) convertView.findViewById( R.id.teamGridPicture );
 		TextView teamName = (TextView) convertView.findViewById( R.id.teamGridName );
 
-		Team team = getItem( position );
+		final Team team = getItem( position );
 
 		UrlImageViewHelper.setUrlDrawable( teamPhoto, team.getTeamPhotoUrl(), R.drawable.team_placeholder );
 		teamName.setTypeface( Util.getRobotoLight( getContext() ) );
 		teamName.setText( team.getName() );
+
+		teamPhoto.setOnClickListener( new OnClickListener() {
+
+			@Override
+			public void onClick( View arg0 ) {
+				( (MainActivity) getContext() ).requestTeamDetailPage( team );
+			}
+		} );
 
 		return convertView;
 	}

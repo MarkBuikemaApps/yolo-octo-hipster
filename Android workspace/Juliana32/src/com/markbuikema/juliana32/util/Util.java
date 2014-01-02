@@ -31,12 +31,10 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
@@ -53,13 +51,10 @@ public class Util {
 	public static final String PHOTO_URL_PREFIX = "http://graph.facebook.com/";
 	public static final String PHOTO_URL_SUFFIX = "/picture";
 	public static final long WEEK = 1000 * 60 * 60 * 24 * 7;
-	private static float screenWidth = - 1;
 	private static Typeface robotoLight;
 	private static Typeface robotoThin;
 	private static Typeface robotoCondensed;
 	private static Typeface robotoSlabLight;
-
-	private static int viewWidth;
 
 	public static String getHttpContent( String url ) {
 		HttpClient client = new DefaultHttpClient();
@@ -97,19 +92,6 @@ public class Util {
 
 	public static String getDateString( Context ctx, GregorianCalendar date ) {
 		return DateTimeUtils.getInstance( ctx ).getTimeDiffString( date.getTimeInMillis() );
-	}
-
-	public static void onOrientationChanged( boolean portrait ) {
-		screenWidth = - 1;
-	}
-
-	@SuppressWarnings( "deprecation" )
-	public static float getScreenWidth( Context ctx ) {
-		if ( screenWidth == - 1 ) {
-			Display d = ( (WindowManager) ctx.getSystemService( Context.WINDOW_SERVICE ) ).getDefaultDisplay();
-			screenWidth = d.getWidth();
-		}
-		return screenWidth;
 	}
 
 	public static boolean hasHoneycomb() {

@@ -26,7 +26,7 @@ public class TeamGridFragment extends Fragment {
 		View view = inflater.inflate( R.layout.grid_teams, null );
 		GridView grid = (GridView) view.findViewById( R.id.teamsGrid );
 		grid.setAdapter( adapter );
-
 		return view;
 	}
+
 }

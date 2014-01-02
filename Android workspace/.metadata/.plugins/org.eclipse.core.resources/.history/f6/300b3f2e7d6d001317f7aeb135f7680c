@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <integer name="columnCount">3</integer>
-
-    <dimen name="readableTextSize">24sp</dimen>
-    <dimen name="card_padding">16dp</dimen>
-
-</resources>

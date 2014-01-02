@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res/com.markbuikema.juliana32"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingTop="@dimen/action_bar_height" >
 
     <org.holoeverywhere.widget.FrameLayout
         android:layout_width="match_parent"
@@ -152,4 +153,5 @@
             </org.holoeverywhere.widget.ListView>
         </org.holoeverywhere.widget.FrameLayout>
     </org.holoeverywhere.widget.FrameLayout>
-</org.holoeverywhere.widget.LinearLayout>
+
+</org.holoeverywhere.widget.LinearLayout>

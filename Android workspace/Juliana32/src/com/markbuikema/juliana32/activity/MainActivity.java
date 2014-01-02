@@ -37,7 +37,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
-import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -165,8 +164,6 @@ public class MainActivity extends FragmentActivity {
 		new EventRetriever().execute();
 
 		logHashKey();
-
-		Util.onOrientationChanged( getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT );
 
 		actionBarHeight = getResources().getDimensionPixelSize( R.dimen.nieuws_header_margin );
 		isTablet = getResources().getBoolean( R.bool.isTablet );
@@ -372,6 +369,8 @@ public class MainActivity extends FragmentActivity {
 			if ( searching )
 				searchInput.setText( savedInstanceState.getString( "searchWord" ) );
 
+			teams.reloadData();
+
 		}
 	}
 
@@ -446,7 +445,6 @@ public class MainActivity extends FragmentActivity {
 			activePageView = findViewById( R.id.teamsView );
 			if ( teams == null )
 				teams = new Teams( this );
-			teams.onResume();
 
 			break;
 		case TELETEKST:
@@ -493,7 +491,6 @@ public class MainActivity extends FragmentActivity {
 			if ( ! nieuws.isRefreshing() )
 				nieuws.refresh();
 		}
-
 	}
 
 	@TargetApi( Build.VERSION_CODES.HONEYCOMB )
@@ -540,7 +537,7 @@ public class MainActivity extends FragmentActivity {
 			shareButton.setVisibility( View.GONE );
 			searchButton.setVisibility( View.GONE );
 			if ( teams != null && ! isTeamDetailShown() )
-				loader.setVisibility( teams.isLoading() ? View.VISIBLE : View.GONE );
+				loader.setVisibility( ! teams.isLoaded() ? View.VISIBLE : View.GONE );
 
 			break;
 		case TELETEKST:
@@ -982,16 +979,6 @@ public class MainActivity extends FragmentActivity {
 
 	public String getUserName() {
 		return userName;
-	}
-
-	public void reloadTeams() {
-		if ( teams != null )
-			teams = new Teams( this );
-	}
-
-	public void reloadNieuws() {
-		if ( nieuws != null )
-			nieuws = new Nieuws( this );
 	}
 
 	public void setRefreshingNieuws( boolean refreshing ) {
