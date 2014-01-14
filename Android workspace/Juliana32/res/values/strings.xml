@@ -78,5 +78,7 @@
     <string name="menu_twitter">Twitter</string>
     <string name="menu_website">Website</string>
     <string name="content_not_found">Nieuwsbericht niet gevonden. Bekijk het bericht op de website.</string>
+    <string name="comment_post_success">Uw reactie is geplaatst!</string>
+    <string name="comment_post_failure">Uw reactie kan niet geplaatst worden. Controleer uw internetverbinding.</string>
 
 </resources>

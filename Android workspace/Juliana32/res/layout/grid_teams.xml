@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.holoeverywhere.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<org.holoeverywhere.widget.GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/teamsGrid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <org.holoeverywhere.widget.GridView
-        android:id="@+id/teamsGrid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:horizontalSpacing="1dp"
-        android:listSelector="@drawable/listselector"
-        android:numColumns="@integer/teamColumns"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp" />
-
-</org.holoeverywhere.widget.LinearLayout>
+    android:horizontalSpacing="@dimen/gridSpacing"
+    android:listSelector="@drawable/listselector"
+    android:numColumns="@integer/teamColumns"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="@dimen/gridSpacing" />

@@ -14,7 +14,6 @@
             android:id="@+id/likeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/listselector"
             android:clickable="true"
             android:orientation="horizontal"
             android:padding="@dimen/card_padding" >
@@ -63,6 +62,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
+
+                <FrameLayout
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginRight="@dimen/card_padding" >
+
+                    <ImageView
+                        android:id="@+id/likeInputImage"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:contentDescription="@string/none"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/silhouette" />
+
+                    <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/listselector"
+                        android:contentDescription="@string/none"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/roundedcorner" />
+
+                    <org.holoeverywhere.widget.ProgressBar
+                        android:id="@+id/likeInputLoader"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:indeterminate="true" />
+                </FrameLayout>
             </org.holoeverywhere.widget.LinearLayout>
         </HorizontalScrollView>
     </org.holoeverywhere.widget.LinearLayout>

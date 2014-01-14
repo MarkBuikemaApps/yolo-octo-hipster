@@ -1,6 +1,5 @@
 <org.holoeverywhere.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res/com.markbuikema.juliana32"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ltgrey"
@@ -68,7 +67,7 @@
         android:id="@+id/actionBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_height"
-        android:background="@drawable/actionbar2"
+        android:background="@drawable/actionbar"
         android:orientation="horizontal" >
 
         <org.holoeverywhere.widget.LinearLayout
@@ -85,13 +84,24 @@
                 <ImageView
                     android:id="@+id/menuDrawerIcon"
                     android:layout_width="64dp"
-                    android:layout_height="@dimen/action_bar_height"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:contentDescription="@string/none"
-                    android:src="@drawable/slider_closed" />
+                    android:scaleType="fitStart"
+                    android:src="@drawable/apptheme_ic_navigation_drawer" />
 
                 <ImageView
-                    android:id="@+id/menuButton"
+                    android:id="@+id/menuUpIcon"
                     android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/none"
+                    android:scaleType="fitStart"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_ab_back_holo_dark_am" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
                     android:layout_margin="0dp"
@@ -99,7 +109,8 @@
                     android:contentDescription="@string/content_description_menubutton"
                     android:padding="0dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/menu_borderless" />
+                    android:src="@drawable/ic_juliana" />
+                <!-- width 64dp? -->
             </org.holoeverywhere.widget.FrameLayout>
 
             <org.holoeverywhere.widget.TextView
@@ -114,17 +125,23 @@
                 android:textSize="20sp" />
         </org.holoeverywhere.widget.LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/tabsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_margin" />
+
         <org.holoeverywhere.widget.EditText
             android:id="@+id/searchInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/edittext"
-            android:drawableLeft="@drawable/ic_menu_search"
+            android:drawableLeft="@drawable/ic_action_action_search"
             android:hint="@string/search"
-            android:imeOptions="actionSearch"
+            android:imeOptions="actionSearch|flagNoExtractUi|flagForceAscii"
             android:inputType="text"
             android:singleLine="true"
-            android:textColor="@android:color/white"
+            android:layout_margin="1dp"
+            android:textColor="@android:color/black"
             android:textColorHint="@color/grey"
             android:visibility="gone" />
 

@@ -19,7 +19,6 @@ package com.markbuikema.juliana32.ui.pulltorefresh;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import uk.co.senab.actionbarpulltorefresh.library.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -32,6 +31,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.markbuikema.juliana32.R;
 
 /**
  * FIXME

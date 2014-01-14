@@ -158,7 +158,7 @@ public class Util {
 		for ( NieuwsItem item : DataManager.getInstance().getNieuwsItems() )
 			try {
 				FacebookNieuwsItem fbni = (FacebookNieuwsItem) item;
-				if ( ! fbni.isPhoto() )
+				if ( !fbni.isPhoto() )
 					continue;
 
 				String title = fbni.getTitle();
@@ -169,17 +169,18 @@ public class Util {
 				else
 					checkString = afterJul.substring( 0, 6 );
 
-				String[] teamCodes = new String[] {
-						"A1", "A2", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "E1", "E2", "F1", "F2", "Da", "1", "2", "3", "4",
-						"5", "6", "7", "8", "9", "10"
-				};
+				String[] teamCodes = new String[] { "A1", "A2", "B1", "B2", "C1", "C2", "C3", "C4", "D1", "D2", "E1", "E2", "F1", "F2",
+						"Da", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
 				for ( String team : teamCodes )
 					if ( checkString.contains( team ) ) {
-						// Log.d("photoadder", checkString + " contains " + team);
+						// Log.d("photoadder", checkString + " contains " +
+						// team);
 						for ( Team t : Teams.getTeams() )
 							if ( isTeam( team, t ) ) {
-								// Log.d("photoadder", "FBNI " + fbni.getTitle() +
-								// " first has " + fbni.getPhotoCount() + " photos");
+								// Log.d("photoadder", "FBNI " + fbni.getTitle()
+								// +
+								// " first has " + fbni.getPhotoCount() +
+								// " photos");
 								for ( String photo : fbni.getPhotos() )
 									t.addPhoto( photo );
 								break;
@@ -195,9 +196,9 @@ public class Util {
 
 	/**
 	 * @param team
-	 *          team code
+	 *            team code
 	 * @param t
-	 *          the team to compare with
+	 *            the team to compare with
 	 * @return whether it is the team
 	 */
 	private static boolean isTeam( String team, Team t ) {
@@ -264,8 +265,7 @@ public class Util {
 		for ( NieuwsItem item : DataManager.getInstance().getNieuwsItems() )
 			try {
 				WebsiteNieuwsItem i = (WebsiteNieuwsItem) item;
-				if ( i.getCreatedAt().getTimeInMillis() < game.getDate()
-						|| i.getCreatedAt().getTimeInMillis() > game.getDate() + WEEK )
+				if ( i.getCreatedAt().getTimeInMillis() < game.getDate() || i.getCreatedAt().getTimeInMillis() > game.getDate() + WEEK )
 					continue;
 
 				if ( i.getSubTitle().contains( club ) || i.getTitle().contains( club ) )
@@ -301,7 +301,7 @@ public class Util {
 		return robotoSlabLight;
 	}
 
-	@TargetApi( Build.VERSION_CODES.JELLY_BEAN )
+	@TargetApi (Build.VERSION_CODES.JELLY_BEAN )
 	public static void removeOnGlobalLayoutListener( View v, ViewTreeObserver.OnGlobalLayoutListener listener ) {
 		if ( Build.VERSION.SDK_INT < 16 )
 			v.getViewTreeObserver().removeGlobalOnLayoutListener( listener );
@@ -371,20 +371,24 @@ public class Util {
 
 	public static class LinkifyExtra extends Linkify {
 		public static Spanned addLinksHtmlAware( String htmlString ) {
-			// gather links from html
-			Spanned spann = Html.fromHtml( htmlString );
-			URLSpan[] old = spann.getSpans( 0, spann.length(), URLSpan.class );
-			List<Pair<Integer, Integer>> htmlLinks = new ArrayList<Pair<Integer, Integer>>();
-			for ( URLSpan span : old )
-				htmlLinks.add( new Pair<Integer, Integer>( spann.getSpanStart( span ), spann.getSpanEnd( span ) ) );
-			// linkify spanned, html link will be lost
-			Linkify.addLinks( (Spannable) spann, Linkify.ALL );
-			// add html links back
-			for ( int i = 0; i < old.length; i++ )
-				( (Spannable) spann ).setSpan( old[ i ], htmlLinks.get( i ).first, htmlLinks.get( i ).second,
-						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
+			try {
+				// gather links from html
+				Spanned spann = Html.fromHtml( htmlString );
+				URLSpan[] old = spann.getSpans( 0, spann.length(), URLSpan.class );
+				List<Pair<Integer, Integer>> htmlLinks = new ArrayList<Pair<Integer, Integer>>();
+				for ( URLSpan span : old )
+					htmlLinks.add( new Pair<Integer, Integer>( spann.getSpanStart( span ), spann.getSpanEnd( span ) ) );
+				// linkify spanned, html link will be lost
+				Linkify.addLinks( (Spannable) spann, Linkify.ALL );
+				// add html links back
+				for ( int i = 0; i < old.length; i++ )
+					( (Spannable) spann ).setSpan( old[ i ], htmlLinks.get( i ).first, htmlLinks.get( i ).second,
+							Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
 
-			return spann;
+				return spann;
+			} catch ( Exception e ) {
+				return null;
+			}
 		}
 	}
 
@@ -394,10 +398,12 @@ public class Util {
 			return "";
 
 		int end = source.length();
-		int start = - 1;
+		int start = -1;
 
-		while ( --end >= 0 && Character.isWhitespace( source.charAt( end ) ) );
-		while ( ++start < end && Character.isWhitespace( source.charAt( start ) ) );
+		while ( --end >= 0 && Character.isWhitespace( source.charAt( end ) ) )
+			;
+		while ( ++start < end && Character.isWhitespace( source.charAt( start ) ) )
+			;
 
 		return source.subSequence( start, end + 1 );
 	}

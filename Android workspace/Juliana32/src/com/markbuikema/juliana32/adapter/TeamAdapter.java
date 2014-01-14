@@ -7,6 +7,8 @@ import org.holoeverywhere.widget.ArrayAdapter;
 import org.holoeverywhere.widget.TextView;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,14 +26,25 @@ public class TeamAdapter extends ArrayAdapter<Team> {
 
 	private Category cat;
 
-	private int stackedActionBarHeight;
+	private int topMargin;
 	private int columnCount;
 
 	public TeamAdapter( Context context, Category cat, List<Team> teams ) {
 		super( context, 0, teams );
 		this.cat = cat;
 
-		stackedActionBarHeight = context.getResources().getDimensionPixelSize( R.dimen.action_bar_height_stacked );
+		Resources res = context.getResources();
+		int stackedActionBarHeight = res.getDimensionPixelSize( R.dimen.action_bar_height_stacked );
+		int actionBarHeight = res.getDimensionPixelSize( R.dimen.action_bar_height );
+		
+		boolean landscape = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+		boolean tablet = res.getBoolean( R.bool.isTablet );
+		if (!landscape && !tablet)
+			topMargin = stackedActionBarHeight;
+		else
+			topMargin = actionBarHeight;
+			
+
 		columnCount = context.getResources().getInteger( R.integer.teamColumns );
 	}
 
@@ -40,7 +53,7 @@ public class TeamAdapter extends ArrayAdapter<Team> {
 
 		if ( position < columnCount ) {
 			View topView = new View( getContext() );
-			LayoutParams lp = new LayoutParams( LayoutParams.MATCH_PARENT, stackedActionBarHeight );
+			LayoutParams lp = new LayoutParams( LayoutParams.MATCH_PARENT, topMargin );
 			topView.setLayoutParams( lp );
 			return topView;
 		}

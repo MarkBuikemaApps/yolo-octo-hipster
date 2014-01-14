@@ -1,6 +1,13 @@
 
 package org.holoeverywhere.preference;
 
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.AlertDialog.Builder;
+import org.holoeverywhere.app.Dialog;
+import org.holoeverywhere.widget.AlertController.AlertParams.OnPrepareListViewListener;
+import org.holoeverywhere.widget.ListView;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,13 +26,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.AlertDialog.Builder;
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.widget.AlertController.AlertParams.OnPrepareListViewListener;
-import org.holoeverywhere.widget.ListView;
 
 public class _RingtonePickerDialog implements OnItemSelectedListener, Runnable,
         OnClickListener, OnPrepareListViewListener, OnCancelListener,

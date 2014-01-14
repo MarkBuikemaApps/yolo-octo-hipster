@@ -1,7 +1,5 @@
 package com.markbuikema.juliana32.activity;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -17,8 +15,7 @@ import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.AlertDialog;
 import org.holoeverywhere.app.AlertDialog.Builder;
 import org.holoeverywhere.preference.PreferenceManagerHelper;
-import org.holoeverywhere.preference.SharedPreferences;
-import org.holoeverywhere.preference.SharedPreferences.Editor;
+import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.ImageButton;
@@ -26,13 +23,13 @@ import org.holoeverywhere.widget.LinearLayout;
 import org.holoeverywhere.widget.ListView;
 import org.holoeverywhere.widget.ProgressBar;
 import org.holoeverywhere.widget.TextView;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -40,7 +37,6 @@ import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -50,44 +46,58 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 
-import com.facebook.LoggingBehavior;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Request.Callback;
+import com.facebook.Request.GraphUserCallback;
+import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
-import com.facebook.Settings;
+import com.facebook.model.GraphUser;
 import com.markbuikema.juliana32.R;
 import com.markbuikema.juliana32.adapter.MenuAdapter;
 import com.markbuikema.juliana32.asynctask.EventRetriever;
 import com.markbuikema.juliana32.model.NieuwsItem;
 import com.markbuikema.juliana32.model.NieuwsItem.OnContentLoadedListener;
 import com.markbuikema.juliana32.model.Team;
+import com.markbuikema.juliana32.model.Team.Category;
+import com.markbuikema.juliana32.model.UserInfo;
 import com.markbuikema.juliana32.section.Agenda;
 import com.markbuikema.juliana32.section.Contact;
 import com.markbuikema.juliana32.section.Nieuws;
 import com.markbuikema.juliana32.section.NieuwsDetail;
+import com.markbuikema.juliana32.section.NieuwsDetail.FacebookProfileCallback;
 import com.markbuikema.juliana32.section.TeamDetail;
 import com.markbuikema.juliana32.section.Teams;
 import com.markbuikema.juliana32.section.Teletekst;
-import com.markbuikema.juliana32.ui.Button;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog;
 import com.markbuikema.juliana32.ui.PhotoPagerDialog.OnPhotoPagerDialogPageChangedListener;
 import com.markbuikema.juliana32.ui.Toaster;
 import com.markbuikema.juliana32.util.DataManager;
-import com.markbuikema.juliana32.util.FacebookHelper;
 import com.markbuikema.juliana32.util.Util;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
+import com.viewpagerindicator.TabPageIndicator;
 
 public class MainActivity extends FragmentActivity {
 
@@ -97,16 +107,16 @@ public class MainActivity extends FragmentActivity {
 	private static final String TAG = "JulianaActivity";
 	private static final long SECOND_BACK_PRESS_TIMEOUT = 3000;
 
-	private Session.StatusCallback statusCallback = new SessionStatusCallback();
-
-	private ImageView menuButton;
 	private ImageView menuDrawerIcon;
+	private ImageView menuUpIcon;
 	private LinearLayout menuToggler;
 	private ImageButton shareButton;
 	private ImageButton searchButton;
 	private ImageButton overflowButton;
 	private ProgressBar loader;
 	private TextView title;
+
+	private LinearLayout actionBar;
 
 	private PopupMenu popupMenu;
 
@@ -119,6 +129,8 @@ public class MainActivity extends FragmentActivity {
 	private TeamDetail teamDetail;
 	private NieuwsDetail nieuwsDetail;
 
+	private UserInfo facebookUser;
+
 	private Teletekst teletekst;
 	private Nieuws nieuws;
 	private Teams teams;
@@ -127,6 +139,7 @@ public class MainActivity extends FragmentActivity {
 	private Contact contact;
 
 	private PhotoPagerDialog photoDialog;
+	private View teamTabs;
 
 	private MenuDrawer menuDrawer;
 	private ListView menu;
@@ -137,12 +150,9 @@ public class MainActivity extends FragmentActivity {
 	private boolean refreshingNieuws = false;
 	private boolean isTablet;
 
-	protected String userName;
-	protected String userPicUrl;
-	protected String userId;
-
 	private int actionBarHeight;
 	private int defaultNieuwsViewWidth;
+	private int drawerOffset;
 
 	private boolean searching;
 
@@ -155,7 +165,7 @@ public class MainActivity extends FragmentActivity {
 		NO_INTERNET, SERVER_OFFLINE, UNKNOWN
 	}
 
-	@SuppressLint( "NewApi" )
+	@SuppressLint ("NewApi" )
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
@@ -166,6 +176,7 @@ public class MainActivity extends FragmentActivity {
 		logHashKey();
 
 		actionBarHeight = getResources().getDimensionPixelSize( R.dimen.nieuws_header_margin );
+		drawerOffset = getResources().getDimensionPixelSize( R.dimen.drawerOffset );
 		isTablet = getResources().getBoolean( R.bool.isTablet );
 
 		Type type =
@@ -181,11 +192,18 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onDrawerStateChange( int oldState, int newState ) {
 				fixActionBar();
+				if ( ViewHelper.getTranslationY( actionBar ) < 0 )
+					ViewPropertyAnimator.animate( actionBar ).translationY( 0 ).setListener( null ).setDuration( 300 ).start();
+
+				View tabs = findViewById( R.id.teamsTabsIndicator );
+				if ( tabs != null && ViewHelper.getTranslationY( tabs ) < 0 )
+					ViewPropertyAnimator.animate( tabs ).translationY( 0 ).setListener( null ).setDuration( 300 ).start();
+
 			}
 
 			@Override
 			public void onDrawerSlide( float openRatio, int offsetPixels ) {
-				float newValue = - 11.0f * openRatio;
+				float newValue = drawerOffset * openRatio;
 				ViewHelper.setTranslationX( menuDrawerIcon, newValue );
 			}
 		} );
@@ -216,9 +234,11 @@ public class MainActivity extends FragmentActivity {
 			}
 		} );
 
+		actionBar = (LinearLayout) findViewById( R.id.actionBar );
 		teamDetailView = findViewById( R.id.teamDetailView );
-		menuButton = (ImageView) findViewById( R.id.menuButton );
+
 		menuDrawerIcon = (ImageView) findViewById( R.id.menuDrawerIcon );
+		menuUpIcon = (ImageView) findViewById( R.id.menuUpIcon );
 		menuToggler = (LinearLayout) findViewById( R.id.menuToggler );
 		shareButton = (ImageButton) findViewById( R.id.menuShare );
 		title = (TextView) findViewById( R.id.titleText );
@@ -227,6 +247,7 @@ public class MainActivity extends FragmentActivity {
 		overflowButton = (ImageButton) findViewById( R.id.menuOverflow );
 		searchButton = (ImageButton) findViewById( R.id.menuSearch );
 		searchInput = (EditText) findViewById( R.id.searchInput );
+		teamTabs = findViewById( R.id.teamsTabsIndicator );
 
 		title.setTypeface( Util.getRobotoLight( this ) );
 
@@ -237,7 +258,32 @@ public class MainActivity extends FragmentActivity {
 			public void onClick( View arg0 ) {
 				if ( isTeamDetailShown() || isNieuwsDetailShown() || isSearchBarShown() )
 					onBackPressed();
-				else
+				else if ( ViewHelper.getTranslationY( actionBar ) < 0 ) {
+					ViewPropertyAnimator.animate( actionBar ).translationY( 0 ).setDuration( 300 ).setListener( new AnimatorListener() {
+
+						@Override
+						public void onAnimationStart( Animator arg0 ) {
+						}
+
+						@Override
+						public void onAnimationRepeat( Animator arg0 ) {
+						}
+
+						@Override
+						public void onAnimationEnd( Animator arg0 ) {
+							menuDrawer.toggleMenu();
+						}
+
+						@Override
+						public void onAnimationCancel( Animator arg0 ) {
+						}
+					} ).start();
+					
+					View tabs = findViewById( R.id.teamsTabsIndicator );
+					if ( tabs != null && ViewHelper.getTranslationY( tabs ) < 0 )
+						ViewPropertyAnimator.animate( tabs ).translationY( 0 ).setListener( null ).setDuration( 300 ).start();
+
+				} else
 					menuDrawer.toggleMenu();
 			}
 		} );
@@ -271,6 +317,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onTextChanged( CharSequence s, int start, int before, int count ) {
 				nieuws.search( s.toString() );
+				searchInput.setTextColor( getResources().getColor( nieuws.isAdapterEmpty() ? R.color.red : android.R.color.black ) );
 			}
 
 			@Override
@@ -281,10 +328,42 @@ public class MainActivity extends FragmentActivity {
 			public void afterTextChanged( Editable s ) {
 			}
 		} );
+		if ( Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB )
+			searchInput.setCustomSelectionActionModeCallback( new ActionMode.Callback() {
+
+				public boolean onPrepareActionMode( ActionMode mode, Menu menu ) {
+					return false;
+				}
+
+				public void onDestroyActionMode( ActionMode mode ) {
+				}
+
+				public boolean onCreateActionMode( ActionMode mode, Menu menu ) {
+					return false;
+				}
+
+				public boolean onActionItemClicked( ActionMode mode, MenuItem item ) {
+					return false;
+				}
+			} );
+
+		if ( isTablet ) {
+			int searchBarWidth = getResources().getDimensionPixelSize( R.dimen.bigSearchBarWidth );
+			LinearLayout.LayoutParams searchInputLP = new LinearLayout.LayoutParams( searchBarWidth, LayoutParams.WRAP_CONTENT );
+			searchInputLP.gravity = Gravity.RIGHT;
+			searchInput.setLayoutParams( searchInputLP );
+		}
+
+		searchInput.setOnFocusChangeListener( new OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange( View arg0, boolean arg1 ) {
+				nieuws.setAnimationsEnabled( !arg1 );
+			}
+		} );
 
 		// hide the overflow button if hardware menu button is detected
-		if ( Build.VERSION.SDK_INT <= 10
-				|| ( Build.VERSION.SDK_INT >= 14 && ViewConfiguration.get( this ).hasPermanentMenuKey() ) )
+		if ( Build.VERSION.SDK_INT <= 10 || ( Build.VERSION.SDK_INT >= 14 && ViewConfiguration.get( this ).hasPermanentMenuKey() ) )
 			overflowButton.setVisibility( View.GONE );
 		else {
 			popupMenu = new PopupMenu( this, overflowButton );
@@ -314,21 +393,20 @@ public class MainActivity extends FragmentActivity {
 			setIntent( null );
 		}
 
-		// FACEBOOK STUFF////////////////
-		Settings.addLoggingBehavior( LoggingBehavior.INCLUDE_ACCESS_TOKENS );
-
+		// FACEBOOK STUFF//////////////////
 		Session session = Session.getActiveSession();
 		if ( session == null ) {
-			if ( savedInstanceState != null )
+			if ( savedInstanceState != null ) {
 				session = Session.restoreSession( this, null, statusCallback, savedInstanceState );
-			if ( session == null )
+			}
+			if ( session == null ) {
 				session = new Session( this );
+			}
 			Session.setActiveSession( session );
-			if ( session.getState().equals( SessionState.CREATED_TOKEN_LOADED ) )
-				session.openForRead( new Session.OpenRequest( this ).setCallback( statusCallback ) );
+			if ( session.getState().equals( SessionState.CREATED_TOKEN_LOADED ) ) {
+				session.openForRead( new Session.OpenRequest( this ).setPermissions( "basic_info" ).setCallback( statusCallback ) );
+			}
 		}
-
-		updateView();
 
 		// RESTORE ACTIVITY STATE ////////////////////
 		if ( savedInstanceState != null ) {
@@ -337,8 +415,8 @@ public class MainActivity extends FragmentActivity {
 				teletekst.onRestoreInstanceState( savedInstanceState );
 			onPageChanged( Page.valueOf( savedInstanceState.getString( "page" ) ) );
 
-			int teamId = savedInstanceState.getInt( "teamId", - 1 );
-			if ( teamId > - 1 ) {
+			int teamId = savedInstanceState.getInt( "teamId", -1 );
+			if ( teamId > -1 ) {
 				Team team = Teams.findTeamById( teamId );
 				requestTeamDetailPage( team );
 				teamDetail.onRestoreInstanceState( savedInstanceState );
@@ -352,8 +430,8 @@ public class MainActivity extends FragmentActivity {
 						break;
 					}
 
-			int photoDialogPage = savedInstanceState.getInt( "photoDialogPage", - 1 );
-			if ( photoDialogPage > - 1 ) {
+			int photoDialogPage = savedInstanceState.getInt( "photoDialogPage", -1 );
+			if ( photoDialogPage > -1 ) {
 				String[] urls = savedInstanceState.getStringArray( "photoDialogUrls" );
 				showPhotoDialog( urls, photoDialogPage, null );
 			}
@@ -363,35 +441,17 @@ public class MainActivity extends FragmentActivity {
 
 			searching = savedInstanceState.getBoolean( "searching", false );
 
-			if ( page == Page.NIEUWS && searching && ! isNieuwsDetailShown() )
+			if ( page == Page.NIEUWS && searching && !isNieuwsDetailShown() )
 				requestSearchBar();
 
 			if ( searching )
 				searchInput.setText( savedInstanceState.getString( "searchWord" ) );
-
-			teams.reloadData();
 
 		}
 	}
 
 	protected boolean isSearchBarShown() {
 		return searchInput.getVisibility() == View.VISIBLE;
-	}
-
-	private void updateView() {
-
-		// Session session = Session.getActiveSession();
-		//
-		// String text = "Session opened: " + session.isOpened() +
-		// "\nAccess token: " + session.getAccessToken() + "\nPERMISSIONS:";
-		//
-		// for (String string : session.getPermissions())
-		// text += "\n" + string;
-		//
-		// Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-
-		// Log.d("ACCESS TOKEN", "Token: " + session.getAccessToken());
-
 	}
 
 	public MenuDrawer getMenu() {
@@ -402,10 +462,6 @@ public class MainActivity extends FragmentActivity {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE );
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		return netInfo != null && netInfo.isConnected();
-	}
-
-	public Teams getTeams() {
-		return teams;
 	}
 
 	private void initializePages() {
@@ -446,6 +502,7 @@ public class MainActivity extends FragmentActivity {
 			if ( teams == null )
 				teams = new Teams( this );
 
+			teams.onResume();
 			break;
 		case TELETEKST:
 			title = getResources().getString( R.string.menu_teletekst );
@@ -460,10 +517,10 @@ public class MainActivity extends FragmentActivity {
 				agenda = new Agenda( this );
 			break;
 		case CONTACT:
-			title = getResources().getString( R.string.menu_contact );
-			activePageView = findViewById( R.id.contactView );
-			if ( contact == null )
-				contact = new Contact( this );
+			// title = getResources().getString( R.string.menu_contact );
+			// activePageView = findViewById( R.id.contactView );
+			// if ( contact == null )
+			// contact = new Contact( this );
 			break;
 		default:
 			break;
@@ -488,17 +545,17 @@ public class MainActivity extends FragmentActivity {
 		if ( reloadNieuws ) {
 			if ( nieuws == null )
 				nieuws = new Nieuws( this );
-			if ( ! nieuws.isRefreshing() )
+			if ( !nieuws.isRefreshing() )
 				nieuws.refresh();
 		}
 	}
 
-	@TargetApi( Build.VERSION_CODES.HONEYCOMB )
+	@TargetApi (Build.VERSION_CODES.HONEYCOMB )
 	private void showBetaDialogIfNecessary() {
 
 		final SharedPreferences prefs = PreferenceManagerHelper.getDefaultSharedPreferences( this );
 
-		if ( ! prefs.getBoolean( "showTeamsMessage", true ) )
+		if ( !prefs.getBoolean( "showTeamsMessage", true ) )
 			return;
 
 		final Editor edit = prefs.edit();
@@ -531,24 +588,27 @@ public class MainActivity extends FragmentActivity {
 		case NIEUWS:
 			loader.setVisibility( View.GONE );
 			shareButton.setVisibility( isNieuwsDetailShown() ? View.VISIBLE : View.GONE );
-			searchButton.setVisibility( isNieuwsDetailShown() ? View.GONE : View.VISIBLE );
+			searchButton.setVisibility( isNieuwsDetailShown() || isTablet ? View.GONE : View.VISIBLE );
+			searchInput.setVisibility( isTablet ? View.VISIBLE : View.GONE );
 			break;
 		case TEAMS:
 			shareButton.setVisibility( View.GONE );
 			searchButton.setVisibility( View.GONE );
-			if ( teams != null && ! isTeamDetailShown() )
-				loader.setVisibility( ! teams.isLoaded() ? View.VISIBLE : View.GONE );
+			if ( teams != null && !isTeamDetailShown() )
+				loader.setVisibility( !teams.isLoaded() ? View.VISIBLE : View.GONE );
 
 			break;
 		case TELETEKST:
 			loader.setVisibility( View.GONE );
 			shareButton.setVisibility( View.GONE );
 			searchButton.setVisibility( View.GONE );
+
 			break;
 		case CONTACT:
 			loader.setVisibility( View.GONE );
 			shareButton.setVisibility( View.GONE );
 			searchButton.setVisibility( View.GONE );
+
 			break;
 		default:
 			break;
@@ -558,19 +618,22 @@ public class MainActivity extends FragmentActivity {
 			hideSearchBar();
 
 		if ( isTeamDetailShown() || isNieuwsDetailShown() || searching ) {
-			menuButton.setImageResource( R.drawable.menu_borderless );
+			menuUpIcon.setVisibility( View.VISIBLE );
 			menuDrawerIcon.setVisibility( View.GONE );
 		} else {
-			menuButton.setImageResource( R.drawable.menu_icon );
+			menuUpIcon.setVisibility( View.GONE );
 			menuDrawerIcon.setVisibility( View.VISIBLE );
 		}
 
 		if ( page == Page.NIEUWS && searching )
-			if ( ! isNieuwsDetailShown() ) {
+			if ( !isNieuwsDetailShown() ) {
 				requestSearchBar();
-				menuButton.setImageResource( R.drawable.menu_borderless );
+				menuUpIcon.setVisibility( View.VISIBLE );
 				menuDrawerIcon.setVisibility( View.GONE );
 			}
+
+		if ( teamTabs != null )
+			teamTabs.setVisibility( page == Page.TEAMS && !isTeamDetailShown() ? View.VISIBLE : View.GONE );
 
 		actionBarContent.setVisibility( menuDrawer.isMenuVisible() ? View.INVISIBLE : View.VISIBLE );
 
@@ -586,6 +649,14 @@ public class MainActivity extends FragmentActivity {
 		if ( page != Page.TEAMS || isTeamDetailShown() )
 			return;
 
+		if ( ViewHelper.getTranslationY( actionBar ) < 0 )
+			ViewPropertyAnimator.animate( actionBar ).translationY( 0 ).setListener( null ).setDuration( 300 ).start();
+
+		View tabs = findViewById( R.id.teamsTabsIndicator );
+		if ( tabs != null && ViewHelper.getTranslationY( tabs ) < 0 )
+			ViewPropertyAnimator.animate( tabs ).translationY( 0 ).setListener( null ).setDuration( 300 ).start();
+
+		
 		teamDetail = new TeamDetail( this, team );
 
 		activePageView.setVisibility( View.GONE );
@@ -594,15 +665,27 @@ public class MainActivity extends FragmentActivity {
 		setTitle( team.getName() );
 
 		fixActionBar();
+
+		increaseCategoryFrequency( team.getCategory() );
 	}
 
-	// FIXME request
-	@TargetApi( Build.VERSION_CODES.HONEYCOMB )
+	private void increaseCategoryFrequency( Category category ) {
+		SharedPreferences sp = getSharedPreferences( "categories", 0 );
+		int currentCount = sp.getInt( "cat" + category.ordinal(), 0 );
+		Editor e = sp.edit();
+		e.putInt( "cat" + category.ordinal(), currentCount + 1 );
+		e.commit();
+
+		Log.d( "counter", "new count for cat " + category.getName() + " :  " + sp.getInt( "cat" + category.ordinal(), -1 ) );
+	}
+
+	@TargetApi (Build.VERSION_CODES.HONEYCOMB )
 	public void requestNieuwsDetailPage( final NieuwsItem item, final View clickedView ) {
+
 		if ( ( page != Page.NIEUWS && page != Page.TEAMS ) || isNieuwsDetailShown() )
 			return;
 
-		if ( ! item.isContentLoaded() ) {
+		if ( !item.isContentLoaded() ) {
 			item.startLoading( new OnContentLoadedListener() {
 
 				@Override
@@ -615,6 +698,8 @@ public class MainActivity extends FragmentActivity {
 		}
 		loader.setVisibility( View.GONE );
 
+		hideSearchBar();
+
 		nieuws.fadeList( true );
 		nieuws.setScrollingEnabled( false );
 
@@ -626,11 +711,13 @@ public class MainActivity extends FragmentActivity {
 		imm.hideSoftInputFromWindow( searchInput.getWindowToken(), 0 );
 	}
 
-	// FIXME hide
 	public void hideNieuwsDetail() {
 
 		if ( nieuwsDetail == null )
 			return;
+
+		if ( searching )
+			requestSearchBar();
 
 		nieuwsDetail.hide();
 		nieuws.fadeList( false );
@@ -660,20 +747,18 @@ public class MainActivity extends FragmentActivity {
 		}
 		if ( isNieuwsDetailShown() )
 			hideNieuwsDetail();
-		else
-			if ( isTeamDetailShown() ) {
-				if ( teamDetail.isACloudOpened() )
-					teamDetail.closeClouds();
-				else {
-					hideTeamDetail();
-					setTitle( R.string.menu_teams );
-				}
-			} else
-				if ( waitingForSecondBackPress ) {
-					DataManager.getInstance().clearData();
-					finish();
-				} else
-					startBackPressTimer();
+		else if ( isTeamDetailShown() ) {
+			if ( teamDetail.isACloudOpened() )
+				teamDetail.closeClouds();
+			else {
+				hideTeamDetail();
+				setTitle( R.string.menu_teams );
+			}
+		} else if ( waitingForSecondBackPress ) {
+			DataManager.getInstance().clearData();
+			finish();
+		} else
+			startBackPressTimer();
 	}
 
 	private void startBackPressTimer() {
@@ -709,8 +794,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 
-		saveGraphUser();
-
 		onPageChanged( page );
 
 		if ( getIntent() != null && getIntent().getData() != null ) {
@@ -741,23 +824,26 @@ public class MainActivity extends FragmentActivity {
 		if ( isSearchBarShown() )
 			return;
 
+		actionBar.setBackgroundResource( R.drawable.actionbar_contextual );
 		actionBarContent.setVisibility( View.GONE );
 		searchInput.setVisibility( View.VISIBLE );
 		searchInput.requestFocus();
 		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE );
-		inputMethodManager
-				.toggleSoftInputFromWindow( searchInput.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0 );
+		inputMethodManager.toggleSoftInputFromWindow( searchInput.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0 );
 
 		searching = true;
 
 		title.setVisibility( View.GONE );
-		menuButton.setImageResource( R.drawable.menu_borderless );
+
+		menuUpIcon.setVisibility( View.VISIBLE );
 		menuDrawerIcon.setVisibility( View.GONE );
 	}
 
 	public void hideSearchBar() {
-		if ( ! isSearchBarShown() )
+		if ( !isSearchBarShown() )
 			return;
+
+		actionBar.setBackgroundResource( R.drawable.actionbar );
 
 		actionBarContent.setVisibility( View.VISIBLE );
 		searchInput.setVisibility( View.GONE );
@@ -786,11 +872,11 @@ public class MainActivity extends FragmentActivity {
 
 		outState.putBoolean( "menuOpened", menuDrawer.isMenuVisible() );
 
-		Session session = Session.getActiveSession();
-		Session.saveSession( session, outState );
-
 		outState.putString( "searchWord", searchInput.getText().toString() );
 		outState.putBoolean( "searching", searching );
+
+		Session session = Session.getActiveSession();
+		Session.saveSession( session, outState );
 
 		super.onSaveInstanceState( outState );
 	}
@@ -810,7 +896,8 @@ public class MainActivity extends FragmentActivity {
 				md = MessageDigest.getInstance( "SHA" );
 				md.update( signature.toByteArray() );
 				String something = new String( Base64.encode( md.digest(), 0 ) );
-				// String something = new String(Base64.encodeBytes(md.digest()));
+				// String something = new
+				// String(Base64.encodeBytes(md.digest()));
 				// Log.e(TAG, "HASH KEY:" + something);
 			}
 		} catch ( NameNotFoundException e1 ) {
@@ -821,89 +908,6 @@ public class MainActivity extends FragmentActivity {
 			Log.e( TAG, e.toString() );
 		}
 		// Log.d(TAG, "Done printing hashkey");
-	}
-
-	@Override
-	public void onActivityResult( int requestCode, int resultCode, Intent data ) {
-		super.onActivityResult( requestCode, resultCode, data );
-		Session.getActiveSession().onActivityResult( this, requestCode, resultCode, data );
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		Session.getActiveSession().addCallback( statusCallback );
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		Session.getActiveSession().removeCallback( statusCallback );
-	}
-
-	private class SessionStatusCallback implements Session.StatusCallback {
-		@Override
-		public void call( Session session, SessionState state, Exception exception ) {
-			updateView();
-			if ( session.isOpened() )
-				saveGraphUser();
-			// Log.d("ACCESS_TOKEN", session.getAccessToken());
-		}
-	}
-
-	public void onClickLogin() {
-		Session session = Session.getActiveSession();
-
-		if ( ! session.isOpened() && ! session.isClosed() )
-			session.openForRead( new Session.OpenRequest( this ).setCallback( statusCallback ) );
-		else
-			Session.openActiveSession( this, true, statusCallback );
-	}
-
-	@SuppressWarnings( "deprecation" )
-	protected void saveGraphUser() {
-		if ( ! Session.getActiveSession().isOpened() ) {
-			userPicUrl = null;
-			userName = null;
-			userId = null;
-			// TODO set profile pic in nieuwsdetail?
-			return;
-		}
-		new AsyncTask<Void, Void, String>() {
-
-			@Override
-			protected String doInBackground( Void... arg0 ) {
-				Bundle params = new Bundle();
-				params.putString( "access_token", Session.getActiveSession().getAccessToken() );
-				params.putString( "fields", "picture,name" );
-				try {
-					// Log.d("USER_INFO", "1");
-					JSONObject object = new JSONObject( FacebookHelper.getFacebook().request( "me", params ) );
-					// Log.d("USER_INFO", object.toString());
-
-					userPicUrl = object.getJSONObject( "picture" ).getJSONObject( "data" ).getString( "url" );
-					userName = object.getString( "name" );
-					userId = object.getString( "id" );
-
-					if ( isNieuwsDetailShown() )
-						return userPicUrl;
-
-				} catch ( MalformedURLException e ) {
-					return null;
-				} catch ( IOException e ) {
-					return null;
-				} catch ( JSONException e ) {
-					return null;
-				}
-				return null;
-			}
-
-			@Override
-			protected void onPostExecute( String result ) {
-				// if (result != null)
-				// nieuwsDetail.setProfilePic(result);
-			}
-		}.execute();
 	}
 
 	public void showPhotoDialog( String[] urls, int position, OnPhotoPagerDialogPageChangedListener callback ) {
@@ -919,8 +923,7 @@ public class MainActivity extends FragmentActivity {
 		hideTitle();
 	}
 
-	public void showPhotoDialog( final ImageView thumbView, String[] urls, int position,
-			OnPhotoPagerDialogPageChangedListener callback ) {
+	public void showPhotoDialog( final ImageView thumbView, String[] urls, int position, OnPhotoPagerDialogPageChangedListener callback ) {
 		if ( urls == null || urls.length < 1 )
 			return;
 		if ( photoDialog != null )
@@ -953,7 +956,7 @@ public class MainActivity extends FragmentActivity {
 		menuToggler.setEnabled( enabled );
 	}
 
-	@TargetApi( Build.VERSION_CODES.ICE_CREAM_SANDWICH )
+	@TargetApi (Build.VERSION_CODES.ICE_CREAM_SANDWICH )
 	public void hideTitle() {
 		try {
 			( (View) findViewById( android.R.id.title ).getParent() ).setVisibility( View.GONE );
@@ -965,7 +968,7 @@ public class MainActivity extends FragmentActivity {
 			getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LOW_PROFILE );
 	}
 
-	@TargetApi( Build.VERSION_CODES.ICE_CREAM_SANDWICH )
+	@TargetApi (Build.VERSION_CODES.ICE_CREAM_SANDWICH )
 	public void showTitle() {
 		try {
 			( (View) findViewById( android.R.id.title ).getParent() ).setVisibility( View.VISIBLE );
@@ -975,10 +978,6 @@ public class MainActivity extends FragmentActivity {
 		getWindow().clearFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN );
 		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH )
 			getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE );
-	}
-
-	public String getUserName() {
-		return userName;
 	}
 
 	public void setRefreshingNieuws( boolean refreshing ) {
@@ -1032,8 +1031,6 @@ public class MainActivity extends FragmentActivity {
 
 	private void onSettingsClick() {
 		Intent i = new Intent( MainActivity.this, SettingsActivity.class );
-		i.putExtra( "userName", userName );
-		i.putExtra( "userPicUrl", userPicUrl );
 		startActivity( i );
 	}
 
@@ -1057,4 +1054,100 @@ public class MainActivity extends FragmentActivity {
 			return true;
 		}
 	};
+
+	public void notifyTeletekstGone() {
+		menuAdapter.removeTeletekst();
+	}
+
+	public void setTabs( TabPageIndicator tabs ) {
+		this.teamTabs = tabs;
+	}
+
+	// FACEBOOK
+	public void getFacebookUser( final FacebookProfileCallback callback ) {
+		if ( facebookUser == null ) {
+			Request userRequest = Request.newMeRequest( Session.getActiveSession(), new GraphUserCallback() {
+
+				@Override
+				public void onCompleted( GraphUser user, Response response ) {
+
+					Log.d( "facebook_login", "getFacebookUser response: " + ( response == null ? "null" : response.toString() ) );
+
+					if ( user != null )
+						facebookUser = new UserInfo( user.getName(), user.getId() );
+
+					callback.onFacebookProfileRetrieved( facebookUser );
+				}
+			} );
+			userRequest.executeAsync();
+
+		} else {
+			callback.onFacebookProfileRetrieved( facebookUser );
+		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Session.getActiveSession().addCallback( statusCallback );
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		Session.getActiveSession().removeCallback( statusCallback );
+	}
+
+	@Override
+	public void onActivityResult( int requestCode, int resultCode, Intent data ) {
+		super.onActivityResult( requestCode, resultCode, data );
+		Session.getActiveSession().onActivityResult( this, requestCode, resultCode, data );
+	}
+
+	public void onClickLogin() {
+		Session session = Session.getActiveSession();
+		if ( !session.isOpened() && !session.isClosed() ) {
+			session.openForRead( new Session.OpenRequest( this ).setPermissions( "basic_info" ).setCallback( statusCallback ) );
+		} else {
+			Session.openActiveSession( this, true, statusCallback );
+		}
+	}
+
+	public static void onClickLogout() {
+		Session session = Session.getActiveSession();
+		if ( !session.isClosed() ) {
+			session.closeAndClearTokenInformation();
+		}
+	}
+
+	private StatusCallback statusCallback = new StatusCallback() {
+
+		@Override
+		public void call( Session session, SessionState state, Exception exception ) {
+			Log.d( "facebook_login", "Session: " + ( session == null ? "null" : session.toString() ) + ", Exception: "
+					+ ( exception == null ? "null" : exception.toString() ) );
+
+			if ( isNieuwsDetailShown() )
+				nieuwsDetail.onFacebookSessionChange( session );
+
+		}
+	};
+
+	private void deletePermissions() {
+		Session session = Session.getActiveSession();
+		if ( session.getPermissions().size() > 0 ) {
+			Request permissionRequest = Request.newGraphPathRequest( session, "me/permissions", new Callback() {
+
+				@Override
+				public void onCompleted( Response response ) {
+					Log.d( "facebook_login_permissions", response == null ? "null" : response.toString() );
+
+				}
+			} );
+			permissionRequest.setHttpMethod( HttpMethod.DELETE );
+			permissionRequest.executeAsync();
+		}
+	}
+
+	// END FACEBOOK
 }

@@ -32,19 +32,19 @@
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/button"
+        android:background="@drawable/card"
         android:contentDescription="@string/call"
         android:focusable="false"
-        android:src="@drawable/ic_action_call" />
+        android:src="@drawable/ic_action_content_copy" />
 
     <org.holoeverywhere.widget.ImageButton
         android:id="@+id/memberEmailButton"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/button"
+        android:background="@drawable/card"
         android:contentDescription="@string/email"
         android:focusable="false"
-        android:src="@drawable/ic_action_email" />
+        android:src="@drawable/ic_action_content_cut" />
 
 </org.holoeverywhere.widget.LinearLayout>

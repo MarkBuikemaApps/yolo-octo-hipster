@@ -160,6 +160,9 @@ public class Teletekst {
 					ttPager.setCurrentItem(page);
 			} catch (Exception e) {
 			}
+			
+			if (pagerAdapter.getCount() == 0) 
+				((MainActivity) activity).notifyTeletekstGone();
 		}
 
 		private void setMaxIndex(String html) {

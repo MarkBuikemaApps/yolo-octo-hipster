@@ -156,6 +156,7 @@ public class Nieuws {
 	public int getAdapterCount() {
 		if ( nieuwsAdapter == null )
 			return 0;
+		
 		return nieuwsAdapter.getCount();
 	}
 
@@ -203,5 +204,9 @@ public class Nieuws {
 
 	public void fadeList( boolean out ) {
 		ViewPropertyAnimator.animate( nieuwsList ).alpha( out ? .05f : 1 ).setDuration( 200 );
+	}
+
+	public void setAnimationsEnabled(boolean b) {
+		nieuwsAdapter.setAnimationsEnabled(b);
 	}
 }

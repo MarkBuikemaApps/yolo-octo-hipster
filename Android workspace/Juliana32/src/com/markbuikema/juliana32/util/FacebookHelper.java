@@ -12,17 +12,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.facebook.Session;
 import com.facebook.android.Facebook;
 import com.markbuikema.juliana32.model.Comment;
 import com.markbuikema.juliana32.model.FacebookNieuwsItem;
 import com.markbuikema.juliana32.model.Like;
 import com.markbuikema.juliana32.model.NieuwsItem;
 
-@SuppressWarnings( "deprecation" )
+@SuppressWarnings ("deprecation" )
 public class FacebookHelper {
 	private static final String TAG = "FacebookHelperJuliana";
 
@@ -77,7 +79,7 @@ public class FacebookHelper {
 		int count = 0;
 		for ( NieuwsItem i : items )
 			if ( i instanceof FacebookNieuwsItem )
-				count++ ;
+				count++;
 
 		Log.d( "FB_POST_COUNT", "count: " + count );
 
@@ -123,7 +125,7 @@ public class FacebookHelper {
 			albumId = null;
 
 		try {
-			if ( ! o.getJSONObject( "from" ).getString( "name" ).toLowerCase( Locale.US ).contains( "juliana" ) )
+			if ( !o.getJSONObject( "from" ).getString( "name" ).toLowerCase( Locale.US ).contains( "juliana" ) )
 				return null;
 		} catch ( JSONException e ) {
 			return null;
@@ -140,12 +142,13 @@ public class FacebookHelper {
 		} catch ( JSONException e ) {
 			id = null;
 		}
-
+		// Log.d( "FB_POST", "pre message parse" );
 		try {
 			content = o.getString( "message" );
 		} catch ( JSONException e ) {
-			return null;
+			content = null;
 		}
+		// Log.d( "FB_POST", "post message parse" );
 
 		try {
 			if ( photo )
@@ -191,8 +194,8 @@ public class FacebookHelper {
 			JSONArray commentArray = commentJSON.getJSONArray( "data" );
 			for ( int i = 0; i < commentArray.length(); i++ ) {
 				JSONObject c = commentArray.getJSONObject( i );
-				Comment comment = new Comment( c.getString( "id" ), c.getJSONObject( "from" ).getString( "name" ), c.getJSONObject(
-						"from" ).getString( "id" ), c.getString( "message" ), c.getString( "created_time" ) );
+				Comment comment = new Comment( c.getString( "id" ), c.getJSONObject( "from" ).getString( "name" ), c.getJSONObject( "from" )
+						.getString( "id" ), c.getString( "message" ), c.getString( "created_time" ) );
 				comments.add( comment );
 			}
 		} catch ( JSONException e ) {
@@ -200,18 +203,23 @@ public class FacebookHelper {
 
 		GregorianCalendar date = toDate( dateString );
 
-		FacebookNieuwsItem item = new FacebookNieuwsItem( id, title, content, date, link, imgUrl, likes, comments,
-				photo ? albumId : null, photo ? defaultPhoto : null );
+		if (!photo && content == null) return null;
+		
+		FacebookNieuwsItem item = new FacebookNieuwsItem( id, title, content, date, link, imgUrl, likes, comments, photo ? albumId : null,
+				photo ? defaultPhoto : null );
+
+		Log.d( "FBNI", item.toString() );
 
 		return item;
 
 	}
 
-	public static class CommentLoader extends AsyncTask<String, Comment, Void> {
+	public static class CommentLoader extends AsyncTask<String, Comment, List<Comment>> {
 
 		@Override
-		protected Void doInBackground( String... id ) {
-
+		protected List<Comment> doInBackground( String... id ) {
+			List<Comment> output = new ArrayList<Comment>();
+			
 			// Log.d("COMMENT", "Started commentloader");
 			Bundle params = new Bundle();
 			params.putString( "access_token", FacebookHelper.ACCESS_TOKEN );
@@ -220,10 +228,13 @@ public class FacebookHelper {
 				JSONObject comments = new JSONObject( FacebookHelper.getFacebook().request( "/" + id[ 0 ] + "/comments", params ) );
 				JSONArray data = comments.getJSONArray( "data" );
 				for ( int i = 0; i < data.length(); i++ ) {
-					// Log.d("COMMENT", data.getJSONObject(i).toString() + "...");
+					// Log.d("COMMENT", data.getJSONObject(i).toString() +
+					// "...");
 					Comment comment = processCommentJSON( data.getJSONObject( i ) );
-					if ( comment != null )
+					if ( comment != null ) {
 						publishProgress( comment );
+						output.add(comment);
+					}
 				}
 			} catch ( MalformedURLException e ) {
 				e.printStackTrace();
@@ -235,7 +246,7 @@ public class FacebookHelper {
 				e.printStackTrace();
 			}
 
-			return null;
+			return output;
 		}
 
 		private Comment processCommentJSON( JSONObject data ) {
@@ -336,4 +347,6 @@ public class FacebookHelper {
 		return createdAt;
 	}
 
+	/////AUTHENTICATION/////////////////////////////////////////////////////////////////////////
+	
 }

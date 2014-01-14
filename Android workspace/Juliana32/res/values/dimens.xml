@@ -6,13 +6,17 @@
     <dimen name="table_column_width">32dp</dimen>
     <dimen name="huge_margin">20dp</dimen>
     <dimen name="action_bar_height">48dp</dimen>
+    <dimen name="ptr_height">48dp</dimen>
     <dimen name="nieuws_header_margin">52dp</dimen>
     <dimen name="action_bar_height_stacked">88dp</dimen>
-    <dimen name="card_line_thickness">0.5dp</dimen>
+    <dimen name="card_line_thickness">0dp</dimen> <!-- 0.5dp -->
     <dimen name="card_padding">8dp</dimen>
     <dimen name="readableTextSize">12sp</dimen>
     <dimen name="normalTextSize">12sp</dimen>
     <dimen name="tabs_height">40dp</dimen>
+    <dimen name="bigSearchBarWidth">160dp</dimen>
+    <dimen name="drawerOffset">-6dp</dimen>
+    <dimen name="gridSpacing">1dp</dimen>
 
     <integer name="columnCount">1</integer>
     <integer name="teamColumns">2</integer>

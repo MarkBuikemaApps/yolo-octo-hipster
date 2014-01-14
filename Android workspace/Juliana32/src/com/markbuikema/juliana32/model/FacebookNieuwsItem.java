@@ -31,7 +31,8 @@ public class FacebookNieuwsItem extends NieuwsItem {
 		likeCount = likes.size();
 		this.defaultPhotoId = defaultPhotoId;
 
-		if ( ! isPhoto() && content.contains( " #" ) ) {
+		
+		if ( ! isPhoto() && content != null && content.contains( " #" ) ) {
 			this.title = "";
 			String[] words = content.split( " " );
 			for ( int i = 0; i < words.length; i++ ) {
@@ -130,6 +131,15 @@ public class FacebookNieuwsItem extends NieuwsItem {
 
 	public List<Comment> getComments() {
 		return Collections.unmodifiableList( comments );
+	}
+	
+	@Override
+	public String toString() {
+		return "";
+	}
+
+	public void setComments( List<Comment> result ) {
+		this.comments = result;
 	}
 
 }
